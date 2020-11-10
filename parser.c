@@ -6,7 +6,7 @@
 /*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2020/11/09 11:52:54 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/11/10 19:42:09 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,9 @@
 
 void	parser(char *line, t_command *com)
 {
-	(void)line;
-	(void)com;
 	pars_pipes(line, com);
-	pars_commands(&line, com);
-	pars_variables(&line, com);
+	pars_commands(line, com);
+	// pars_variables(blocks, com);
 }
 
 void	pars_pipes(char *line, t_command *com)
@@ -29,9 +27,23 @@ void	pars_pipes(char *line, t_command *com)
 			com->pipe_count++;
 		(*line)++;
 	}
+	com->no_command = com->pipe_count + 1;
+	com->no_arg = com->pipe_count + 1;
 }
 
-void	pars_commands(char **line, t_command *com)
+void	pars_commands(char *line, t_command *com)
 {
-	
+	size_t	i;
+	t_comd	*new;
+
+	i = 0;
+	new = com->comd;
+	while (line && line[i])
+	{
+		// pars_block(blocks[i]);
+		i++;
+		com->comd = com->comd->next;
+		init_comd(com);
+	}
+	com->comd = new;
 }
