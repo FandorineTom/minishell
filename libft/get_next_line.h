@@ -6,13 +6,13 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 13:42:00 by snorthmo          #+#    #+#             */
-/*   Updated: 2020/10/17 17:02:45 by snorthmo         ###   ########.fr       */
+/*   Updated: 2020/11/11 18:14:10 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# define BUFFER_SIZE 1
+# define BUFFER_SIZE 100
 # include <stdlib.h>
 # include <unistd.h>
 
