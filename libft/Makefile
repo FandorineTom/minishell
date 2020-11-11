@@ -6,7 +6,7 @@
 #    By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/13 18:05:17 by snorthmo          #+#    #+#              #
-#    Updated: 2020/10/17 21:58:14 by snorthmo         ###   ########.fr        #
+#    Updated: 2020/11/11 18:10:25 by snorthmo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,11 @@ SRC = ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c ft_memchr.c \
 	ft_isascii.c ft_isprint.c ft_toupper.c ft_tolower.c ft_calloc.c \
 	ft_strdup.c ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c ft_itoa.c \
 	ft_strmapi.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c\
-	get_next_line.c get_next_line_utils.c ft_putchar.c ft_putendl.c
+	get_next_line.c get_next_line_utils.c ft_putchar.c ft_putendl.c\
+	init_flags.c libftprintf.c parse_flags.c print_c.c print_d.c\
+	print_hexa_big.c print_hexa.c print_p.c print_perc.c print_pointer.c\
+	print_s.c print_u.c print_x_big.c print_x.c ft_putnbr.c\
+	ft_putstr.c ft_putnbr_unint.c
 SRC_B = ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
 	ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c \
 	ft_strcat_bonus.c ft_strcmp_bonus.c ft_strcpy_bonus.c ft_strncat_bonus.c \

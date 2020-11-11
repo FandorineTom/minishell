@@ -2,6 +2,7 @@
 
 int echo(void)
 {
-	int a = 6;
+	int a = 8;
+	ft_printf("%d\n", a);
 	return(a);
 }

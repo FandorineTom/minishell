@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/13 23:48:34 by snorthmo          #+#    #+#             */
-/*   Updated: 2020/10/17 21:54:44 by snorthmo         ###   ########.fr       */
+/*   Updated: 2020/11/11 18:08:28 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdarg.h>
 # include "get_next_line.h"
 # define FT_SIZE_MAX (size_t)~0
 
@@ -23,6 +24,59 @@ typedef struct		s_list
 	void			*content;
 	struct s_list	*next;
 }					t_list;
+
+typedef	struct		s_flags
+{
+	char			flag;
+	int				width;
+	int				precision;
+	char			type;
+	int				zero;
+	int				wrong;
+}					t_flags;
+
+void				check_flag(const char **line, t_flags *flags);
+void				check_width(const char **line, t_flags *flags, va_list args);
+void				check_type(const char **line, t_flags *flags);
+void				check_precision(const char **line, t_flags *flags,\
+					va_list args);
+void				check_length(const char **line, t_flags *flags);
+int					parse_flags(const char **line, t_flags *flags, va_list args);
+int					ft_printf(const char *line, ...);
+int					treat_flags(t_flags *flags, va_list	args);
+int					print_hexa(unsigned long n);
+int					print_hexa_big(unsigned long n);
+int					print_pointer(int *n);
+int					print_c(t_flags *flags, va_list args);
+int					print_s(t_flags *flags, va_list	args);
+int					print_s_width(t_flags *flags, char *str);
+int					print_s_precision(t_flags *flags, char *str, size_t w,\
+					size_t p);
+int					print_s_null(t_flags *flags, int w, int min);
+int					print_u(t_flags *flags, va_list	args);
+int					print_u_width(t_flags *flags, int count, unsigned int num);
+int					print_u_precision(t_flags *flags, int count, unsigned int num);
+int					print_x(t_flags *flags, va_list	args);
+int					print_x_width(t_flags *flags, int count, unsigned int num);
+int					print_x_precision(t_flags *flags, int count, unsigned int num);
+int					count_x_len(unsigned int num);
+void				init_flags(t_flags *flags);
+int					print_x_big(t_flags *flags, va_list	args);
+int					print_x_width_big(t_flags *flags, int count, unsigned int num);
+int					print_x_precision_big(t_flags *flags, int count,\
+					unsigned int num);
+int					print_p(t_flags *flags, va_list args);
+int					count_u_len(unsigned int num);
+int					count_d_len(int num);
+int					print_d(t_flags *flags, va_list args);
+int					print_d_width(t_flags *flags, int count, int num);
+int					print_d_precision_neg(t_flags *flags, int count, int num);
+int					print_d_width_neg(t_flags *flags, int count, int num, int n);
+int					print_perc(t_flags *flags);
+int					print_p_null(t_flags *flags, int w);
+int					ft_putnbr_unint(unsigned int n);
+int					ft_putnbr(int n);
+int					ft_putstr(char *s);
 
 int					ft_strncmp(const char *str1, const char *str2, size_t n);
 int					ft_strcmp(const char *str1, const char *str2);
@@ -76,7 +130,7 @@ void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *), \
 					void (*del)(void *));
-void				ft_putchar(char c);
+int					ft_putchar(char c);
 void				ft_putendl(char *s);
 
 #endif

@@ -1,18 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar.c                                       :+:      :+:    :+:   */
+/*   init_flags.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/17 21:52:59 by snorthmo          #+#    #+#             */
-/*   Updated: 2020/11/11 18:05:30 by snorthmo         ###   ########.fr       */
+/*   Created: 2020/07/19 11:48:52 by snorthmo          #+#    #+#             */
+/*   Updated: 2020/11/11 17:57:41 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_putchar(char c)
+void	init_flags(t_flags *flags)
 {
-	return(write(1, &c, 1));
+	flags->flag = 0;
+	flags->precision = 0;
+	flags->type = 0;
+	flags->width = 0;
+	flags->zero = 0;
+	flags->wrong = 0;
 }

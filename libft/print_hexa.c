@@ -1,18 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar.c                                       :+:      :+:    :+:   */
+/*   print_hexa.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/17 21:52:59 by snorthmo          #+#    #+#             */
-/*   Updated: 2020/11/11 18:05:30 by snorthmo         ###   ########.fr       */
+/*   Created: 2020/07/15 17:07:00 by snorthmo          #+#    #+#             */
+/*   Updated: 2020/11/11 17:58:33 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_putchar(char c)
+int	print_hexa(unsigned long n)
 {
-	return(write(1, &c, 1));
+	int len;
+
+	len = 0;
+	if (n >= 16)
+		len += print_hexa(n / 16);
+	n = n % 16;
+	n += n < 10 ? '0' : 'a' - 10;
+	len += write(1, &n, 1);
+	return (len);
 }
