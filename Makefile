@@ -6,7 +6,7 @@
 #    By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/11 16:45:52 by snorthmo          #+#    #+#              #
-#    Updated: 2020/11/11 17:48:39 by snorthmo         ###   ########.fr        #
+#    Updated: 2020/11/12 16:42:55 by snorthmo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,9 @@ CC = gcc
 FLAGS = -g -Wall -Wextra -Werror
 LIBFT = libft/libft.a
 MAIN = main.c
-SRC = echo.c
+SRC = echo.c\
+		cmd_start.c\
+		main.c
 OBJ = $(SRC:.c=.o)
 RM = rm -rf
 HEADER = minishell.h

@@ -1,8 +1,14 @@
 #include "minishell.h"
 
-int echo(void)
+void	 cmd_echo(t_comd *comd)
 {
-	int a = 8;
-	ft_printf("%d\n", a);
-	return(a);
+	int		flag;
+
+	flag = 0;
+	if (comd->flag->no_flag && !ft_strcmp(comd->flag->flag, "n"))
+		flag = 1;
+	if (comd->env_var)
+		ft_printf("%s", comd->env_var);
+	if (!flag)
+		ft_printf("\n");
 }
