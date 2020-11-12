@@ -6,7 +6,7 @@
 #    By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/11 16:45:52 by snorthmo          #+#    #+#              #
-#    Updated: 2020/11/12 16:42:55 by snorthmo         ###   ########.fr        #
+#    Updated: 2020/11/12 16:56:10 by snorthmo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,5 +45,6 @@ clean:
 fclean: clean
 		$(MAKE) fclean -C ./libft
 		$(RM) $(NAME)
+		$(RM) minishell
 
 re: fclean $(NAME)
