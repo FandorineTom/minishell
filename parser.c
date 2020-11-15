@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2020/11/15 17:10:31 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/11/15 17:51:07 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,23 @@ void	pars_tockens(char **line, t_command *com)
 	new = com->comd;
 	while (line && *line && **line && (**line != ';' || !com->quotes_op))
 	{
-		pars_command(line, com);
-		pars_flags(line, com);
-		pars_variables(line, com);
-		*line++;
+		// pars_command(line, com);
+		// pars_flags(line, com);
+		// pars_variables(line, com);
+		if (!check_command(line, com))
+			com->no_command = 0;
+		if (!check_agr(line, com))
+			com->no_arg = 0;
+		
+		**line++;
 		com->comd = com->comd->next;
 		init_comd(com);
 	}
 	com->comd = new;
+}
+
+int		check_command(char **line, t_command *com)
+{
+	if (**line = 'e')
+		if (*(*line + 1) == ) 
 }
