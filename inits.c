@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:45:37 by scopycat          #+#    #+#             */
-/*   Updated: 2020/11/10 21:19:55 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/11/15 15:25:50 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,17 @@ void	init_com(t_command *com)
 {
 	int i;
 	
-	i = -1;
+	i = 0;
 	init_comd(com);
 	init_arg(com);
+	com->quotes_op = 0;
 	com->env_var = NULL;
 	com->no_arg = 1; // в целом тут можно не инициализировать, потому что дальше инициализируетя (эти три счетчика)
 	com->no_command = 1;
 	com->no_var = 1;
 	com->pipe_count = 0;
-	while (++i < 100) // проверить, что инкремент так как надо работает
-		com->process[i] = 0;
+	while (i < 100)
+		com->process[i++] = 0;
 }
 
 void	init_comd(t_command *com)

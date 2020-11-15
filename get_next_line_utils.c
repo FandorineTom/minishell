@@ -6,11 +6,11 @@
 /*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/22 15:33:12 by scopycat          #+#    #+#             */
-/*   Updated: 2020/11/10 23:02:32 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/11/08 22:33:25 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "./headers/get_next_line.h"
 
 size_t	ft_strlen(const char *str)
 {
