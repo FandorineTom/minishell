@@ -6,7 +6,7 @@
 #    By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/11 16:45:52 by snorthmo          #+#    #+#              #
-#    Updated: 2020/11/12 16:56:10 by snorthmo         ###   ########.fr        #
+#    Updated: 2020/11/15 14:18:49 by snorthmo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,9 @@ CC = gcc
 FLAGS = -g -Wall -Wextra -Werror
 LIBFT = libft/libft.a
 MAIN = main.c
-SRC = echo.c\
+SRC = cmd_echo.c\
 		cmd_start.c\
+		cmd_cd.c\
 		main.c
 OBJ = $(SRC:.c=.o)
 RM = rm -rf
@@ -30,7 +31,7 @@ all: $(NAME)
 $(NAME): $(OBJ) $(LIBFT)
 	ar rc $(NAME) $(OBJ)
 	ranlib $(NAME)
-	$(CC) $(FLAGS) $(MAIN) $(LIBFT) $(NAME) -o minishell
+	$(CC) $(FLAGS) $(SRC) $(LIBFT) -o minishell
 
 %.o: %.c $(HEADER)
 	$(CC) $(FLAG) -c $< -o $@
