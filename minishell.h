@@ -4,6 +4,8 @@
 #include "libft/libft.h"
 #include "libft/get_next_line.h"
 
+char				*g_opath;
+
 typedef struct		s_flag
 {
 	struct s_flar	*next;
