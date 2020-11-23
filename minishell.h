@@ -25,5 +25,6 @@ typedef struct		s_comd
 void				cmd_start(t_comd *comd);
 void				cmd_echo(t_comd *comd);
 int					cmd_cd(t_comd *comd);
+int					cmd_pwd(void);
 
 #endif

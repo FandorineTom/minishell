@@ -6,8 +6,8 @@ void	cmd_start(t_comd *comd)
 		cmd_echo(comd);
 	if (!ft_strncmp(comd->cmnd, "cd", 2))
 		cmd_cd(comd);
-	// if (!ft_strncmp(comd->cmnd, "pwd", 3))
-	// 	cmd_pwd(comd);
+	if (!ft_strncmp(comd->cmnd, "pwd", 3))
+		cmd_pwd();
 	// if (!ft_strncmp(comd->cmnd, "export", 6))
 	// 	cmd_export(comd);
 	// if (!ft_strncmp(comd->cmnd, "unset", 5))

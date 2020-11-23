@@ -6,7 +6,7 @@
 #    By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/11 16:45:52 by snorthmo          #+#    #+#              #
-#    Updated: 2020/11/15 14:18:49 by snorthmo         ###   ########.fr        #
+#    Updated: 2020/11/23 12:53:34 by snorthmo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ MAIN = main.c
 SRC = cmd_echo.c\
 		cmd_start.c\
 		cmd_cd.c\
+		cmd_pwd.c\
 		main.c
 OBJ = $(SRC:.c=.o)
 RM = rm -rf

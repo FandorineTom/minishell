@@ -7,9 +7,13 @@ int	main()
 
 	flag.flag = NULL;
 	flag.no_flag = 0;
-	comd.cmnd = "cd";
-	comd.env_var = "~";
+	comd.cmnd = "pwd";
+	comd.env_var = "test_dir";
 	comd.flag = &flag;
+	cmd_start(&comd);
+	comd.cmnd = "cd";
+	cmd_start(&comd);
+	comd.cmnd = "pwd";
 	cmd_start(&comd);
 	// comd.env_var = "-";
 	// cmd_start(&comd);
