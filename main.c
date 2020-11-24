@@ -6,13 +6,13 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2020/11/15 16:41:32 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/11/19 14:30:18 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
+int	main(void) // нужно как-то принять переменные окружения
 {
 	char		*line;
 	t_command	com;

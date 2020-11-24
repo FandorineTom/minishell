@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2020/11/15 16:53:58 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/11/19 14:45:40 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct		s_command
 	t_comd			*comd;
 	t_arg			*arg;
 	char			*env_var; // переменная, которая просто выводится (или исполняется)
+	char			**env_def;
 	size_t			error;
 	size_t			quotes_op;
 	size_t			no_command; //обнуляется, если нет команды. изначально количество pipe + 1
@@ -77,11 +78,15 @@ typedef struct		s_command
 void				parser(char **line, t_command *com);
 void				pars_pipes(char **line, t_command *com);
 void				pars_tockens(char **line, t_command *com);
+int					check_command(char **line, t_command *com);
+int 				check_which_command(char **line, t_command *com, char *command, int i);
+int 				check_env_var(char **line, t_command *com);
 void				work_comman(t_command *com);
 void				free_all(t_command *com);
 void				init_com(t_command *com);
 void				init_comd(t_command *com);
 void				init_flag(t_command *com);
 void				init_arg(t_command *com);
+int					ft_strlen_space(char *str);
 
 #endif
