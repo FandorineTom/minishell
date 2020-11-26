@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2020/11/19 14:45:40 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/11/26 17:56:26 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct	s_arg
 {
 	struct s_arg	*next;
 	char			*arg;
-	char			*path;
+	char			*path; // вспомнить, зачем это
 	t_pipe			*pipes;
 	size_t			wildcard; // для бонуса если 0, но звездочки нет, если 1, то есть и можно вспомнить matchtomatch
 	size_t			no_arg; // изначально  1, если аргументы не найдены, то обнуляется
@@ -78,9 +78,12 @@ typedef struct		s_command
 void				parser(char **line, t_command *com);
 void				pars_pipes(char **line, t_command *com);
 void				pars_tockens(char **line, t_command *com);
+void				pars_single_quotes(char **line, t_command *com);
 int					check_command(char **line, t_command *com);
 int 				check_which_command(char **line, t_command *com, char *command, int i);
 int 				check_env_var(char **line, t_command *com);
+void				change_env_var_meaning(t_command *com);
+void				check_tockens(char **line, t_command *com);
 void				work_comman(t_command *com);
 void				free_all(t_command *com);
 void				init_com(t_command *com);
@@ -88,5 +91,7 @@ void				init_comd(t_command *com);
 void				init_flag(t_command *com);
 void				init_arg(t_command *com);
 int					ft_strlen_space(char *str);
+int					ft_strlen_char(char *str, char c);
+int					check_open_quotes(char **line, int len);
 
 #endif
