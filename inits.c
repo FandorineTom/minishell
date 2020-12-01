@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:45:37 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/01 15:34:19 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/01 17:05:26 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	init_com(t_command *com)
 	
 	i = 0;
 	init_comd(com);
-	init_arg(com);
+	// init_arg(com);
 	// init_env_d(com);
 	com->quotes_op = 0;
 	com->env_var = NULL;

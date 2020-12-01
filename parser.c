@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/01 16:14:08 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/01 17:21:56 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	parser(char **line, t_command *com)
 	pars_pipes(*line, com);
 	while (line && *line && **line && (**line != ';' || !com->quotes_op))
 		pars_tockens(line, com);
+	write(1, "end of parser\n", 14);
 	// pars_variables(blocks, com);
 }
 
@@ -34,25 +35,18 @@ void	pars_pipes(char *line, t_command *com)
 
 void	pars_tockens(char **line, t_command *com)
 {
-	// t_comd	*new;
 	t_arg	*new;
 
-	// new = com->comd; // это не нужно. потому что мы распарсиваем только одну строчку до точки запятой, где может быть только одна команда. (возможно, если будут редиректы, надо будет вернуть взад)
+	new = com->arg;
 	if (!check_command(line, com))
 			com->no_command = 0;
-	if (!check_env_var(line, com))
-		com->no_var = 0;
-	// if (!check_arg(line, com))
-	// 	com->no_arg = 0;
 	while (line && *line && **line && (**line != ';' || !com->quotes_op))
 	{
-		// pars_command(line, com);
-		// pars_flags(line, com);
-		// pars_variables(line, com);
-		
 		// if  (check_mistakes(line, com))	
 		// 	break ; // тут возможно надо всякие экситы и прочее гавно реализовывать
-		new = com->arg;
+		init_arg(com);
+		if (!check_env_var(line, com))
+			com->no_var = 0;
 		if (!com->no_var)
 			check_tockens(line, com);
 		else
@@ -62,13 +56,9 @@ void	pars_tockens(char **line, t_command *com)
 			com->env_var = NULL;
 			com->no_var = 0;
 		}
-		com->arg = com->arg->next;
-		init_arg(com);
-		// (*line)++; // или тут это вообще не нужно, или еще нужно как  (*line)++
-		// com->comd = com->comd->next;
-		// init_comd(com);
+		ft_argadd_back(&new, com->arg);
 	}
-	// com->comd = new;
+	com->arg = new;
 }
 
 void	check_tockens(char **line, t_command *com)
@@ -126,9 +116,9 @@ void	pars_single_quotes(char **line, t_command *com)
 {
 	size_t	len;
 
-	len = ft_strlen_char(*line, '\'');
+	len = ft_strlen_char(*line + 1, '\'');
 	// com->quotes_op = 1;
-	com->arg->arg = ft_substr(*line, 1, len - 2);
+	com->arg->arg = ft_substr(*line, 1, len);
 	(*line) += len;
 }
 
@@ -162,11 +152,9 @@ void	pars_double_quotes(char **line, t_command *com)
 				com->arg->arg = ft_strjoin_gnl(com->arg->arg, buf_2);
 				free(buf_2);
 			}
-		}	
-	// 	if ((len_buf = ft_strlen(ft_strchr(com->arg->arg, '\\')))) говорят, что экранирование обрабатывать не надо
-	// 	{
-	// 	}	
+		}
 	}
+	(*line) += len;
 }
 
 int		check_command(char **line, t_command *com)
@@ -255,11 +243,7 @@ void	copy_env(char **env, t_command *com)  // взять листы из либ�
 		len_2 = ft_strlen(env[i]);
 		new->env = ft_substr(env[i], 0, len);
 		new->meaning = ft_substr(env[i], len + 1, len_2 - (len + 1));
-		// buf->next = new;
 		ft_envadd_back(&buf, new);
-		// com->env_def->env = ft_substr(env[i], 0, len);
-		// com->env_def->meaning = ft_substr(env[i], len + 1, len_2 - (len + 1));
-		// com->env_def = com->env_def->next;
 		i++;
 	}
 	com->env_def = buf;
@@ -289,29 +273,6 @@ void	change_env_var_meaning(t_command *com) // нужно переписать
 	if (!com->env_def)
 		com->no_var = 0;
 	com->env_def = new;
-
-	// if (com->env_def)
-	// {
-	// 	while(com->env_def[i] && (ft_strncmp(com->env_def[i], com->env_var, len)) && i > -1)
-	// 	{
-	// 		i++;
-	// 		len_env = 0;
-	// 		if(com->env_def[i] && !(ft_strncmp(com->env_def[i], com->env_var, len)))
-	// 		{
-	// 			while (com->env_def[i][len_env] != '=')
-	// 				len_env++;
-	// 			if (len == len_env)
-	// 			{
-	// 				free(com->env_var);
-	// 				com->env_var = NULL;
-	// 				com->env_var = ft_strdup(com->env_def[i] + len_env);
-	// 				i = -1;
-	// 			}
-	// 		}
-	// 	}
-	// 	if (!com->env_def[i])
-	// 		com->no_var = 0; // `если переменной нет, то ничего не происходит		
-	// }
 }
 
 
@@ -414,6 +375,23 @@ char	*ft_strchr(const char *str, int sym)
 void	ft_envadd_back(t_env **lst, t_env *new)
 {
 	t_env	*bonus;
+
+	if (!new || !lst)
+		return ;
+	bonus = *lst;
+	if (bonus)
+	{
+		while (bonus->next)
+			bonus = bonus->next;
+		bonus->next = new;
+	}
+	else
+		*lst = new;
+}
+
+void	ft_argadd_back(t_arg **lst, t_arg *new)
+{
+	t_arg	*bonus;
 
 	if (!new || !lst)
 		return ;

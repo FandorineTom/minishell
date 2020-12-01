@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/01 16:17:06 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/01 16:52:59 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,6 @@ char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strchr(const char *str, int sym);
 void				copy_env(char **env, t_command *com);
 void				ft_envadd_back(t_env **lst, t_env *new);
+void				ft_argadd_back(t_arg **lst, t_arg *new);
 
 #endif
