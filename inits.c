@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:45:37 by scopycat          #+#    #+#             */
-/*   Updated: 2020/11/15 15:25:50 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/01 15:34:19 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	init_com(t_command *com)
 	i = 0;
 	init_comd(com);
 	init_arg(com);
+	// init_env_d(com);
 	com->quotes_op = 0;
 	com->env_var = NULL;
 	com->no_arg = 1; // в целом тут можно не инициализировать, потому что дальше инициализируетя (эти три счетчика)
@@ -55,4 +56,12 @@ void	init_arg(t_command *com)
 	com->arg->wildcard = 0;
 	com->arg->no_arg = 1;
 	com->arg->next = NULL;
+}
+
+void	init_env_d(t_command *com)
+{
+	com->env_def = (t_env*)malloc(sizeof(t_env));
+	com->env_def->env = NULL;
+	com->env_def->meaning = NULL;
+	com->env_def->next = NULL;
 }

@@ -6,22 +6,24 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2020/11/26 15:20:25 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/01 16:32:47 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(char **env) // нужно как-то принять переменные окружения
+int	main(int argc, char **argv, char **env) // нужно как-то принять переменные окружения
 {
 	char		*line;
 	t_command	com;
 
+	(void)argc;
+	(void)argv;
 	write(1, "my_minishell: ", 14); // тут надо что-то поизящнее зафигачить и чтобы оно висело
 	get_next_line(0, &line);
-	//init_com(&com);
+	init_com(&com);
 	com.error = 0;
-	com.env_def = env;
+	copy_env(env, &com);
 	while (line && !com.error)
 		{
 			parser(&line, &com); // тут надо прописать так, чтобы обрабатывать только до ; и потом снова вызывать парсер, а строку обрезать

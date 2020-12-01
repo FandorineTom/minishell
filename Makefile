@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: scopycat <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/13 20:15:44 by scopycat          #+#    #+#              #
-#    Updated: 2020/11/09 21:41:47 by scopycat         ###   ########.fr        #
+#    Updated: 2020/11/29 16:38:01 by scopycat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,6 @@ FLAG = -g -Wall -Wextra -Werror
 NAME = libminishell.a
 
 FUNC = main.c\
-ft_split.c\
 get_next_line.c\
 get_next_line_utils.c\
 inits.c\

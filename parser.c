@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2020/11/26 19:13:04 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/01 16:14:08 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 void	parser(char **line, t_command *com)
 {
-	pars_pipes(line, com);
+	pars_pipes(*line, com);
 	while (line && *line && **line && (**line != ';' || !com->quotes_op))
 		pars_tockens(line, com);
 	// pars_variables(blocks, com);
 }
 
-void	pars_pipes(char **line, t_command *com)
+void	pars_pipes(char *line, t_command *com)
 {
-	while (line && *line && **line)
+	while (line && *line)
 	{
-		if (**line == '|')
+		if (*line == '|')
 			com->pipe_count++;
-		**line++;
+		line++;
 	}
 	com->no_command = com->pipe_count + 1; // надо вспомнить зачем это и как можно использовать
 	com->no_arg = com->pipe_count + 1;
@@ -42,16 +42,16 @@ void	pars_tockens(char **line, t_command *com)
 			com->no_command = 0;
 	if (!check_env_var(line, com))
 		com->no_var = 0;
-	if (!check_arg(line, com))
-		com->no_arg = 0;
+	// if (!check_arg(line, com))
+	// 	com->no_arg = 0;
 	while (line && *line && **line && (**line != ';' || !com->quotes_op))
 	{
 		// pars_command(line, com);
 		// pars_flags(line, com);
 		// pars_variables(line, com);
 		
-		if  (check_mistakes(line, com))	
-			break ; // тут возможно надо всякие экситы и прочее гавно реализовывать
+		// if  (check_mistakes(line, com))	
+		// 	break ; // тут возможно надо всякие экситы и прочее гавно реализовывать
 		new = com->arg;
 		if (!com->no_var)
 			check_tockens(line, com);
@@ -73,7 +73,7 @@ void	pars_tockens(char **line, t_command *com)
 
 void	check_tockens(char **line, t_command *com)
 {
-	int		len;
+	size_t	len;
 	
 	while (**line == ' ')
 		(*line)++;
@@ -91,30 +91,30 @@ void	check_tockens(char **line, t_command *com)
 		pars_double_quotes(line, com); // это различают спецсимволы
 	else if (**line == '\'')
 		pars_single_quotes(line, com);
-	else if (**line == '|')
-		activate_pipe(line, com); // функция для пайпа
-	else if (**line == '>')
-		pars_redirect(line, com);
-	else if (**line == '<')
-		pars_reverse_redirect(line, com);
-	check_pipe(line, com);
+	// else if (**line == '|')
+	// 	activate_pipe(line, com); // функция для пайпа
+	// else if (**line == '>')
+	// 	pars_redirect(line, com);
+	// else if (**line == '<')
+	// 	pars_reverse_redirect(line, com);
+	// check_pipe(line, com);
 }
 
-int		check_open_quotes(char **line, int len)
+int		check_open_quotes(char **line, size_t len)
 {
-	int	len_qu;
-	int	len_qu_2;
+	size_t	len_qu;
+	size_t	len_qu_2;
 
 	len_qu = ft_strlen_char(*line, '\''); // длина будет равна или расстоянию до кавычки, или расстоянию до конца line
 	if (len_qu != ft_strlen(*line))
-		len_qu_2 = t_strlen_char(*line + len_qu + 1, '\''); //длина будет равна длине от следующего символа после первой кавычки до второй кавычки или до конца строки
+		len_qu_2 = ft_strlen_char(*line + len_qu + 1, '\''); //длина будет равна длине от следующего символа после первой кавычки до второй кавычки или до конца строки
 	else 
 		len_qu_2 = 0;
 	if (len > len_qu && len < len_qu_2) // если ; между кавычками или стоит после первой кавычки, а второй нет (возможно нужно тут переделать на только если есть обе кавычки)
 		return (1);
 	len_qu = ft_strlen_char(*line, '"'); // длина будет равна или расстоянию до кавычки, или расстоянию до конца line
 	if (len_qu != ft_strlen(*line))
-		len_qu_2 = t_strlen_char(*line + len_qu + 1, '"'); //длина будет равна длине от следующего символа после первой кавычки до второй кавычки или до конца строки
+		len_qu_2 = ft_strlen_char(*line + len_qu + 1, '"'); //длина будет равна длине от следующего символа после первой кавычки до второй кавычки или до конца строки
 	else 
 		len_qu_2 = 0;
 	if (len > len_qu && len < len_qu_2) // если ; между кавычками или стоит после первой кавычки, а второй нет (возможно нужно тут переделать на только если есть обе кавычки)
@@ -124,7 +124,7 @@ int		check_open_quotes(char **line, int len)
 
 void	pars_single_quotes(char **line, t_command *com)
 {
-	int	len;
+	size_t	len;
 
 	len = ft_strlen_char(*line, '\'');
 	// com->quotes_op = 1;
@@ -134,21 +134,38 @@ void	pars_single_quotes(char **line, t_command *com)
 
 void	pars_double_quotes(char **line, t_command *com)
 {
-	int len;
-	int	len_env;
+	size_t 	len;
+	size_t	len_env;
+	char	*buf;
+	size_t	len_buf;
+	char	*buf_2;
 	
-	len = ft_strlen_char(*line, '"');
+	len = ft_strlen_char(*line + 1, '"');
 	len_env = 0;
-	if (len == ft_strlen(*line))
+	if (len == ft_strlen(*line + 1) && (*line)[len - 1] != '"') // а что, если последний символ - кавычка?
 		com->arg->arg = ft_substr(*line, 1, len - 1);
 	else
 	{
-		com->arg->arg = ft_substr(*line, 1, len - 1);
-		if (ft_strchr(com->arg->arg, '$'))
+		com->arg->arg = ft_substr(*line, 1, len); // тут возможно минус 2 надо делать
+		while ((len_buf = ft_strlen(ft_strchr(com->arg->arg, '$'))))
 		{
-			len_env = check_env_var(ft_strchr(com->arg->arg, '$'), com);
+			buf = ft_strchr(com->arg->arg, '$');
+			len_env = check_env_var(&buf, com); // тут я посчитала длину переменной окружения вместе с долларом
+			buf = ft_substr(com->arg->arg, 0, len - len_buf);
+			buf_2 = ft_substr(com->arg->arg, ft_strlen(buf) + len_env + 1, len_buf - len_env + 2); // возможно тут нужно сделать -1
+			change_env_var_meaning(com);
+			if (com->no_var)
+			{
+				free(com->arg->arg);
+				com->arg->arg = NULL;
+				com->arg->arg = ft_strjoin_gnl(buf, com->env_var);
+				com->arg->arg = ft_strjoin_gnl(com->arg->arg, buf_2);
+				free(buf_2);
+			}
 		}	
-			
+	// 	if ((len_buf = ft_strlen(ft_strchr(com->arg->arg, '\\')))) говорят, что экранирование обрабатывать не надо
+	// 	{
+	// 	}	
 	}
 }
 
@@ -190,7 +207,7 @@ int	ft_strncmp(const char *str1, const char *str2, size_t len)
 
 int check_which_command(char **line, t_command *com, char *command, int i)
 {
-	if (!(ft_strncmp(*line, command, i) || !(ft_strncmp(*line, ft_strjoin_gnl(command, " "), i))))
+	if (!(ft_strncmp(*line, command, i)) || !(ft_strncmp(*line, ft_strjoin_gnl(ft_strdup(command), " "), i)))
 	{
 		if (!(com->comd->cmnd = ft_strdup(command)))
 				return (0); // подумать насчет кодов ошибок
@@ -202,7 +219,7 @@ int check_which_command(char **line, t_command *com, char *command, int i)
 
 int check_env_var(char **line, t_command *com)
 {
-	int	i;
+	size_t	i;
 
 	i = ft_strlen_space(*line);
 	if (**line == '$')
@@ -217,43 +234,91 @@ int check_env_var(char **line, t_command *com)
 	return (0);
 }
 
-void	change_env_var_meaning(t_command *com)
+void	copy_env(char **env, t_command *com)  // взять листы из либы и просто пушить в конец
 {
-	int	i;
-	int	len;
-	int	len_env;
+	t_env	*new;
+	t_env	*buf;
+	size_t	i;
+	size_t	len;
+	size_t	len_2;
+	
+	i = 0;
+	len = 0;
+	buf = com->env_def;
+	while(env && env[i])
+	{
+		new = (t_env*)malloc(sizeof(t_env));
+		new->env = NULL;
+		new->meaning = NULL;
+		new->next = NULL;
+		len = ft_strlen_char(env[i], '=');
+		len_2 = ft_strlen(env[i]);
+		new->env = ft_substr(env[i], 0, len);
+		new->meaning = ft_substr(env[i], len + 1, len_2 - (len + 1));
+		// buf->next = new;
+		ft_envadd_back(&buf, new);
+		// com->env_def->env = ft_substr(env[i], 0, len);
+		// com->env_def->meaning = ft_substr(env[i], len + 1, len_2 - (len + 1));
+		// com->env_def = com->env_def->next;
+		i++;
+	}
+	com->env_def = buf;
+}
+
+void	change_env_var_meaning(t_command *com) // нужно переписать
+{
+	size_t	i;
+	size_t	len;
+	// size_t	len_env;
+	t_env	*new;
 
 	i = 0;
-	len = ft_strlen(com->env_var);
-	if (com->env_def)
+	new = com->env_def;
+	len = ft_strlen_space(com->env_var);
+	while(com->env_def)
 	{
-		while(com->env_def[i] && (ft_strncmp(com->env_def[i], com->env_var, len)) && i > -1)
+		if (!(ft_strncmp(com->env_def->env, com->env_var, len)))
 		{
-			i++;
-			len_env = 0;
-			if(com->env_def[i] && !(ft_strncmp(com->env_def[i], com->env_var, len)))
-			{
-				while (com->env_def[i][len_env] != '=')
-					len_env++;
-				if (len == len_env)
-				{
-					free(com->env_var);
-					com->env_var = NULL;
-					com->env_var = ft_strdup(com->env_def[i] + len_env);
-					i = -1;
-				}
-			}
+			free(com->env_var);
+			com->env_var = NULL;
+			com->env_var = ft_strdup(com->env_def->meaning);
+			break ;
 		}
-		if (!com->env_def[i])
-			com->no_var = 0; // `если переменной нет, то ничего не происходит		
+		com->env_def = com->env_def->next;
 	}
+	if (!com->env_def)
+		com->no_var = 0;
+	com->env_def = new;
+
+	// if (com->env_def)
+	// {
+	// 	while(com->env_def[i] && (ft_strncmp(com->env_def[i], com->env_var, len)) && i > -1)
+	// 	{
+	// 		i++;
+	// 		len_env = 0;
+	// 		if(com->env_def[i] && !(ft_strncmp(com->env_def[i], com->env_var, len)))
+	// 		{
+	// 			while (com->env_def[i][len_env] != '=')
+	// 				len_env++;
+	// 			if (len == len_env)
+	// 			{
+	// 				free(com->env_var);
+	// 				com->env_var = NULL;
+	// 				com->env_var = ft_strdup(com->env_def[i] + len_env);
+	// 				i = -1;
+	// 			}
+	// 		}
+	// 	}
+	// 	if (!com->env_def[i])
+	// 		com->no_var = 0; // `если переменной нет, то ничего не происходит		
+	// }
 }
 
 
 
-int	ft_strlen_space(char *str)
+size_t	ft_strlen_space(char *str)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	if (!str)
@@ -263,9 +328,9 @@ int	ft_strlen_space(char *str)
 	return (i);
 }
 
-int	ft_strlen_char(char *str, char c)
+size_t	ft_strlen_char(char *str, char c)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	if (!str)
@@ -344,4 +409,21 @@ char	*ft_strchr(const char *str, int sym)
 		}
 	}
 	return (NULL);
+}
+
+void	ft_envadd_back(t_env **lst, t_env *new)
+{
+	t_env	*bonus;
+
+	if (!new || !lst)
+		return ;
+	bonus = *lst;
+	if (bonus)
+	{
+		while (bonus->next)
+			bonus = bonus->next;
+		bonus->next = new;
+	}
+	else
+		*lst = new;
 }
