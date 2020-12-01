@@ -8,7 +8,7 @@ void	 cmd_echo(t_comd *comd)
 	if (comd->flag->no_flag && !ft_strcmp(comd->flag->flag, "n"))
 		flag = 1;
 	if (comd->env_var)
-		ft_printf("%s", comd->env_var);
+		ft_putstr(comd->env_var);
 	if (!flag)
-		ft_printf("\n");
+		ft_putstr("\n");
 }
