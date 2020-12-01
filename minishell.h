@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/01 16:52:59 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/01 19:29:43 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 typedef struct		s_flag
 {
-	struct s_flar	*next;
+	struct s_flag	*next;
 	char			*flag;
 	size_t			no_flag; // изначально 1, если флаги не найдены, то обнуляется
 }					t_flag;
@@ -95,7 +95,6 @@ int 				check_env_var(char **line, t_command *com);
 void				change_env_var_meaning(t_command *com);
 void				check_tockens(char **line, t_command *com);
 void				work_comman(t_command *com);
-void				free_all(t_command *com);
 void				init_com(t_command *com);
 void				init_comd(t_command *com);
 void				init_flag(t_command *com);
@@ -109,5 +108,9 @@ char				*ft_strchr(const char *str, int sym);
 void				copy_env(char **env, t_command *com);
 void				ft_envadd_back(t_env **lst, t_env *new);
 void				ft_argadd_back(t_arg **lst, t_arg *new);
+void				free_all(t_command *com, int i); // если приходит 1 то чистится все, кроме списка переменных окружения, если 0, то чистится все
+void				free_comd(t_comd *comd);
+void				free_flag(t_flag *flag);
+
 
 #endif

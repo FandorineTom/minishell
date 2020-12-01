@@ -6,7 +6,7 @@
 #    By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/13 20:15:44 by scopycat          #+#    #+#              #
-#    Updated: 2020/11/29 16:38:01 by scopycat         ###   ########.fr        #
+#    Updated: 2020/12/01 18:42:21 by scopycat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ FLAG = -g -Wall -Wextra -Werror
 NAME = libminishell.a
 
 FUNC = main.c\
+free_struct.c\
 get_next_line.c\
 get_next_line_utils.c\
 inits.c\

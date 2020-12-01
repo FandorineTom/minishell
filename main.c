@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/01 17:11:23 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/01 18:46:22 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 		}
 
 	// work_comman(&com);
-	// free_all(&com);
+	// free_all(&com, 0);
 	return (0);
 }
 
