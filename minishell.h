@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/01 19:29:43 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/02 12:38:15 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,9 @@ void				ft_argadd_back(t_arg **lst, t_arg *new);
 void				free_all(t_command *com, int i); // если приходит 1 то чистится все, кроме списка переменных окружения, если 0, то чистится все
 void				free_comd(t_comd *comd);
 void				free_flag(t_flag *flag);
+void 				free_arg(t_arg *arg);
+void				free_pipe(t_pipe *pipes);
+void				free_env(t_env *env_def);
 
 
 #endif

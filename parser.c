@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/01 18:45:35 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/02 14:26:25 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	parser(char **line, t_command *com)
 	pars_pipes(*line, com);
 	while (line && *line && **line && **line != ';')
 		pars_tockens(line, com);
-	write(1, "end of parser\n", 14);
+	write(1, "end of parser\n", 14); // чисто для теста, потом нужно убрать
 	// pars_variables(blocks, com);
 }
 
@@ -45,7 +45,7 @@ void	pars_tockens(char **line, t_command *com)
 {
 	t_arg	*new;
 
-	new = com->arg;
+	new = NULL;
 	if (!check_command(line, com))
 			com->no_command = 0;
 	while (line && *line && **line && **line != ';')
@@ -66,7 +66,7 @@ void	pars_tockens(char **line, t_command *com)
 		}
 		ft_argadd_back(&new, com->arg);
 	}
-	com->arg = new;
+	com->arg = new; // тут создается лишний лист с пустыми элементами в начале. надо найти откуда он и убрать
 }
 
 void	check_tockens(char **line, t_command *com)
