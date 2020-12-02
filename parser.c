@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/02 17:14:29 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/02 19:54:38 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,14 @@ void	pars_tockens(char **line, t_command *com)
 			check_tockens(line, com);
 		else
 		{
+			change_env_var_meaning(com);
 			com->arg->arg = ft_strdup(com->env_var);
 			free(com->env_var);
 			com->env_var = NULL;
 			com->no_var = 0;
 		}
-		ft_argadd_back(&new, com->arg);
+		if (com->arg->arg) // возможно это не нужно
+			ft_argadd_back(&new, com->arg);
 	}
 	com->arg = new; // тут создается лишний лист с пустыми элементами в начале. надо найти откуда он и убрать
 }
@@ -124,10 +126,14 @@ void	pars_single_quotes(char **line, t_command *com)
 {
 	size_t	len;
 
-	len = ft_strlen_char(*line + 1, '\'');
+	while (**line == '\'')
+	{
+		len = ft_strlen_char(*line + 1, '\'');
 	// com->quotes_op = 1;
-	com->arg->arg = ft_substr(*line, 1, len);
-	(*line) += len;
+		if (len)
+			com->arg->arg = ft_strjoin_gnl(com->arg->arg, ft_substr(*line, 1, len));
+		(*line) += len + 2;
+	}
 }
 
 void	pars_double_quotes(char **line, t_command *com)
@@ -218,6 +224,8 @@ int		check_echo_flag(char **line, t_command *com) // тут еще долбан�
 		com->comd->flag->flag[2] = '\0';
 		(*line) += flag + i;
 	}
+	else
+		com->comd->flag->no_flag = 0;
 	// if ((*line)[i] == '-' && (*line)[i + 1] == 'n') // && ((*line)[i + 2] == 'n' || (*line)[i + 2] == ' '))
 	// {
 	// 	i += 2;
@@ -294,13 +302,17 @@ int check_env_var(char **line, t_command *com)
 	size_t	i;
 
 	i = ft_strlen_space(*line);
+	if (i > ft_strlen_char(*line, '\''))
+		i = ft_strlen_char(*line, '\'');
+	if (i > ft_strlen_char(*line, '"'))
+		i = ft_strlen_char(*line, '"');
 	if (**line == '$')
 	{
 		if (!(com->env_var = ft_substr(*line, 1, i - 1))) // скорее всего минус 1 не нужен
 			return (0);
 		if (i - 1)
 			com->no_var += 1;
-		(*line) += (i - 1);
+		(*line) += i;
 		return (i - 1);
 	}
 	return (0);
