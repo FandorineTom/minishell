@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/02 14:26:25 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/02 16:30:30 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void	pars_double_quotes(char **line, t_command *com)
 int		check_command(char **line, t_command *com)
 {
 	if (check_which_command(line, com, "echo", 5))
-		return (1);
+		return (check_echo_flag(line, com));
 	if (check_which_command(line, com, "cd", 3))
 		return (1);
 	if (check_which_command(line, com, "pwd", 4))
@@ -187,6 +187,82 @@ int		check_command(char **line, t_command *com)
 			return(check_command(&com->env_var, com));
 		}
 	return (0);
+}
+
+int		check_echo_flag(char **line, t_command *com) // тут еще долбанные кавычки
+{
+	int	i;
+	int	flag;
+	int	quotes;
+
+	i = 0;
+	flag = 0;
+	quotes = 0;
+	while ((*line)[i] == ' ')
+		i++;
+	if ((*line)[i] == '"' || (*line)[i] == '\'')
+	{
+		if ((*line)[i] == '"')
+			quotes = 2;
+		if ((*line)[i] == '\'')
+			quotes = 1;
+		i++;
+	}	
+	if ((*line)[i] == '-')
+		flag = check_flag_n((*line) + i + 1, quotes); // возвращается длина, занимаемая флагом (до конца ковычек)
+	if (flag)
+	{
+		com->comd->flag->flag = (char *)malloc(3);
+		com->comd->flag->flag[0] = '-';
+		com->comd->flag->flag[1] = 'n';
+		com->comd->flag->flag[2] = '\0';
+		(*line) += flag + i;
+	}
+	// if ((*line)[i] == '-' && (*line)[i + 1] == 'n') // && ((*line)[i + 2] == 'n' || (*line)[i + 2] == ' '))
+	// {
+	// 	i += 2;
+	// 	while ((*line)[i] == 'n')
+	// 		i++;
+	// 	com->comd->flag->flag = (char *)malloc(3);
+	// 	com->comd->flag->flag[0] = '-';
+	// 	com->comd->flag->flag[1] = 'n';
+	// 	com->comd->flag->flag[2] = '\0';
+	// }	
+	return (1);
+}
+
+int	check_flag_n(char *line, int quotes) // приходит линия, начиная с n (где то нужно прибавлять, только если ноль не вернула функция)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] == 'n')
+		i++;
+	if (quotes == 0 && line[i] != ' ')
+		return (0);
+	if (quotes == 2 && line[i] != '"')
+		return (0);
+	if (quotes == 1 && line[i] != '\'')
+		return (0);
+	if (quotes)
+		i++;
+	if (line[i] != ' ')
+		return (0);
+	while (line[i] == ' ')
+		i++;
+	if (line[i] == '"' || line[i] == '\'')
+	{
+		if (line[i] == '"')
+			quotes = 2;
+		if (line[i] == '\'')
+			quotes = 1;
+		i++;
+	}
+	else
+		quotes = 0;
+	if (line[i] == '-')
+		i += check_flag_n(line + i + 1, quotes) + 1;
+	return (i);
 }
 
 int	ft_strncmp(const char *str1, const char *str2, size_t len)
