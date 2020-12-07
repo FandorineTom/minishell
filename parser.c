@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/02 19:54:38 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/07 22:20:01 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,35 +140,110 @@ void	pars_double_quotes(char **line, t_command *com)
 {
 	size_t 	len;
 	size_t	len_env;
-	char	*buf;
-	size_t	len_buf;
-	char	*buf_2;
 	
 	len = ft_strlen_char(*line + 1, '"');
+	while (*(*line + len) == '\\')
+		len = len + ft_strlen_char(*line + len + 2, '"') + 1;
 	len_env = 0;
 	if (len == ft_strlen(*line + 1) && (*line)[len - 1] != '"') // а что, если последний символ - кавычка?
-		com->arg->arg = ft_substr(*line, 1, len - 1);
+	{
+		com->arg->arg = ft_substr(*line, 1, len);
+		(*line) += len + 1;
+	}
 	else
 	{
 		com->arg->arg = ft_substr(*line, 1, len); // тут возможно минус 2 надо делать
-		while ((len_buf = ft_strlen(ft_strchr(com->arg->arg, '$'))))
+		if (ft_strchr(com->arg->arg, '$'))
+			pars_dollar(com, len);
+		if (ft_strchr(com->arg->arg, '\\'))
+			pars_escaping(com, len); // нужно написать функцию парсинга сранного экранирования (экранировать тут уже нужно только знак экранирования и кавычку)
+		(*line) += len + 2;
+	}
+	
+}
+
+void	pars_escaping(t_command *com, size_t len_str)
+{
+	char	*buf;
+	// char	*buf_end;
+	size_t	len_slash;
+
+	buf = NULL;
+	(void)len_str;
+	// buf_end = NULL;
+	while (com->arg->arg && *com->arg->arg)
+	{
+		len_slash = ft_strlen_char(com->arg->arg, '\\');
+		buf = ft_strjoin_gnl(buf, ft_substr(com->arg->arg, 0, len_slash));
+		com->arg->arg += len_slash;
+		if (*com->arg->arg && *(com->arg->arg + 1))
 		{
-			buf = ft_strchr(com->arg->arg, '$');
-			len_env = check_env_var(&buf, com); // тут я посчитала длину переменной окружения вместе с долларом
-			buf = ft_substr(com->arg->arg, 0, len - len_buf);
-			buf_2 = ft_substr(com->arg->arg, ft_strlen(buf) + len_env + 1, len_buf - len_env + 2); // возможно тут нужно сделать -1
+			if (*(com->arg->arg + 1) == '"' || *(com->arg->arg + 1) == '\\')
+				buf = ft_strjoin_gnl(buf, ft_substr(com->arg->arg, 1, 1));
+			else
+				buf = ft_strjoin_gnl(buf, ft_substr(com->arg->arg, 0, 2));
+			com->arg->arg += 2;
+		}
+	}
+	com->arg->arg = buf;
+}
+
+void 	pars_dollar(t_command *com, size_t len_str)
+{
+	char	*buf; // сюда записываю переработанные куски.
+	char	*buf_end;
+	size_t	len_slash;
+	size_t	len_dol;
+	size_t	len_var;
+
+	buf = NULL;
+	buf_end = NULL;
+	while (com->arg->arg && *com->arg->arg)
+	{
+		len_slash = ft_strlen_char(com->arg->arg, '\\');
+		len_dol = ft_strlen_char(com->arg->arg, '$');
+		if (len_slash < len_str && len_slash < len_dol)
+		{
+			buf = ft_strjoin_gnl(buf, ft_substr(com->arg->arg, 0, len_slash)); //тут должна скопировать до бекслеша
+			com->arg->arg += len_slash;
+		}
+		else // если ни слеша, ни доллара, то строчка скопируется до конца
+		{
+			buf = ft_strjoin_gnl(buf, ft_substr(com->arg->arg, 0, ft_strlen_char(com->arg->arg, '$'))); // тут должна скопировать до знака доллар
+			com->arg->arg += ft_strlen_char(com->arg->arg, '$');
+		}
+		if (*com->arg->arg == '\\' && com->arg->arg[1] == '$')
+		{
+			buf = ft_strjoin_gnl(buf, "$");
+			com->arg->arg += 2; // сместила на текст после $
+		}
+		else if (*com->arg->arg == '$')
+		{
+			len_var = ft_strlen_space(com->arg->arg); // тут или до пробела, или до экранирования - что из этого будет ближе
+			if (len_var > ft_strlen_char(com->arg->arg, '\\'))
+				len_var = ft_strlen_char(com->arg->arg, '\\');
+			buf_end = ft_substr(com->arg->arg, len_var, ft_strlen(com->arg->arg) - len_var); // тут лучше просто переместить указатель, возможно? чтобы новую память не выделять
+			com->env_var = ft_substr(com->arg->arg, 1, len_var - 1);
 			change_env_var_meaning(com);
-			if (com->no_var)
+			buf = ft_strjoin_gnl(buf, com->env_var);
+			com->arg->arg += len_var;
+			free(com->env_var);
+			com->env_var = NULL;
+			// free(com->arg->arg);
+			com->arg->arg = buf_end;
+		}
+		else if (*com->arg->arg == '\\')
+		{
+			while (*com->arg->arg == '\\')
 			{
-				free(com->arg->arg);
-				com->arg->arg = NULL;
-				com->arg->arg = ft_strjoin_gnl(buf, com->env_var);
-				com->arg->arg = ft_strjoin_gnl(com->arg->arg, buf_2);
-				free(buf_2);
+				buf = ft_strjoin_gnl(buf, "\\");
+				com->arg->arg++;
 			}
 		}
 	}
-	(*line) += len;
+	// if (com->arg->arg)
+	// 	free(com->arg->arg);
+	com->arg->arg = buf;
 }
 
 int		check_command(char **line, t_command *com)
@@ -269,7 +344,7 @@ int	check_flag_n(char *line, int quotes) // приходит линия, нач�
 	else
 		quotes = 0;
 	if (line[i] == '-')
-		i += check_flag_n(line + i + 1, quotes) + 1;
+		i += check_flag_n(line + i + 1, quotes) + 1; // если кавычек нет, то + 1 не нужен
 	return (i);
 }
 
@@ -301,6 +376,8 @@ int check_env_var(char **line, t_command *com)
 {
 	size_t	i;
 
+	while (**line == ' ')
+		(*line)++;
 	i = ft_strlen_space(*line);
 	if (i > ft_strlen_char(*line, '\''))
 		i = ft_strlen_char(*line, '\'');
@@ -367,7 +444,22 @@ void	change_env_var_meaning(t_command *com) // нужно переписать
 		com->env_def = com->env_def->next;
 	}
 	if (!com->env_def)
+	{
 		com->no_var = 0;
+		if (!ft_strncmp("?", com->env_var, len))
+		{
+			free(com->env_var);
+			com->env_var = NULL;
+			com->env_var = ft_strdup("0");
+		}
+		else
+		{
+			free(com->env_var);
+			com->env_var = NULL;
+			com->env_var = ft_strdup("");
+		}
+		
+	}
 	com->env_def = new;
 }
 

@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/02 15:50:08 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/07 21:04:47 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ void 				free_arg(t_arg *arg);
 void				free_pipe(t_pipe *pipes);
 void				free_env(t_env *env_def);
 int					check_flag_n(char *line, int quotes);
+void 				pars_dollar(t_command *com, size_t len_str);
+void				pars_escaping(t_command *com, size_t len_str);
 
 
 #endif
