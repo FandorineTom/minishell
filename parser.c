@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/08 15:32:05 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/08 18:59:07 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	parser(char **line, t_command *com)
 		(*line)++;
 		free_all(com, 1); // предыдущие элементы структуры не нужны, поэтому всё зачищаем
 		init_com(com);
+		activate_pipe(line, NULL);
 	}
 	while (**line == ' ')
 		(*line)++;
@@ -28,7 +29,7 @@ void	parser(char **line, t_command *com)
 	write(1, "end of parser\n", 14); // чисто для теста, потом нужно убрать
 }
 
-void	pars_pipes(char *line, t_command *com)
+void	pars_pipes(char *line, t_command *com) // пока не понимаю, зачем мне эта функция
 {
 	while (line && *line)
 	{
@@ -37,7 +38,7 @@ void	pars_pipes(char *line, t_command *com)
 		line++;
 	}
 	com->no_command = com->pipe_count + 1; // надо вспомнить зачем это и как можно использовать
-	com->no_arg = com->pipe_count + 1;
+	// com->no_arg = com->pipe_count + 1;
 }
 
 void	pars_tockens(char **line, t_command *com)
@@ -45,9 +46,11 @@ void	pars_tockens(char **line, t_command *com)
 	t_arg	*new;
 
 	new = NULL;
+	while (**line == ' ')
+		(*line)++;
 	if (!check_command(line, com))
 			com->no_command = 0;
-	while (line && *line && **line && **line != ';')
+	while (line && *line && **line && **line != ';' && **line != '|')
 	{
 		// if  (check_mistakes(line, com))	
 		// 	break ; // тут возможно надо всякие экситы и прочее гавно реализовывать
@@ -66,8 +69,12 @@ void	pars_tockens(char **line, t_command *com)
 		}
 		if (com->comd->arg->arg) // возможно это не нужно
 			ft_argadd_back(&new, com->comd->arg);
+		while (**line == ' ')
+			(*line)++;
 	}
 	com->comd->arg = new; // тут создается лишний лист с пустыми элементами в начале. надо найти откуда он и убрать
+	if (**line == '|')
+		activate_pipe(line, com);
 }
 
 void	check_tockens(char **line, t_command *com)
@@ -92,13 +99,45 @@ void	check_tockens(char **line, t_command *com)
 		pars_single_quotes(line, com);
 	else if (**line == '\\')
 		pars_esc_nq(line, com);
-	// else if (**line == '|')
-	// 	activate_pipe(line, com); // функция для пайпа
 	// else if (**line == '>')
 	// 	pars_redirect(line, com);
 	// else if (**line == '<')
 	// 	pars_reverse_redirect(line, com);
 	// check_pipe(line, com);
+}
+
+void	activate_pipe(char **line, t_command *com)
+{
+	static t_comd	*new = NULL; // нужно как-то обнулить это после первой рекурсии
+	static int		i = 0; // нужно как-то обнулить после первой рекурсии
+
+	// new = NULL;
+	if (!com)
+	{
+		// if (new)
+		// 	free_comd(new); // надо чистить, но с чисткой какая-то беда
+		new = NULL;
+		i = 0;
+		return ;
+	}
+	if (!com->comd->cmnd && !com->comd->arg)
+		com->error = 1; // код ошибки 1 - перед пайпом нет ничего
+	if (!com->error)
+	{
+		com->comd->pipe_r = 1;
+		if (com->comd) // возможно это не нужно
+			ft_comdadd_back(&new, com->comd);
+		init_comd(com);
+		com->comd->pipe_l = 1;
+		(*line)++;
+		pars_tockens(line, com);
+		if ((!ft_strchr(*line, '|') || (ft_strlen_char(*line, '|') > ft_strlen_char(*line, ';'))) && !i)
+		{
+			ft_comdadd_back(&new, com->comd);
+			i = 1; // тут нужно докрутить, потому что второй раз этот костыль не срабатывает
+		}
+	}
+	com->comd = new;
 }
 
 void	pars_esc_nq(char **line, t_command *com)
@@ -595,6 +634,23 @@ void	ft_envadd_back(t_env **lst, t_env *new)
 void	ft_argadd_back(t_arg **lst, t_arg *new)
 {
 	t_arg	*bonus;
+
+	if (!new || !lst)
+		return ;
+	bonus = *lst;
+	if (bonus)
+	{
+		while (bonus->next)
+			bonus = bonus->next;
+		bonus->next = new;
+	}
+	else
+		*lst = new;
+}
+
+void	ft_comdadd_back(t_comd **lst, t_comd *new)
+{
+	t_comd	*bonus;
 
 	if (!new || !lst)
 		return ;

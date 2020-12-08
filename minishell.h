@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/08 15:26:18 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/08 17:50:29 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct		s_arg
 	struct s_arg	*next;
 	char			*arg;
 	char			*path; // вспомнить, зачем это
-	t_pipe			*pipes; // тут это скорее всего не нужно
+	// t_pipe			*pipes; // тут это скорее всего не нужно
 	size_t			wildcard; // для бонуса если 0, но звездочки нет, если 1, то есть и можно вспомнить matchtomatch
 	size_t			no_arg; // изначально  1, если аргументы не найдены, то обнуляется
 }					t_arg;
@@ -81,7 +81,7 @@ typedef struct		s_command
 	size_t			error;
 	size_t			quotes_op;
 	size_t			no_command; //обнуляется, если нет команды. изначально количество pipe + 1
-	size_t			no_arg; // обнуляется, если нет аргументов. изначально количество pipe + 1
+	// size_t			no_arg; // обнуляется, если нет аргументов. изначально количество pipe + 1
 	size_t			no_var; // обнуляется, если нет переменной окружения. изначально количество pipe + 1
 	size_t			pipe_count;
 	size_t			process[100]; // сюда пишутся переменные, которые возвращает fork
@@ -113,6 +113,7 @@ char				*ft_strchr(const char *str, int sym);
 void				copy_env(char **env, t_command *com);
 void				ft_envadd_back(t_env **lst, t_env *new);
 void				ft_argadd_back(t_arg **lst, t_arg *new);
+void				ft_comdadd_back(t_comd **lst, t_comd *new);
 void				free_all(t_command *com, int i); // если приходит 1 то чистится все, кроме списка переменных окружения, если 0, то чистится все
 void				free_comd(t_comd *comd);
 void				free_flag(t_flag *flag);
@@ -122,6 +123,7 @@ void				free_env(t_env *env_def);
 int					check_flag_n(char *line, int quotes);
 void 				pars_dollar(t_command *com, size_t len_str);
 void				pars_escaping(t_command *com, size_t len_str);
+void				activate_pipe(char **line, t_command *com);
 
 
 #endif

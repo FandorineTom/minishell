@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 18:40:09 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/08 15:29:22 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/08 18:53:26 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ void	free_flag(t_flag *flag)
 		if (buf->flag)
 			free(buf->flag);
 		buf->flag = NULL;
-		free(buf);
+		if (buf)
+			free(buf);
 		buf = NULL;
 	}	
 	// buf = flag;
@@ -108,24 +109,24 @@ void 	free_arg(t_arg *arg)
 		if (buf->path)
 			free(buf->path);
 		buf->path = NULL;
-		free_pipe(buf->pipes);
+		// free_pipe(buf->pipes);
 		free(buf);
 		buf = NULL;
 	}
 }
 
-void	free_pipe(t_pipe *pipes)
-{
-	t_pipe	*buf;
+// void	free_pipe(t_pipe *pipes)
+// {
+// 	t_pipe	*buf;
 
-	while (pipes)
-	{
-		buf = pipes;
-		pipes = pipes->next;
-		free(buf);
-		buf = NULL;
-	}
-}
+// 	while (pipes)
+// 	{
+// 		buf = pipes;
+// 		pipes = pipes->next;
+// 		free(buf);
+// 		buf = NULL;
+// 	}
+// }
 
 void	free_env(t_env *env_def)
 {
