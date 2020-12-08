@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/07 21:04:47 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/08 15:26:18 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,6 @@
 # include <unistd.h>
 # include "./headers/get_next_line.h"
 
-typedef struct		s_flag
-{
-	struct s_flag	*next;
-	char			*flag;
-	size_t			no_flag; // изначально 1, если флаги не найдены, то обнуляется
-}					t_flag;
-
-typedef struct		s_comd
-{
-	struct s_comd	*next;
-	char			*cmnd;
-	t_flag			*flag;
-	char			*env_var; // переменная для команды
-	size_t			no_command; // изначально 1, если команды не найдены, то обнуляется
-}					t_comd;
-
 typedef struct		s_pipe
 {
 	struct s_pipe	*next;
@@ -43,22 +27,41 @@ typedef struct		s_pipe
 	int				fd_write;
 }					t_pipe;
 
-typedef	struct		s_redirect
+typedef struct		s_flag
 {
-	int				fd1;
-	int				fd2;
-}					t_redirect;
-
+	struct s_flag	*next;
+	char			*flag;
+	size_t			no_flag; // изначально 1, если флаги не найдены, то обнуляется
+}					t_flag;
 
 typedef struct		s_arg
 {
 	struct s_arg	*next;
 	char			*arg;
 	char			*path; // вспомнить, зачем это
-	t_pipe			*pipes;
+	t_pipe			*pipes; // тут это скорее всего не нужно
 	size_t			wildcard; // для бонуса если 0, но звездочки нет, если 1, то есть и можно вспомнить matchtomatch
 	size_t			no_arg; // изначально  1, если аргументы не найдены, то обнуляется
 }					t_arg;
+
+typedef struct		s_comd
+{
+	struct s_comd	*next;
+	char			*cmnd;
+	t_flag			*flag;
+	t_arg			*arg;
+	char			*env_var; // переменная для команды
+	size_t			pipe_r;
+	size_t			pipe_l;
+	size_t			no_command; // изначально 1, если команды не найдены, то обнуляется
+}					t_comd;
+
+typedef	struct		s_redirect
+{
+	int				fd1;
+	int				fd2;
+}					t_redirect;
+
 
 typedef struct		s_env
 {
@@ -72,7 +75,7 @@ typedef struct		s_env
 typedef struct		s_command
 {
 	t_comd			*comd;
-	t_arg			*arg;
+	// t_arg			*arg;
 	char			*env_var; // переменная, которая просто выводится (или исполняется)
 	t_env			*env_def;
 	size_t			error;
@@ -89,6 +92,7 @@ void				pars_pipes(char *line, t_command *com);
 void				pars_tockens(char **line, t_command *com);
 void				pars_single_quotes(char **line, t_command *com);
 void				pars_double_quotes(char **line, t_command *com);
+void				pars_esc_nq(char **line, t_command *com);
 int					check_command(char **line, t_command *com);
 int					check_echo_flag(char **line, t_command *com);
 int 				check_which_command(char **line, t_command *com, char *command, int i);

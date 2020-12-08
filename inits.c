@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:45:37 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/01 17:05:26 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/08 15:19:56 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	init_comd(t_command *com)
 	init_flag(com);
 	com->comd->no_command = 1;
 	com->comd->env_var = NULL;
+	com->comd->pipe_l = 0;
+	com->comd->pipe_r = 0;
 	com->comd->next = NULL;
 }
 
@@ -50,12 +52,12 @@ void	init_flag(t_command *com)
 
 void	init_arg(t_command *com)
 {
-	com->arg = (t_arg*)malloc(sizeof(t_arg));
-	com->arg->arg = NULL;
-	com->arg->path = NULL;
-	com->arg->wildcard = 0;
-	com->arg->no_arg = 1;
-	com->arg->next = NULL;
+	com->comd->arg = (t_arg*)malloc(sizeof(t_arg));
+	com->comd->arg->arg = NULL;
+	com->comd->arg->path = NULL;
+	com->comd->arg->wildcard = 0;
+	com->comd->arg->no_arg = 1;
+	com->comd->arg->next = NULL;
 }
 
 void	init_env_d(t_command *com)

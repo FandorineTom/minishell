@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 18:40:09 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/02 14:59:08 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/08 15:29:22 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	free_all(t_command *com, int i)
 {
 	(void)i;
 	free_comd(com->comd);
-	free_arg(com->arg);
+	// free_arg(com->arg);
 	if (com->env_var)
 		free(com->env_var);
 	com->env_var = NULL;
@@ -36,6 +36,7 @@ void	free_comd(t_comd *comd)
 			free(buf->cmnd);
 		buf->cmnd = NULL;
 		free_flag(buf->flag);
+		free_arg(buf->arg);
 		if (buf->env_var)
 			free(buf->env_var);
 		buf->env_var = NULL;
