@@ -6,11 +6,38 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/08 15:42:33 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/13 16:29:34 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+#include <stdio.h>
+void	check_parser(t_command com)
+{
+	int i = 0;
+	
+	if (com.comd->cmnd)
+		printf("command is %s\n", com.comd->cmnd);
+	else
+		printf("no command\n");
+	if (com.comd->flag->flag)
+		printf("flag is %s\n", com.comd->flag->flag);
+	else
+		printf("no flag\n");
+	if (com.comd->arg)
+	{
+		while (com.comd->arg)
+		{
+			i++;
+			printf("argument %d = |%s|\n", i, com.comd->arg->arg);
+			com.comd->arg = com.comd->arg->next;
+		}
+	}
+	else
+		printf("no arguments\n");
+}
+
 
 int	main(int argc, char **argv, char **env) // нужно как-то принять переменные окружения
 {
@@ -27,12 +54,13 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 	while (line && *line && !com.error)
 		{
 			parser(&line, &com); // тут надо прописать так, чтобы обрабатывать только до ; и потом снова вызывать парсер, а строку обрезать
+			check_parser(com); // это просто для проверки парсера
 			// возможно тут нужно поработать с пайпами, т.е если есть правый, то закрыть, открыть fd
 			// тут исполняется одна распарсенная команда до точки с запятой и идет дальше
 			// а тут возможно нужно переоткрыть пайпы
 			//тут нужно вернуть fdшники на свои места
 		}
-
+	
 	// work_comman(&com);
 	free_all(&com, 0);
 	return (0);

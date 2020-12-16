@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/08 18:59:07 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/16 16:18:37 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,12 @@ void	check_tockens(char **line, t_command *com)
 	len = ft_strlen_space(*line);
 	if (len > ft_strlen_char(*line, ';') && !check_open_quotes(line, ft_strlen_char(*line, ';')))
 		len = ft_strlen_char(*line, ';');
+	if (len > ft_strlen_char(*line, '$') && !check_open_quotes(line, ft_strlen_char(*line, '$')))
+		len = ft_strlen_char(*line, '$');
+	if (len > ft_strlen_char(*line + 1, '"') + 1 && !check_open_quotes(line, ft_strlen_char(*line + 1, '"') + 1))
+		len = ft_strlen_char(*line + 1, '"') + 1;
+	if (len > ft_strlen_char(*line + 1, '\'') + 1 && !check_open_quotes(line, ft_strlen_char(*line + 1, '\'') + 1))
+		len = ft_strlen_char(*line + 1, '\'') + 1;
 	if (!len)
 		com->comd->arg->no_arg = 0;
 	else if (!(**line == '|') && !(**line == '"') && !(**line == '\'') && !(**line == '\\') && !(**line == '>') && !(**line == '<'))
@@ -93,12 +99,24 @@ void	check_tockens(char **line, t_command *com)
 		com->comd->arg->arg = ft_substr(*line, 0, len);
 		(*line) += len;	
 	}
-	else if (**line == '"')
+	// else if (**line == '"')
+	if (**line == '"')
 		pars_double_quotes(line, com); // это различают спецсимволы
-	else if (**line == '\'')
+	// else if (**line == '\'')
+	if (**line == '\'')
 		pars_single_quotes(line, com);
 	else if (**line == '\\')
 		pars_esc_nq(line, com);
+	if (**line == '$')
+	{
+		check_env_var(line, com);
+		len = ft_strlen(com->env_var);
+		change_env_var_meaning(com);
+		com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, com->env_var);
+		// (*line) += len;
+	}
+	if (**line && **line != ' ' && **line != ';')
+		check_tockens(line, com);
 	// else if (**line == '>')
 	// 	pars_redirect(line, com);
 	// else if (**line == '<')
@@ -178,7 +196,7 @@ int		check_open_quotes(char **line, size_t len)
 	return (0);
 }
 
-void	pars_single_quotes(char **line, t_command *com)
+void	pars_single_quotes(char **line, t_command *com) // эту функцию нужно переписать под кейсы '''chto-to'''
 {
 	size_t	len;
 
@@ -190,32 +208,6 @@ void	pars_single_quotes(char **line, t_command *com)
 			com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, ft_substr(*line, 1, len));
 		(*line) += len + 2;
 	}
-}
-
-void	pars_double_quotes(char **line, t_command *com)
-{
-	size_t 	len;
-	size_t	len_env;
-	
-	len = ft_strlen_char(*line + 1, '"');
-	while (*(*line + len) == '\\')
-		len = len + ft_strlen_char(*line + len + 2, '"') + 1;
-	len_env = 0;
-	if (len == ft_strlen(*line + 1) && (*line)[len - 1] != '"') // а что, если последний символ - кавычка?
-	{
-		com->comd->arg->arg = ft_substr(*line, 1, len);
-		(*line) += len + 1;
-	}
-	else
-	{
-		com->comd->arg->arg = ft_substr(*line, 1, len); // тут возможно минус 2 надо делать
-		if (ft_strchr(com->comd->arg->arg, '$'))
-			pars_dollar(com, len);
-		if (ft_strchr(com->comd->arg->arg, '\\'))
-			pars_escaping(com, len); // нужно написать функцию парсинга сранного экранирования (экранировать тут уже нужно только знак экранирования и кавычку)
-		(*line) += len + 2;
-	}
-	
 }
 
 void	pars_escaping(t_command *com, size_t len_str)
@@ -256,10 +248,15 @@ void 	pars_dollar(t_command *com, size_t len_str)
 	{
 		len_slash = ft_strlen_char(com->comd->arg->arg, '\\');
 		len_dol = ft_strlen_char(com->comd->arg->arg, '$');
-		if (len_slash < len_str && len_slash < len_dol)
+		if (len_slash < len_str && len_slash < len_dol && len_str != 1)
 		{
 			buf = ft_strjoin_gnl(buf, ft_substr(com->comd->arg->arg, 0, len_slash)); //тут должна скопировать до бекслеша
 			com->comd->arg->arg += len_slash;
+		}
+		else if (len_str == 1)
+		{
+			buf = ft_substr(com->comd->arg->arg, 0, 1);
+			com->comd->arg->arg += 1;
 		}
 		else // если ни слеша, ни доллара, то строчка скопируется до конца
 		{
@@ -276,9 +273,14 @@ void 	pars_dollar(t_command *com, size_t len_str)
 			len_var = ft_strlen_space(com->comd->arg->arg); // тут или до пробела, или до экранирования - что из этого будет ближе
 			if (len_var > ft_strlen_char(com->comd->arg->arg, '\\'))
 				len_var = ft_strlen_char(com->comd->arg->arg, '\\');
+			if (len_var > ft_strlen_char(com->comd->arg->arg, '"'))
+				len_var = ft_strlen_char(com->comd->arg->arg, '"');
+			if (len_var > ft_strlen_char(com->comd->arg->arg, '\''))
+				len_var = ft_strlen_char(com->comd->arg->arg, '\'');
 			buf_end = ft_substr(com->comd->arg->arg, len_var, ft_strlen(com->comd->arg->arg) - len_var); // тут лучше просто переместить указатель, возможно? чтобы новую память не выделять
 			com->env_var = ft_substr(com->comd->arg->arg, 1, len_var - 1);
-			change_env_var_meaning(com);
+			if (len_var > 1)
+				change_env_var_meaning(com);
 			buf = ft_strjoin_gnl(buf, com->env_var);
 			com->comd->arg->arg += len_var;
 			free(com->env_var);
@@ -416,7 +418,7 @@ int	ft_strncmp(const char *str1, const char *str2, size_t len)
 
 int check_which_command(char **line, t_command *com, char *command, int i)
 {
-	if (!(ft_strncmp(*line, command, i)) || !(ft_strncmp(*line, ft_strjoin_gnl(ft_strdup(command), " "), i)))
+	if (!(ft_strncmp(*line, command, i)) || !(ft_strncmp(*line, ft_strjoin_gnl(ft_strdup(command), " "), i)) || !(ft_strncmp(*line, ft_strjoin_gnl(ft_strdup(command), ";"), i)))
 	{
 		if (!(com->comd->cmnd = ft_strdup(command)))
 				return (0); // подумать насчет кодов ошибок
@@ -437,6 +439,8 @@ int check_env_var(char **line, t_command *com)
 		i = ft_strlen_char(*line, '\'');
 	if (i > ft_strlen_char(*line, '"'))
 		i = ft_strlen_char(*line, '"');
+	if (i > ft_strlen_char(*line, ';'))
+		i = ft_strlen_char(*line, ';');
 	if (**line == '$')
 	{
 		if (!(com->env_var = ft_substr(*line, 1, i - 1)))
@@ -488,7 +492,7 @@ void	change_env_var_meaning(t_command *com) // нужно переписать
 	len = ft_strlen_space(com->env_var);
 	while(com->env_def)
 	{
-		if (!(ft_strncmp(com->env_def->env, com->env_var, len)))
+		if (!(ft_strncmp(com->env_def->env, com->env_var, len)) && len)
 		{
 			free(com->env_var);
 			com->env_var = NULL;
@@ -500,7 +504,7 @@ void	change_env_var_meaning(t_command *com) // нужно переписать
 	if (!com->env_def)
 	{
 		com->no_var = 0;
-		if (!ft_strncmp("?", com->env_var, len))
+		if (!ft_strncmp("?", com->env_var, len)) // тут надо переписать - это дичьы
 		{
 			free(com->env_var);
 			com->env_var = NULL;
