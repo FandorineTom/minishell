@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/13 16:29:34 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/16 18:32:14 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,15 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 
 	(void)argc;
 	(void)argv;
-	write(1, "my_minishell: ", 14); // тут надо что-то поизящнее зафигачить и чтобы оно висело
-	get_next_line(0, &line);
-	init_com(&com);
-	com.error = 0;
-	copy_env(env, &com);
-	while (line && *line && !com.error)
+	while (1) // тут может быть на какой-то сигнал прекращение цикла записать
+	{
+		write(1, "my_minishell: ", 14); // тут надо что-то поизящнее зафигачить и чтобы оно висело и выводилось после (может, тупо, while (1))
+		get_next_line(0, &line);
+		init_com(&com);
+		com.com_ret = 0;
+		com.error = 0;
+		copy_env(env, &com);
+		while (line && *line && !com.error)
 		{
 			parser(&line, &com); // тут надо прописать так, чтобы обрабатывать только до ; и потом снова вызывать парсер, а строку обрезать
 			check_parser(com); // это просто для проверки парсера
@@ -60,8 +63,9 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 			// а тут возможно нужно переоткрыть пайпы
 			//тут нужно вернуть fdшники на свои места
 		}
-	
 	// work_comman(&com);
+		free_all(&com, 1);
+	}
 	free_all(&com, 0);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/08 17:50:29 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/19 17:18:21 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,15 @@ typedef struct		s_arg
 	size_t			no_arg; // изначально  1, если аргументы не найдены, то обнуляется
 }					t_arg;
 
+typedef	struct		s_redirect
+{
+	int				fd1;
+	int				fd2;
+	size_t			type_red;
+	size_t			r_redir;
+	size_t			l_redir;
+}					t_redirect;
+
 typedef struct		s_comd
 {
 	struct s_comd	*next;
@@ -53,15 +62,9 @@ typedef struct		s_comd
 	char			*env_var; // переменная для команды
 	size_t			pipe_r;
 	size_t			pipe_l;
+	t_redirect		redir;
 	size_t			no_command; // изначально 1, если команды не найдены, то обнуляется
 }					t_comd;
-
-typedef	struct		s_redirect
-{
-	int				fd1;
-	int				fd2;
-}					t_redirect;
-
 
 typedef struct		s_env
 {
@@ -85,6 +88,7 @@ typedef struct		s_command
 	size_t			no_var; // обнуляется, если нет переменной окружения. изначально количество pipe + 1
 	size_t			pipe_count;
 	size_t			process[100]; // сюда пишутся переменные, которые возвращает fork
+	size_t			com_ret;
 }					t_command;
 
 void				parser(char **line, t_command *com);
@@ -105,6 +109,7 @@ void				init_comd(t_command *com);
 void				init_flag(t_command *com);
 void				init_arg(t_command *com);
 void				init_env_d(t_command *com);
+void				init_redirect(t_command *com);
 size_t				ft_strlen_space(char *str);
 size_t				ft_strlen_char(char *str, char c);
 int					check_open_quotes(char **line, size_t len);
@@ -123,7 +128,10 @@ void				free_env(t_env *env_def);
 int					check_flag_n(char *line, int quotes);
 void 				pars_dollar(t_command *com, size_t len_str);
 void				pars_escaping(t_command *com, size_t len_str);
+void				pars_redirect(char **line, t_command *com);
+void				pars_reverse_redirect(char **line, t_command *com);
 void				activate_pipe(char **line, t_command *com);
+char				*ft_itoa(int n);
 
 
 #endif

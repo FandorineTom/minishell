@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:45:37 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/08 15:39:10 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/19 17:14:07 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,21 @@ void	init_comd(t_command *com)
 	com->comd = (t_comd*)malloc(sizeof(t_comd));
 	com->comd->cmnd = NULL;
 	init_flag(com);
+	init_redirect(com);
 	com->comd->no_command = 1;
 	com->comd->env_var = NULL;
 	com->comd->pipe_l = 0;
 	com->comd->pipe_r = 0;
 	com->comd->next = NULL;
+}
+
+void	init_redirect(t_command *com)
+{
+	com->comd->redir.fd1 = 0; // проверить, чтобы именно эти были значения по умолчанию
+	com->comd->redir.fd2 = 1;
+	com->comd->redir.l_redir = 0;
+	com->comd->redir.r_redir = 0;
+	com->comd->redir.type_red = 0; // если > - 1, если < - 2, если >> - 3, если <> - 4
 }
 
 void	init_flag(t_command *com)

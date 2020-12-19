@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/16 16:18:37 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/19 17:19:39 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	check_tockens(char **line, t_command *com)
 	
 	while (**line == ' ')
 		(*line)++;
-	len = ft_strlen_space(*line);
+	len = ft_strlen_space(*line); // вынести выяснение длины в отдельную функцию
 	if (len > ft_strlen_char(*line, ';') && !check_open_quotes(line, ft_strlen_char(*line, ';')))
 		len = ft_strlen_char(*line, ';');
 	if (len > ft_strlen_char(*line, '$') && !check_open_quotes(line, ft_strlen_char(*line, '$')))
@@ -92,6 +92,10 @@ void	check_tockens(char **line, t_command *com)
 		len = ft_strlen_char(*line + 1, '"') + 1;
 	if (len > ft_strlen_char(*line + 1, '\'') + 1 && !check_open_quotes(line, ft_strlen_char(*line + 1, '\'') + 1))
 		len = ft_strlen_char(*line + 1, '\'') + 1;
+	if (len > ft_strlen_char(*line, '>') && !check_open_quotes(line, ft_strlen_char(*line, '>')))
+		len = ft_strlen_char(*line, '>');
+	if (len > ft_strlen_char(*line, '<') && !check_open_quotes(line, ft_strlen_char(*line, '<')))
+		len = ft_strlen_char(*line, '<');
 	if (!len)
 		com->comd->arg->no_arg = 0;
 	else if (!(**line == '|') && !(**line == '"') && !(**line == '\'') && !(**line == '\\') && !(**line == '>') && !(**line == '<'))
@@ -105,7 +109,7 @@ void	check_tockens(char **line, t_command *com)
 	// else if (**line == '\'')
 	if (**line == '\'')
 		pars_single_quotes(line, com);
-	else if (**line == '\\')
+	else if (**line == '\\') // нужно ли тут элс
 		pars_esc_nq(line, com);
 	if (**line == '$')
 	{
@@ -115,13 +119,50 @@ void	check_tockens(char **line, t_command *com)
 		com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, com->env_var);
 		// (*line) += len;
 	}
-	if (**line && **line != ' ' && **line != ';')
+	if (**line == '>')
+		pars_redirect(line, com); // нужно на следующий лист comd переходить
+	if (**line == '<')
+		pars_reverse_redirect(line, com);
+	if (**line && **line != ' ' && **line != ';') // нужно на следующий лист comd переходить
 		check_tockens(line, com);
 	// else if (**line == '>')
 	// 	pars_redirect(line, com);
 	// else if (**line == '<')
 	// 	pars_reverse_redirect(line, com);
 	// check_pipe(line, com);
+}
+
+void	pars_redirect(char **line, t_command *com)
+{
+	if (**line == '>' && *(*line + 1) == '>')
+	{
+		com->comd->redir.type_red = 3;
+		com->comd->redir.r_redir = 1;
+		// и нужно в следующий лист comd запихнуть, что там есть левый редирект
+		(*line) += 2;
+	}
+	if (**line == '>' && *(*line + 1) != '>' && *(*line + 1) != '<')
+	{
+		com->comd->redir.type_red = 1;
+		com->comd->redir.r_redir = 1;
+		// и нужно в следующий лист comd запихнуть, что там есть левый редирект
+		(*line)++;
+	}
+	if (**line == '>' && *(*line + 1) == '<')
+	{
+		com->comd->redir.type_red = 4;
+		com->comd->redir.r_redir = 1;
+		// и нужно в следующий лист comd запихнуть, что там есть левый редирект
+		(*line) += 2;
+	}
+}
+
+void	pars_reverse_redirect(char **line, t_command *com)
+{
+	com->comd->redir.type_red = 2;
+	com->comd->redir.r_redir = 1;
+	// и нужно в следующий лист comd запихнуть, что там есть левый редирект
+	(*line)++;
 }
 
 void	activate_pipe(char **line, t_command *com)
@@ -508,7 +549,7 @@ void	change_env_var_meaning(t_command *com) // нужно переписать
 		{
 			free(com->env_var);
 			com->env_var = NULL;
-			com->env_var = ft_strdup("0");
+			com->env_var = ft_itoa((int)com->com_ret); // тут нужно сделать, чтобы номер каунта соответствовал предыдущему процессу (т.е. после каждого ; плюсовался) а вот насчет пайпа не понятно
 		}
 		else
 		{
@@ -516,7 +557,6 @@ void	change_env_var_meaning(t_command *com) // нужно переписать
 			com->env_var = NULL;
 			com->env_var = ft_strdup("");
 		}
-		
 	}
 	com->env_def = new;
 }

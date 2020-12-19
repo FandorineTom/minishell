@@ -6,7 +6,7 @@
 #    By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/13 20:15:44 by scopycat          #+#    #+#              #
-#    Updated: 2020/12/13 14:09:18 by scopycat         ###   ########.fr        #
+#    Updated: 2020/12/16 18:15:04 by scopycat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ NAME = libminishell.a
 
 FUNC = main.c\
 free_struct.c\
+ft_itoa.c\
 get_next_line.c\
 get_next_line_utils.c\
 inits.c\
