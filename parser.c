@@ -6,11 +6,23 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/19 17:19:39 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/23 18:34:24 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_strncmp(const char *str1, const char *str2, size_t len)
+{
+	size_t i;
+
+	i = 0;
+	if (len == 0)
+		return (0);
+	while (str1[i] && str1[i] == str2[i] && i < (len - 1))
+		i++;
+	return ((unsigned char)str1[i] - (unsigned char)str2[i]);
+}
 
 void	parser(char **line, t_command *com)
 {
@@ -25,8 +37,40 @@ void	parser(char **line, t_command *com)
 		(*line)++;
 	pars_pipes(*line, com);
 	while (line && *line && **line && **line != ';')
+	{
 		pars_tockens(line, com);
+		check_result(com);
+	}
 	write(1, "end of parser\n", 14); // чисто для теста, потом нужно убрать
+}
+
+void	check_result(t_command *com)
+{
+	t_arg	*new;
+
+	new = com->comd->arg;
+	if (!com->comd->no_command)
+	{
+		if (!(ft_strncmp(new->arg, "echo\0", 5)) || !(ft_strncmp(new->arg, \
+		"cd\0", 3)) || !(ft_strncmp(new->arg, "pwd\0", 4)) || !(ft_strncmp(\
+		new->arg, "export\0", 7)) || !(ft_strncmp(new->arg, "unset\0", 6)) || 
+		!(ft_strncmp(new->arg, "env\0", 5)) || !(ft_strncmp(new->arg, "exit\0", 5)))
+		{
+			com->comd->cmnd = ft_strdup(new->arg);
+			com->comd->arg = com->comd->arg->next;
+			free(new);
+			new = com->comd->arg;
+			com->no_command = 1;
+			while (!(ft_strncmp(com->comd->cmnd, "echo\0", 5)) && !(ft_strncmp(new->arg, "-n\0", 3)))
+			{
+				com->comd->flag->flag = ft_strdup(new->arg);
+				com->comd->flag->no_flag = 1;
+				com->comd->arg = com->comd->arg->next;
+				free(new);
+				new = com->comd->arg;
+			}
+		}
+	}
 }
 
 void	pars_pipes(char *line, t_command *com) // пока не понимаю, зачем мне эта функция
@@ -49,7 +93,7 @@ void	pars_tockens(char **line, t_command *com)
 	while (**line == ' ')
 		(*line)++;
 	if (!check_command(line, com))
-			com->no_command = 0;
+			com->comd->no_command = 0;
 	while (line && *line && **line && **line != ';' && **line != '|')
 	{
 		// if  (check_mistakes(line, com))	
@@ -98,9 +142,9 @@ void	check_tockens(char **line, t_command *com)
 		len = ft_strlen_char(*line, '<');
 	if (!len)
 		com->comd->arg->no_arg = 0;
-	else if (!(**line == '|') && !(**line == '"') && !(**line == '\'') && !(**line == '\\') && !(**line == '>') && !(**line == '<'))
+	else if (**line != '|' && **line != '"' && **line != '\'' && **line != '\\' && **line != '>' && **line != '<')
 	{
-		com->comd->arg->arg = ft_substr(*line, 0, len);
+		com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, ft_substr(*line, 0, len));
 		(*line) += len;	
 	}
 	// else if (**line == '"')
@@ -364,6 +408,7 @@ int		check_command(char **line, t_command *com)
 			change_env_var_meaning(com);
 			return(check_command(&com->env_var, com));
 		}
+	com->comd->flag->no_flag = 0;
 	return (0);
 }
 
@@ -443,18 +488,6 @@ int	check_flag_n(char *line, int quotes) // приходит линия, нач�
 	if (line[i] == '-')
 		i += check_flag_n(line + i + 1, quotes) + 1; // если кавычек нет, то + 1 не нужен
 	return (i);
-}
-
-int	ft_strncmp(const char *str1, const char *str2, size_t len)
-{
-	size_t i;
-
-	i = 0;
-	if (len == 0)
-		return (0);
-	while (str1[i] && str1[i] == str2[i] && i < (len - 1))
-		i++;
-	return ((unsigned char)str1[i] - (unsigned char)str2[i]);
 }
 
 int check_which_command(char **line, t_command *com, char *command, int i)

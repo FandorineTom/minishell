@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/19 17:18:21 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/22 17:52:59 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void				pars_tockens(char **line, t_command *com);
 void				pars_single_quotes(char **line, t_command *com);
 void				pars_double_quotes(char **line, t_command *com);
 void				pars_esc_nq(char **line, t_command *com);
+void				check_result(t_command *com);
 int					check_command(char **line, t_command *com);
 int					check_echo_flag(char **line, t_command *com);
 int 				check_which_command(char **line, t_command *com, char *command, int i);
