@@ -1,13 +1,13 @@
 #include "minishell.h"
 
-void	cmd_start(t_comd *comd)
+void	cmd_start(t_command *com)
 {
-	if (!ft_strncmp(comd->cmnd, "echo", 4))
-		cmd_echo(comd);
-	if (!ft_strncmp(comd->cmnd, "cd", 2))
-		cmd_cd(comd);
-	if (!ft_strncmp(comd->cmnd, "pwd", 3))
-		cmd_pwd();
+	if (!ft_strncmp(com->comd->cmnd, "echo", 4))
+		cmd_echo(com);
+	// if (!ft_strncmp(com->comd->cmnd, "cd", 2))
+	// 	cmd_cd(com);
+	// if (!ft_strncmp(com->comd->cmnd, "pwd", 3))
+	// 	cmd_pwd();
 	// if (!ft_strncmp(comd->cmnd, "export", 6))
 	// 	cmd_export(comd);
 	// if (!ft_strncmp(comd->cmnd, "unset", 5))

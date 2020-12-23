@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:45:37 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/01 17:05:26 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/23 16:23:12 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	init_com(t_command *com)
 	// init_env_d(com);
 	com->quotes_op = 0;
 	com->env_var = NULL;
-	com->no_arg = 1; // в целом тут можно не инициализировать, потому что дальше инициализируетя (эти три счетчика)
+	com->error = 0;
+	// com->no_arg = 1; // в целом тут можно не инициализировать, потому что дальше инициализируетя (эти три счетчика)
 	com->no_command = 1;
 	com->no_var = 1;
 	com->pipe_count = 0;
@@ -35,9 +36,21 @@ void	init_comd(t_command *com)
 	com->comd = (t_comd*)malloc(sizeof(t_comd));
 	com->comd->cmnd = NULL;
 	init_flag(com);
+	init_redirect(com);
 	com->comd->no_command = 1;
 	com->comd->env_var = NULL;
+	com->comd->pipe_l = 0;
+	com->comd->pipe_r = 0;
 	com->comd->next = NULL;
+}
+
+void	init_redirect(t_command *com)
+{
+	com->comd->redir.fd1 = 0; // проверить, чтобы именно эти были значения по умолчанию
+	com->comd->redir.fd2 = 1;
+	com->comd->redir.l_redir = 0;
+	com->comd->redir.r_redir = 0;
+	com->comd->redir.type_red = 0; // если > - 1, если < - 2, если >> - 3, если <> - 4
 }
 
 void	init_flag(t_command *com)
@@ -50,12 +63,12 @@ void	init_flag(t_command *com)
 
 void	init_arg(t_command *com)
 {
-	com->arg = (t_arg*)malloc(sizeof(t_arg));
-	com->arg->arg = NULL;
-	com->arg->path = NULL;
-	com->arg->wildcard = 0;
-	com->arg->no_arg = 1;
-	com->arg->next = NULL;
+	com->comd->arg = (t_arg*)malloc(sizeof(t_arg));
+	com->comd->arg->arg = NULL;
+	com->comd->arg->path = NULL;
+	com->comd->arg->wildcard = 0;
+	com->comd->arg->no_arg = 1;
+	com->comd->arg->next = NULL;
 }
 
 void	init_env_d(t_command *com)

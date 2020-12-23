@@ -3,14 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/01 17:11:23 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/23 16:32:57 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+#include <stdio.h>
+void	check_parser(t_command com)
+{
+	int i = 0;
+	
+	if (com.comd->cmnd)
+		printf("command is %s\n", com.comd->cmnd);
+	else
+		printf("no command\n");
+	if (com.comd->flag->flag)
+		printf("flag is %s\n", com.comd->flag->flag);
+	else
+		printf("no flag\n");
+	if (com.comd->arg)
+	{
+		while (com.comd->arg)
+		{
+			i++;
+			printf("argument %d = |%s|\n", i, com.comd->arg->arg);
+			com.comd->arg = com.comd->arg->next;
+		}
+	}
+	else
+		printf("no arguments\n");
+}
+
 
 int	main(int argc, char **argv, char **env) // нужно как-то принять переменные окружения
 {
@@ -19,19 +46,28 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 
 	(void)argc;
 	(void)argv;
-	write(1, "my_minishell: ", 14); // тут надо что-то поизящнее зафигачить и чтобы оно висело
-	get_next_line(0, &line);
-	init_com(&com);
-	com.error = 0;
-	copy_env(env, &com);
-	while (line && *line && !com.error)
+	while (1) // тут может быть на какой-то сигнал прекращение цикла записать
+	{
+		write(1, "my_minishell: ", 14); // тут надо что-то поизящнее зафигачить и чтобы оно висело и выводилось после (может, тупо, while (1))
+		get_next_line(0, &line);
+		init_com(&com);
+		com.com_ret = 0;
+		com.error = 0;
+		copy_env(env, &com);
+		while (line && *line && !com.error)
 		{
 			parser(&line, &com); // тут надо прописать так, чтобы обрабатывать только до ; и потом снова вызывать парсер, а строку обрезать
-			cmd_start(com.comd);// тут исполняется одна распарсенная команда до точки с запятой и идет дальше
+			// check_parser(com); // это просто для проверки парсера
+			cmd_start(&com);
+			// возможно тут нужно поработать с пайпами, т.е если есть правый, то закрыть, открыть fd
+			// тут исполняется одна распарсенная команда до точки с запятой и идет дальше
+			// а тут возможно нужно переоткрыть пайпы
+			//тут нужно вернуть fdшники на свои места
 		}
-
 	// work_comman(&com);
-	// free_all(&com);
+		free_all(&com, 1);
+	}
+	free_all(&com, 0);
 	return (0);
 }
 
@@ -57,3 +93,5 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 // выполняется не в терминал, а в другой фд
 // после отработки строки команды с пайпами нужно вернуть оригинальный фд на родину
 // если редирект и пайп, то пайп отработает, только если редирект не в его сторону
+// в двойных кавычках экранирование срабатывает только на само себя и на $ (и на двойную кавычку). остальное обрабатывать не надо
+// экранирование двойной кавычки
