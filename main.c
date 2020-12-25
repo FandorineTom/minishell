@@ -64,8 +64,8 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 			// а тут возможно нужно переоткрыть пайпы
 			//тут нужно вернуть fdшники на свои места
 		}
-	// work_comman(&com);
-		free_all(&com, 1);
+		// work_comman(&com);
+		// free_all(&com, 1);
 	}
 	free_all(&com, 0);
 	return (0);

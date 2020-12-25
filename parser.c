@@ -61,7 +61,7 @@ void	check_result(t_command *com)
 			free(new);
 			new = com->comd->arg;
 			com->no_command = 1;
-			while (!(ft_strncmp(com->comd->cmnd, "echo\0", 5)) && !(ft_strncmp(new->arg, "-n\0", 3)))
+			while (!(ft_strncmp(new->arg, "-n\0", 3)))
 			{
 				com->comd->flag->flag = ft_strdup(new->arg);
 				com->comd->flag->no_flag = 1;
