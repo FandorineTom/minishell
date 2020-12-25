@@ -463,7 +463,7 @@ int	check_flag_n(char *line, int quotes) // приходит линия, нач�
 	i = 0;
 	while (line[i] == 'n')
 		i++;
-	if (quotes == 0 && line[i] != ' ')
+	if (quotes == 0 && line[i] != ' ' && line[i] != '\0')
 		return (0);
 	if (quotes == 2 && line[i] != '"')
 		return (0);
@@ -471,7 +471,7 @@ int	check_flag_n(char *line, int quotes) // приходит линия, нач�
 		return (0);
 	if (quotes)
 		i++;
-	if (line[i] != ' ')
+	if (line[i] != ' ' && line[i] != '\0')
 		return (0);
 	while (line[i] == ' ')
 		i++;
@@ -487,6 +487,8 @@ int	check_flag_n(char *line, int quotes) // приходит линия, нач�
 		quotes = 0;
 	if (line[i] == '-')
 		i += check_flag_n(line + i + 1, quotes) + 1; // если кавычек нет, то + 1 не нужен
+	if (line[i] == '\0')
+		i++;
 	return (i);
 }
 
