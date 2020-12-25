@@ -31,8 +31,7 @@ int		cmd_export(t_command *com)
 	{
 		if (!ft_strcmp(var_tochange, tmp->env))
 		{
-			free(tmp->meaning);
-			tmp->meaning = ft_strcpy();
+			
 		}
 		ft_putstr(tmp->env);
 		ft_putchar('=');

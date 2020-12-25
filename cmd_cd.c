@@ -20,3 +20,5 @@ int		cmd_cd(t_command *com)
 	// printf("now: %s\n", path);				// just to check how it works
 	return (0);
 }
+
+//надо дописать функуию по изменению переменных окружения
