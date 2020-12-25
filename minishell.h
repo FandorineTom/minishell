@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/23 16:24:13 by snorthmo         ###   ########.fr       */
+/*   Updated: 2020/12/25 13:57:17 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ void				cmd_start(t_command *com);
 void	 			cmd_echo(t_command *com);
 int					cmd_cd(t_command *com);
 int					cmd_pwd(void);
+int					cmd_env(t_command *com);
 int					error_message(char *message, int exit_code);
 
 #endif
