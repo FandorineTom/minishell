@@ -15,6 +15,8 @@ FLAG = -g -Wall -Wextra -Werror
 NAME = libminishell.a
 
 FUNC = main.c\
+free_struct.c\
+ft_itoa.c\
 get_next_line.c\
 get_next_line_utils.c\
 inits.c\

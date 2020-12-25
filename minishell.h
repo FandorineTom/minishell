@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/25 13:57:17 by snorthmo         ###   ########.fr       */
+/*   Updated: 2020/12/22 17:52:59 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,8 @@
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <unistd.h>
-# include <sys/errno.h>
-# include <string.h>
+#include <sys/errno.h>
 # include "./headers/get_next_line.h"
-# include "libft/libft.h"
 
 typedef struct		s_pipe
 {
@@ -44,7 +42,7 @@ typedef struct		s_arg
 	char			*path; // вспомнить, зачем это
 	// t_pipe			*pipes; // тут это скорее всего не нужно
 	size_t			wildcard; // для бонуса если 0, но звездочки нет, если 1, то есть и можно вспомнить matchtomatch
-	size_t			no_arg; // изначально  1, если аргументы не найдены, то обнуляется (забить)
+	size_t			no_arg; // изначально  1, если аргументы не найдены, то обнуляется
 }					t_arg;
 
 typedef	struct		s_redirect
@@ -100,6 +98,7 @@ void				pars_tockens(char **line, t_command *com);
 void				pars_single_quotes(char **line, t_command *com);
 void				pars_double_quotes(char **line, t_command *com);
 void				pars_esc_nq(char **line, t_command *com);
+void				check_result(t_command *com);
 int					check_command(char **line, t_command *com);
 int					check_echo_flag(char **line, t_command *com);
 int 				check_which_command(char **line, t_command *com, char *command, int i);
