@@ -1,0 +1,8 @@
+minishell
+minishell.dSYM/
+.DS_Store
+libft/*.o
+*.o
+*.a
+.vscode
+test_dir/

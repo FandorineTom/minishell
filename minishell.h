@@ -18,8 +18,10 @@
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <unistd.h>
-#include <sys/errno.h>
+# include <sys/errno.h>
+# include <string.h>
 # include "./headers/get_next_line.h"
+# include "libft/libft.h"
 
 typedef struct		s_pipe
 {

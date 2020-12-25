@@ -21,7 +21,6 @@ get_next_line.c\
 get_next_line_utils.c\
 inits.c\
 parser.c\
-free_struct.c\
 parse_quotes.c\
 cmd_echo.c\
 cmd_start.c\
