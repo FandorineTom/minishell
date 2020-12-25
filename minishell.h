@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/22 17:52:59 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/25 15:22:29 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,9 @@ void				pars_single_quotes(char **line, t_command *com);
 void				pars_double_quotes(char **line, t_command *com);
 void				pars_esc_nq(char **line, t_command *com);
 void				check_result(t_command *com);
+void    			check_mistakes(char *line, t_command *com);
+void				check_mistakes_quotes(char **line);
+void				check_mistakes_inside(char **line, size_t *i);
 int					check_command(char **line, t_command *com);
 int					check_echo_flag(char **line, t_command *com);
 int 				check_which_command(char **line, t_command *com, char *command, int i);
@@ -113,6 +116,7 @@ void				init_env_d(t_command *com);
 void				init_redirect(t_command *com);
 size_t				ft_strlen_space(char *str);
 size_t				ft_strlen_char(char *str, char c);
+size_t				find_len_to_ss(char *line);
 int					check_open_quotes(char **line, size_t len);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strchr(const char *str, int sym);

@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/23 18:34:24 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/25 16:07:50 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ void	pars_redirect(char **line, t_command *com)
 	{
 		com->comd->redir.type_red = 3;
 		com->comd->redir.r_redir = 1;
-		// и нужно в следующий лист comd запихнуть, что там есть левый редирект
+		// и нужно в следующий лист comd запихнуть, что там есть левый редирект // спросить у махмуда - как
 		(*line) += 2;
 	}
 	if (**line == '>' && *(*line + 1) != '>' && *(*line + 1) != '<')
@@ -463,7 +463,7 @@ int	check_flag_n(char *line, int quotes) // приходит линия, нач�
 	i = 0;
 	while (line[i] == 'n')
 		i++;
-	if (quotes == 0 && line[i] != ' ')
+	if (quotes == 0 && line[i] != ' ' && line[i] != '\0')
 		return (0);
 	if (quotes == 2 && line[i] != '"')
 		return (0);
@@ -471,7 +471,7 @@ int	check_flag_n(char *line, int quotes) // приходит линия, нач�
 		return (0);
 	if (quotes)
 		i++;
-	if (line[i] != ' ')
+	if (line[i] != ' ' && line[i] != '\0')
 		return (0);
 	while (line[i] == ' ')
 		i++;
@@ -487,6 +487,8 @@ int	check_flag_n(char *line, int quotes) // приходит линия, нач�
 		quotes = 0;
 	if (line[i] == '-')
 		i += check_flag_n(line + i + 1, quotes) + 1; // если кавычек нет, то + 1 не нужен
+	if (line[i] == '\0')
+		i++;
 	return (i);
 }
 
