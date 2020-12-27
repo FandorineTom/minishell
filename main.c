@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/23 16:32:57 by snorthmo         ###   ########.fr       */
+/*   Updated: 2020/12/27 13:54:08 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,20 @@ void	check_parser(t_command com)
 		printf("no flag\n");
 	if (com.comd->arg)
 	{
-		while (com.comd->arg)
+		while (com.comd->arg->next)
 		{
 			i++;
 			printf("argument %d = |%s|\n", i, com.comd->arg->arg);
+			// com.comd->arg->previous = com.comd->arg;
 			com.comd->arg = com.comd->arg->next;
 		}
+		i++;
+		printf("argument %d = |%s|\n", i, com.comd->arg->arg);
 	}
 	else
 		printf("no arguments\n");
+	while (com.comd->arg && com.comd->arg->previous)
+		com.comd->arg = com.comd->arg->previous;
 }
 
 
@@ -53,12 +58,15 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 		init_com(&com);
 		com.com_ret = 0;
 		com.error = 0;
-		copy_env(env, &com);
+		copy_env(env, &com); // может это можно вынести из цикла (только тогда надо заранее инициализировать ком)
 		while (line && *line && !com.error)
 		{
-			parser(&line, &com); // тут надо прописать так, чтобы обрабатывать только до ; и потом снова вызывать парсер, а строку обрезать
+			check_mistakes(line, &com);
+			if (!com.error)
+				parser(&line, &com); // тут надо прописать так, чтобы обрабатывать только до ; и потом снова вызывать парсер, а строку обрезать
 			// check_parser(com); // это просто для проверки парсера
-			cmd_start(&com);
+			if (!com.error)
+				cmd_start(&com);
 			// возможно тут нужно поработать с пайпами, т.е если есть правый, то закрыть, открыть fd
 			// тут исполняется одна распарсенная команда до точки с запятой и идет дальше
 			// а тут возможно нужно переоткрыть пайпы

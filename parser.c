@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/23 18:34:24 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/27 12:36:01 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,16 @@ void	check_result(t_command *com)
 		{
 			com->comd->cmnd = ft_strdup(new->arg);
 			com->comd->arg = com->comd->arg->next;
+			com->comd->arg->previous = NULL;
 			free(new);
 			new = com->comd->arg;
-			com->no_command = 1;
-			while (!(ft_strncmp(new->arg, "-n\0", 3)))
+			com->comd->no_command = 1;
+			while (new && new->arg && !(ft_strncmp(new->arg, "-n\0", 3)))
 			{
 				com->comd->flag->flag = ft_strdup(new->arg);
 				com->comd->flag->no_flag = 1;
 				com->comd->arg = com->comd->arg->next;
+				com->comd->arg->previous = NULL;
 				free(new);
 				new = com->comd->arg;
 			}
@@ -81,7 +83,7 @@ void	pars_pipes(char *line, t_command *com) // пока не понимаю, з�
 			com->pipe_count++;
 		line++;
 	}
-	com->no_command = com->pipe_count + 1; // надо вспомнить зачем это и как можно использовать
+	com->comd->no_command = com->pipe_count + 1; // надо вспомнить зачем это и как можно использовать
 	// com->no_arg = com->pipe_count + 1;
 }
 
@@ -140,6 +142,8 @@ void	check_tockens(char **line, t_command *com)
 		len = ft_strlen_char(*line, '>');
 	if (len > ft_strlen_char(*line, '<') && !check_open_quotes(line, ft_strlen_char(*line, '<')))
 		len = ft_strlen_char(*line, '<');
+	if (len > ft_strlen_char(*line, '\\') && !check_open_quotes(line, ft_strlen_char(*line, '\\')))
+		len = ft_strlen_char(*line, '\\');
 	if (!len)
 		com->comd->arg->no_arg = 0;
 	else if (**line != '|' && **line != '"' && **line != '\'' && **line != '\\' && **line != '>' && **line != '<')
@@ -176,35 +180,59 @@ void	check_tockens(char **line, t_command *com)
 	// check_pipe(line, com);
 }
 
-void	pars_redirect(char **line, t_command *com)
+void	pars_redirect(char **line, t_command *com) // дописать
 {
-	if (**line == '>' && *(*line + 1) == '>')
+	t_arg	*new;
+	t_redir	*tmp;
+	t_arg	*buf;
+
+	tmp = NULL;
+	new = com->comd->arg;
+	while (new->next) // докручиваем до последнего элемента, чтобы знать, какой следующий и какой файл нам нужен
+		new = new->next;
+	while (line && *line && **line && **line != ';' && **line != '|')
 	{
-		com->comd->redir.type_red = 3;
-		com->comd->redir.r_redir = 1;
+		init_redirect(com);
+		if (**line == '>' && *(*line + 1) == '>')
+		{
+			com->comd->redir->type_red = 3;
+			com->comd->redir->r_redir = 1;
 		// и нужно в следующий лист comd запихнуть, что там есть левый редирект
-		(*line) += 2;
+			(*line) += 2;
+		}
+		else if (**line == '>' && *(*line + 1) != '>' && *(*line + 1) != '<')
+		{
+			com->comd->redir->type_red = 1;
+			com->comd->redir->r_redir = 1;
+			// и нужно в следующий лист comd запихнуть, что там есть левый редирект
+			(*line)++;
+		}
+		else if (**line == '<' && *(*line + 1) == '>')
+		{
+			com->comd->redir->type_red = 4;
+			com->comd->redir->r_redir = 1;
+			// и нужно в следующий лист comd запихнуть, что там есть левый редирект
+			(*line) += 2;
+		}
+		check_tockens(line, com);
+		buf = com->comd->arg;
+		while (buf && buf->previous != new)
+			buf = buf->next;
+		if (buf->previous == new)
+		{
+			com->comd->redir->file_name = ft_strdup(com->comd->arg->arg);
+			
+		}
+		if (com->comd->redir->type_red)
+			ft_redadd_back(&tmp, com->comd->redir);
 	}
-	if (**line == '>' && *(*line + 1) != '>' && *(*line + 1) != '<')
-	{
-		com->comd->redir.type_red = 1;
-		com->comd->redir.r_redir = 1;
-		// и нужно в следующий лист comd запихнуть, что там есть левый редирект
-		(*line)++;
-	}
-	if (**line == '>' && *(*line + 1) == '<')
-	{
-		com->comd->redir.type_red = 4;
-		com->comd->redir.r_redir = 1;
-		// и нужно в следующий лист comd запихнуть, что там есть левый редирект
-		(*line) += 2;
-	}
+	com->comd->redir = tmp;
 }
 
 void	pars_reverse_redirect(char **line, t_command *com)
 {
-	com->comd->redir.type_red = 2;
-	com->comd->redir.r_redir = 1;
+	com->comd->redir->type_red = 2;
+	com->comd->redir->r_redir = 1;
 	// и нужно в следующий лист comd запихнуть, что там есть левый редирект
 	(*line)++;
 }
@@ -247,10 +275,11 @@ void	pars_esc_nq(char **line, t_command *com)
 {
 	size_t	len;
 
-	
-	while (**line != ' ')
+	while (**line && **line != ' ')
 	{
 		(*line)++;
+		if (**line == ' ' && ((*line)++))
+			com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, " ");
 		len = ft_strlen_space(*line);
 		if (len > ft_strlen_char(*line + 1, '\\') + 1) // тут так написано, чтобы если после экранирования идет экранирование, не ушло в бесконечный цикл
 			len = ft_strlen_char(*line + 1, '\\') + 1;
@@ -713,6 +742,7 @@ void	ft_envadd_back(t_env **lst, t_env *new)
 void	ft_argadd_back(t_arg **lst, t_arg *new)
 {
 	t_arg	*bonus;
+	t_arg	*buf;
 
 	if (!new || !lst)
 		return ;
@@ -720,8 +750,13 @@ void	ft_argadd_back(t_arg **lst, t_arg *new)
 	if (bonus)
 	{
 		while (bonus->next)
+		{
+			buf = bonus;
 			bonus = bonus->next;
+			bonus->previous = buf;
+		}
 		bonus->next = new;
+		new->previous = bonus;
 	}
 	else
 		*lst = new;
@@ -730,6 +765,7 @@ void	ft_argadd_back(t_arg **lst, t_arg *new)
 void	ft_comdadd_back(t_comd **lst, t_comd *new)
 {
 	t_comd	*bonus;
+	t_comd	*buf;
 
 	if (!new || !lst)
 		return ;
@@ -737,8 +773,38 @@ void	ft_comdadd_back(t_comd **lst, t_comd *new)
 	if (bonus)
 	{
 		while (bonus->next)
+		{
+			buf = bonus;
+			bonus->previous = bonus;
 			bonus = bonus->next;
+		}
 		bonus->next = new;
+		new->previous = bonus;
+		
+	}
+	else
+		*lst = new;
+}
+
+void	ft_redadd_back(t_redir **lst, t_redir *new)
+{
+	t_redir	*bonus;
+	t_redir	*buf;
+
+	if (!new || !lst)
+		return ;
+	bonus = *lst;
+	if (bonus)
+	{
+		while (bonus->next)
+		{
+			buf = bonus;
+			bonus->previous = bonus;
+			bonus = bonus->next;
+		}
+		bonus->next = new;
+		new->previous = bonus;
+		
 	}
 	else
 		*lst = new;

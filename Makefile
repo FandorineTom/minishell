@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+         #
+#    By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/13 20:15:44 by scopycat          #+#    #+#              #
-#    Updated: 2020/12/25 13:58:26 by snorthmo         ###   ########.fr        #
+#    Updated: 2020/12/27 12:37:56 by scopycat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ FLAG = -g -Wall -Wextra -Werror
 NAME = libminishell.a
 
 FUNC = main.c\
+check_mistakes.c\
 free_struct.c\
 ft_itoa.c\
 get_next_line.c\
