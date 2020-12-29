@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/27 15:48:18 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/29 18:34:38 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,17 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 
 	(void)argc;
 	(void)argv;
+	init_com(&com);
+	init_env_d(&com);
+	copy_env(env, &com);
 	while (1) // тут может быть на какой-то сигнал прекращение цикла записать
 	{
 		write(1, "my_minishell: ", 14); // тут надо что-то поизящнее зафигачить и чтобы оно висело и выводилось после (может, тупо, while (1))
 		get_next_line(0, &line);
-		init_com(&com);
+		// init_com(&com);
 		com.com_ret = 0;
 		com.error = 0;
-		copy_env(env, &com); // может это можно вынести из цикла (только тогда надо заранее инициализировать ком)
+		// copy_env(env, &com); // может это можно вынести из цикла (только тогда надо заранее инициализировать ком)
 		while (line && *line && !com.error)
 		{
 			check_mistakes(line, &com);
