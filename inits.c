@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:45:37 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/26 17:05:33 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/29 19:57:53 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	init_com(t_command *com)
 	i = 0;
 	init_comd(com);
 	// init_arg(com);
-	// init_env_d(com);
+	init_env_d(com);
 	com->quotes_op = 0;
 	com->env_var = NULL;
 	com->error = 0;

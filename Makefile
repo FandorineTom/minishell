@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+         #
+#    By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/13 20:15:44 by scopycat          #+#    #+#              #
-#    Updated: 2020/12/27 12:37:56 by scopycat         ###   ########.fr        #
+#    Updated: 2020/12/29 21:21:05 by snorthmo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ cmd_start.c\
 cmd_cd.c\
 cmd_pwd.c\
 cmd_env.c\
+cmd_export.c\
 error.c
 
 OBJ = $(FUNC:.c=.o)
