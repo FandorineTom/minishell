@@ -41,5 +41,3 @@ int		cmd_export(t_command *com)
 	}
 	return (0);
 }
-
-// пытаемся смреджить все это дело....
