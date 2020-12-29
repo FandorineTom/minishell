@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 18:49:22 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/27 16:00:35 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/29 18:58:04 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,6 @@ void	check_mistakes(char *line, t_command *com) // проверка, что ош
 		i = write(2, "syntax error near unexpected token ';;'\n", 40);
 	else if (*line == ';' && !com->comd->cmnd && !com->comd->arg)
 		i = write(2, "syntax error near unexpected token ';'\n", 39);
-	// len = ft_strlen(line); // вынести выяснение длины в отдельную функцию
-	// if (len > ft_strlen_char(line + 1, ';') + 1)
-	// 	len = ft_strlen_char(line + 1, ';') + 1;
-	// if (len > ft_strlen_char(line, '>'))
-	// 	len = ft_strlen_char(line, '>');
-	// if (len > ft_strlen_char(line, '<'))
-	// 	len = ft_strlen_char(line, '<');
-	// if (len > ft_strlen_char(line, '|'))
-	// 	len = ft_strlen_char(line, '|');
-	// if (len > ft_strlen_char(line, '&'))
-	// 	len = ft_strlen_char(line, '&');
-	// len_qu = ft_strlen_char(line, '\'');
-	// if (len_qu > ft_strlen_char(line, '"'))
-	// 	len_qu = ft_strlen_char(line, '"');
 	while (line && *line && !i)
 	{
 		len = find_len_to_ss(line);
@@ -81,8 +67,10 @@ void	check_mistakes_inside(char **line, size_t *i) // тут нужно пров
 {
 	size_t	len;
 	size_t	len_q;
+	char	sym;
 
 	(void)i;
+	sym = **line;
 	len = find_len_to_ss(*line);
 	len_q = ft_strlen_char(*line, '\'');
 	if (len_q > ft_strlen_char(*line, '"'))
@@ -101,6 +89,16 @@ void	check_mistakes_inside(char **line, size_t *i) // тут нужно пров
 		*i = write(2, "syntax error near unexpected token '||'\n", 40);
 	if (**line == '&' && *(*line + 1) == '&')
 		*i = write(2, "syntax error near unexpected token '&'\n", 39);
+	else if (sym != ';')
+		(*line)++; 
+	while (**line == ' ')
+		(*line)++;
+	if (!(*i) && **line == '|')
+		*i = write(2, "syntax error near unexpected token '|'\n", 39);
+	if (!(*i) && **line == '&')
+		*i = write(2, "syntax error near unexpected token '&'\n", 39);
+	if (!(*i) && **line == ';')
+		*i = write(2, "syntax error near unexpected token ';'\n", 39);
 }
 
 size_t	find_len_to_ss(char *line)
