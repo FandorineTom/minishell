@@ -8,18 +8,11 @@ char	*detect_env_var(t_command *com)
 	i = 0;
 	while(com->comd->arg->arg[i] != '=')
 		i++;
-	if (!(var = (char *)ft_calloc(sizeof(char), i)))
+	if (!(var = ft_substr(com->comd->arg->arg, 0, i)))
 	{
 		error_message(strerror(errno), -1);
 		return (NULL);
 	}
-	i = 0;
-	while (*(com->comd->arg->arg) != '=')
-	{
-		var[i++] = *(com->comd->arg->arg);
-		com->comd->arg->arg++;
-	}
-	com->comd->arg->arg++;
 	return (var);
 }
 
@@ -27,23 +20,17 @@ char	*find_meaning(t_command *com)
 {
 	char	*mean;
 	int		i;
+	int		len;
 
 	i = 0;
-	while(com->comd->arg->arg[i])
+	while(com->comd->arg->arg[i] != '=')
 		i++;
-	if (!(mean = (char *)ft_calloc(sizeof(char), i)))
+	len = ft_strlen(com->comd->arg->arg);
+	if (!(mean = ft_substr(com->comd->arg->arg, i + 1, len - i + 1)))
 	{
 		error_message(strerror(errno), -1);
 		return (NULL);
 	}
-	i = 0;
-	while (*(com->comd->arg->arg))
-	{
-		mean[i++] = *(com->comd->arg->arg);
-		com->comd->arg->arg++;
-	}
-	// free(com->comd->arg->arg); // по хорошему тут указатель надо вернуть на начало строки и только потом освобождать
-	com->comd->arg->arg = NULL;
 	return (mean);
 }
 
@@ -66,11 +53,13 @@ int		cmd_export(t_command *com)
 {
 	t_env	*tmp;
 	char	*var_tochange;
+	char	*mean;
 	int		flag;
 
 	tmp = com->env_def;
 	flag = 0;
 	var_tochange = detect_env_var(com);
+	mean = find_meaning(com);
 	if (!com->env_def->env && com->env_def->next)
 		com->env_def = com->env_def->next;
 	while (com->env_def && !flag)
@@ -78,14 +67,15 @@ int		cmd_export(t_command *com)
 		if (!ft_strcmp(var_tochange, com->env_def->env))
 		{
 			free(com->env_def->meaning);
-			com->env_def->meaning = ft_strdup(find_meaning(com));
+			com->env_def->meaning = ft_strdup(mean);
 			flag = 1;
 		}
 		com->env_def = com->env_def->next;
 	}
 	com->env_def = tmp;
 	if (!flag)
-		ft_envadd_back(&com->env_def, new_node(var_tochange, find_meaning(com))); 
+		ft_envadd_back(&com->env_def, new_node(var_tochange, mean)); 
 	free(var_tochange);
+	free(mean);
 	return (0);
 }
