@@ -71,19 +71,19 @@ int		cmd_export(t_command *com)
 	var_tochange = detect_env_var(com);
 	if (!com->env_def->env && com->env_def->next)
 		com->env_def = com->env_def->next;
-	while (com->env_def->next)
+	while (com->env_def)
 	{
 		if (!ft_strcmp(var_tochange, com->env_def->env))
 		{
 			free(com->env_def->meaning);
-			com->env_def->meaning = ft_strdup(var_tochange);
+			com->env_def->meaning = ft_strdup(find_meaning(com));
 			flag = 1;
 		}
 		com->env_def = com->env_def->next;
 	}
-	if (!flag)
-		com->env_def->next = new_node(var_tochange, find_meaning(com)); 
 	com->env_def = tmp;
+	if (!flag)
+		ft_envadd_back(&com->env_def, new_node(var_tochange, find_meaning(com))); 
 	free(var_tochange);
 	return (0);
 }
