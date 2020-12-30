@@ -6,7 +6,7 @@
 #    By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/13 20:15:44 by scopycat          #+#    #+#              #
-#    Updated: 2020/12/29 21:21:05 by snorthmo         ###   ########.fr        #
+#    Updated: 2020/12/31 00:43:26 by snorthmo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ cmd_cd.c\
 cmd_pwd.c\
 cmd_env.c\
 cmd_export.c\
+cmd_unset.c\
 error.c
 
 OBJ = $(FUNC:.c=.o)
