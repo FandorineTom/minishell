@@ -9,7 +9,7 @@ void	 cmd_echo(t_command *com)
 	tmp = com->comd->arg;
 	if (com->comd->flag->no_flag && !ft_strcmp(com->comd->flag->flag, "-n"))
 		flag = 1;
-	while (tmp->next)
+	while (tmp && tmp->next)
 	{
 		ft_putstr(tmp->arg);
 		ft_putchar(' ');
