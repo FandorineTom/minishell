@@ -6,7 +6,7 @@
 /*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/30 15:54:54 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/30 17:03:34 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 	(void)argc;
 	(void)argv;
 	init_com(&com);
-	init_env_def(com.env_def);
+	init_env_d(&com);
+	// init_env_def(com.env_def);
 	copy_env(env, &com);
 	while (1) // тут может быть на какой-то сигнал прекращение цикла записать
 	{
@@ -62,9 +63,9 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 		com.com_ret = 0;
 		com.error = 0;
 		// copy_env(env, &com); // может это можно вынести из цикла (только тогда надо заранее инициализировать ком)
+		check_mistakes(line, &com);
 		while (line && *line && !com.error)
 		{
-			check_mistakes(line, &com);
 			if (!com.error)
 				parser(&line, &com); // тут надо прописать так, чтобы обрабатывать только до ; и потом снова вызывать парсер, а строку обрезать
 			// check_parser(com); // это просто для проверки парсера

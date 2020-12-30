@@ -42,6 +42,8 @@ char	*find_meaning(t_command *com)
 		mean[i++] = *(com->comd->arg->arg);
 		com->comd->arg->arg++;
 	}
+	// free(com->comd->arg->arg); // по хорошему тут указатель надо вернуть на начало строки и только потом освобождать
+	com->comd->arg->arg = NULL;
 	return (mean);
 }
 
@@ -71,7 +73,7 @@ int		cmd_export(t_command *com)
 	var_tochange = detect_env_var(com);
 	if (!com->env_def->env && com->env_def->next)
 		com->env_def = com->env_def->next;
-	while (com->env_def)
+	while (com->env_def && !flag)
 	{
 		if (!ft_strcmp(var_tochange, com->env_def->env))
 		{
