@@ -54,8 +54,8 @@ t_env	*new_node(char *var, char *mean)
 		error_message(strerror(errno), -1);
 		return (NULL);
 	}
-	elem->env = var;
-	elem->meaning = mean;
+	elem->env = ft_strdup(var);
+	elem->meaning = ft_strdup(mean);
 	elem->next = NULL;
 	return (elem);
 }
@@ -65,26 +65,25 @@ int		cmd_export(t_command *com)
 	t_env	*tmp;
 	char	*var_tochange;
 	int		flag;
-	// t_env	*new;
 
 	tmp = com->env_def;
 	flag = 0;
 	var_tochange = detect_env_var(com);
+	if (!com->env_def->env && com->env_def->next)
+		com->env_def = com->env_def->next;
 	while (com->env_def->next)
 	{
-		if (!com->env_def->env)
-			com->env_def = com->env_def->next;
-		if (!ft_strcmp(var_tochange, com->env_def->env)) // что-то здесь не так, надо выяснить, что!!!
+		if (!ft_strcmp(var_tochange, com->env_def->env))
 		{
-			com->env_def->meaning = var_tochange; // надо уточнить можно ли так вообще...
+			free(com->env_def->meaning);
+			com->env_def->meaning = ft_strdup(var_tochange);
 			flag = 1;
 		}
 		com->env_def = com->env_def->next;
 	}
 	if (!flag)
-	{
-		com->env_def->next = new_node(var_tochange, find_meaning(com));
-	}
+		com->env_def->next = new_node(var_tochange, find_meaning(com)); 
 	com->env_def = tmp;
+	free(var_tochange);
 	return (0);
 }
