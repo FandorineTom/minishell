@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:45:37 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/29 19:57:53 by snorthmo         ###   ########.fr       */
+/*   Updated: 2020/12/30 15:53:50 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,12 @@ void	init_env_d(t_command *com)
 	com->env_def->env = NULL;
 	com->env_def->meaning = NULL;
 	com->env_def->next = NULL;
+}
+
+void	init_env_def(t_env *env)
+{
+	env = (t_env*)malloc(sizeof(t_env));
+	env->env = NULL;
+	env->meaning = NULL;
+	env->next = NULL;
 }

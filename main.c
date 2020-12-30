@@ -6,7 +6,7 @@
 /*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/30 15:08:24 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/30 15:54:54 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 	(void)argc;
 	(void)argv;
 	init_com(&com);
-	init_env_d(&com);
+	init_env_def(com.env_def);
 	copy_env(env, &com);
 	while (1) // тут может быть на какой-то сигнал прекращение цикла записать
 	{

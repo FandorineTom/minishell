@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/29 21:20:50 by snorthmo         ###   ########.fr       */
+/*   Updated: 2020/12/30 15:51:53 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void				init_comd(t_command *com);
 void				init_flag(t_command *com);
 void				init_arg(t_command *com);
 void				init_env_d(t_command *com);
+void				init_env_def(t_env *env);
 void				init_redirect(t_command *com);
 size_t				ft_strlen_space(char *str);
 size_t				ft_strlen_char(char *str, char c);
