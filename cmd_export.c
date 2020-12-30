@@ -65,12 +65,15 @@ int		cmd_export(t_command *com)
 	t_env	*tmp;
 	char	*var_tochange;
 	int		flag;
+	// t_env	*new;
 
 	tmp = com->env_def;
 	flag = 0;
 	var_tochange = detect_env_var(com);
 	while (com->env_def->next)
 	{
+		if (!com->env_def->env)
+			com->env_def = com->env_def->next;
 		if (!ft_strcmp(var_tochange, com->env_def->env)) // что-то здесь не так, надо выяснить, что!!!
 		{
 			com->env_def->meaning = var_tochange; // надо уточнить можно ли так вообще...

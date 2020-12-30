@@ -4,8 +4,11 @@ int		cmd_env(t_command *com)
 {
 	t_env *tmp;
 
-	tmp = com->env_def;
-	while (tmp->next)
+	if (!com->env_def->env)
+		tmp = com->env_def->next;
+	else
+		tmp = com->env_def;
+	while (tmp)
 	{
 		ft_putstr(tmp->env);
 		ft_putchar('=');
