@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/27 12:36:01 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/30 15:09:53 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -566,8 +566,11 @@ void	copy_env(char **env, t_command *com)
 	size_t	len;
 	size_t	len_2;
 	
-	i = 0;
-	len = 0;
+	i = 1;
+	len = ft_strlen_char(env[0], '=');
+	len_2 = ft_strlen(env[0]);
+	com->env_def->env = ft_substr(env[0], 0, len);
+	com->env_def->meaning = ft_substr(env[0], len + 1, len_2 - (len + 1));
 	buf = com->env_def;
 	while(env && env[i])
 	{
