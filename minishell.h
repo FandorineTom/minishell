@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/30 15:51:53 by scopycat         ###   ########.fr       */
+/*   Updated: 2020/12/30 22:57:50 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,5 +157,6 @@ int					cmd_export(t_command *com);
 char				*detect_env_var(t_command *com);
 t_env				*new_node(char *var, char *mean);
 char				*find_meaning(t_command *com);
+int					error_export(t_command *com);
 
 #endif

@@ -6,5 +6,6 @@ int		cmd_pwd(void)
 
 	getcwd(path, 1024);
 	ft_putstr(path);
+	ft_putchar('\n');
 	return (0);
 }

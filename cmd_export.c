@@ -6,11 +6,19 @@ char	*detect_env_var(t_command *com)
 	int		i;
 
 	i = 0;
-	while(com->comd->arg->arg[i] != '=')
+	while(com->comd->arg->arg[i] && com->comd->arg->arg[i] != '=')
 		i++;
-	if (!(var = ft_substr(com->comd->arg->arg, 0, i)))
+	if (com->comd->arg->arg[i])
 	{
-		error_message(strerror(errno), -1);
+		if (!(var = ft_substr(com->comd->arg->arg, 0, i)))
+		{
+			error_message(strerror(errno), -1);
+			return (NULL);
+		}
+	}
+	else
+	{
+		error_export(com);
 		return (NULL);
 	}
 	return (var);
@@ -58,10 +66,9 @@ int		cmd_export(t_command *com)
 
 	tmp = com->env_def;
 	flag = 0;
-	var_tochange = detect_env_var(com);
+	if (!(var_tochange = detect_env_var(com)))
+		return (0);								// обработать эту ошибку тут!! Это если в аргументах нет =
 	mean = find_meaning(com);
-	if (!com->env_def->env && com->env_def->next)
-		com->env_def = com->env_def->next;
 	while (com->env_def && !flag)
 	{
 		if (!ft_strcmp(var_tochange, com->env_def->env))
