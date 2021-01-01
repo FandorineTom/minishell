@@ -14,6 +14,6 @@ void	cmd_start(t_command *com)
 		cmd_unset(com);
 	else if (com->comd->no_command && !ft_strncmp(com->comd->cmnd, "env", 3))
 		cmd_env(com);
-	// if (!ft_strncmp(comd->cmnd, "exit", 4))
-	// 	cmd_exit(comd);
+	if (com->comd->no_command && !ft_strncmp(com->comd->cmnd, "exit", 4))
+		cmd_exit();
 }
