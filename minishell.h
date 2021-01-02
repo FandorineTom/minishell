@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/02 20:04:42 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/02 21:40:21 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ void				pars_pipes(char *line, t_command *com);
 void				pars_tockens(char **line, t_command *com);
 void				pars_single_quotes(char **line, t_command *com);
 void				pars_double_quotes(char **line, t_command *com);
+void				double_quotes_utils(t_command *com, char **line,\
+						size_t len);
 void				pars_esc_nq(char **line, t_command *com);
 void				check_result(t_command *com);
 void				check_mistakes(char **line_true, t_command *com);
@@ -121,8 +123,10 @@ int					check_command(char **line, t_command *com);
 int					check_echo_flag(char **line, t_command *com);
 int					check_which_command(char **line, t_command *com, \
 						char *command, int i);
+void				define_quotes(int *quotes, char *line, int i);
 int					check_env_var(char **line, t_command *com);
 void				change_env_var_meaning(t_command *com);
+void				no_such_env(t_command *com, size_t len);
 void				check_tockens(char **line, t_command *com);
 void				work_comman(t_command *com);
 void				init_com(t_command *com);

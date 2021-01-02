@@ -6,7 +6,7 @@
 #    By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/13 20:15:44 by scopycat          #+#    #+#              #
-#    Updated: 2021/01/02 19:08:47 by scopycat         ###   ########.fr        #
+#    Updated: 2021/01/02 21:52:42 by scopycat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,12 @@ get_next_line_utils.c\
 inits.c\
 parser.c\
 parse_quotes.c\
+pars_command.c\
+pars_env.c\
+pars_escaping.c\
+pars_lib_utils.c\
+pars_pipes.c\
+pars_structs_utils.c\
 sys_mistakes_utils.c\
 cmd_echo.c\
 cmd_start.c\
