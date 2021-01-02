@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/30 15:16:54 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/02 16:47:58 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ void	check_tockens(char **line, t_command *com)
 		pars_redirect(line, com); // нужно на следующий лист comd переходить
 	if (**line == '<')
 		pars_reverse_redirect(line, com);
-	if (**line && **line != ' ' && **line != ';') // нужно на следующий лист comd переходить
+	if (**line && **line != ' ' && **line != ';' && **line != '|') // нужно на следующий лист comd переходить
 		check_tockens(line, com);
 	// else if (**line == '>')
 	// 	pars_redirect(line, com);

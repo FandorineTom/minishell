@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/01 21:29:37 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/02 16:20:08 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,10 @@ void				pars_single_quotes(char **line, t_command *com);
 void				pars_double_quotes(char **line, t_command *com);
 void				pars_esc_nq(char **line, t_command *com);
 void				check_result(t_command *com);
-void    			check_mistakes(char *line, t_command *com);
+void    			check_mistakes(char **line_true, t_command *com);
 void				check_mistakes_quotes(char **line);
-void				check_mistakes_inside(char **line, size_t *i);
+void				check_mistakes_inside(char **line, size_t *i, char **line_true, t_command *com);
+void				please_enter(char **line_true, size_t *i, t_command *com);
 int					check_command(char **line, t_command *com);
 int					check_echo_flag(char **line, t_command *com);
 int 				check_which_command(char **line, t_command *com, char *command, int i);
