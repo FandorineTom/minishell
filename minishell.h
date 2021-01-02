@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/02 16:20:08 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/02 18:57:24 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ void				check_result(t_command *com);
 void    			check_mistakes(char **line_true, t_command *com);
 void				check_mistakes_quotes(char **line);
 void				check_mistakes_inside(char **line, size_t *i, char **line_true, t_command *com);
+size_t				skip_sp(char *line);
+void				rewrite_line(char **line_true, char **line);
 void				please_enter(char **line_true, size_t *i, t_command *com);
 int					check_command(char **line, t_command *com);
 int					check_echo_flag(char **line, t_command *com);

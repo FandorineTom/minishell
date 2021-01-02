@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/02 16:47:58 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/02 19:00:06 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -737,6 +737,7 @@ void	ft_envadd_back(t_env **lst, t_env *new)
 		while (bonus->next)
 			bonus = bonus->next;
 		bonus->next = new;
+		new->next = NULL;
 	}
 	else
 		*lst = new;
@@ -760,6 +761,7 @@ void	ft_argadd_back(t_arg **lst, t_arg *new)
 		}
 		bonus->next = new;
 		new->previous = bonus;
+		new->next = NULL;
 	}
 	else
 		*lst = new;
@@ -783,7 +785,7 @@ void	ft_comdadd_back(t_comd **lst, t_comd *new)
 		}
 		bonus->next = new;
 		new->previous = bonus;
-		
+		new->next = NULL;
 	}
 	else
 		*lst = new;
@@ -807,7 +809,7 @@ void	ft_redadd_back(t_redir **lst, t_redir *new)
 		}
 		bonus->next = new;
 		new->previous = bonus;
-		
+		new->next = NULL;
 	}
 	else
 		*lst = new;

@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 18:49:22 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/02 16:41:01 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/02 18:56:48 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,28 @@ void	check_mistakes(char **line_true, t_command *com) // проверка, чт�
 			check_mistakes_quotes(&line);
 		if ((*line == '>' || *line == '<') && (*(line + 1) == '\0' || ((*(line + 1) == '>' || *(line + 1) == '<') && *(line + 2) == '\0')))
 			i = write(2, "syntax error near unexpected token `newline'\n", 45);
+		else if (*line == '>' && *(line + 1) == '|')
+			rewrite_line(line_true, &line);
+			// line += 2;
 		else
 			check_mistakes_inside(&line, &i, line_true, com);
 	}
 	if (i)
 		com->error = 258;
+}
+
+void	rewrite_line(char **line_true, char **line)
+{
+	char *buf;
+	char *buf2;
+	
+	buf2 = ft_strdup(*line + 2);
+	buf = ft_substr(*line_true, 0, ft_strlen(*line_true) - ft_strlen(*line) + 1);
+	free(*line_true);
+	*line_true = ft_strjoin_gnl(buf, buf2);
+	free(buf2);
+	buf2 = NULL;
+	*line += 2;
 }
 
 void	check_mistakes_quotes(char **line)
@@ -92,7 +109,8 @@ void	check_mistakes_inside(char **line, size_t *i, char **line_true, t_command *
 		*i = write(2, "syntax error near unexpected token '||'\n", 40);
 	if (**line == '&' && *(*line + 1) == '&')
 		*i = write(2, "syntax error near unexpected token '&'\n", 39);
-	if (**line == '|' && *(*line + 1) == '\0' && ((*line)++))
+	if ((**line == '|' && *(*line + 1) == '\0' && ((*line)++)) || 
+	((**line == '|' && *(*line + skip_sp(*line + 1) + 1) == '\0' && ((*line) + skip_sp(*line + 1) + 1))))
 		please_enter(line_true, i, com);
 	// else if (sym != ';')
 	// 	(*line)++; 
@@ -108,7 +126,6 @@ void	check_mistakes_inside(char **line, size_t *i, char **line_true, t_command *
 		if (!(*i) && **line == ';')
 			*i = write(2, "syntax error near unexpected token ';'\n", 39);
 	}
-	
 	// (*line)++;
 	// while (**line == ' ')
 	// 	(*line)++;
@@ -119,6 +136,18 @@ void	check_mistakes_inside(char **line, size_t *i, char **line_true, t_command *
 	// if (!(*i) && **line == ';')
 	// 	*i = write(2, "syntax error near unexpected token ';'\n", 39);
 }
+
+	
+size_t	skip_sp(char *line)
+{
+	size_t	i;
+
+	i = 0;
+	while (line[i] == ' ')
+		i++;
+	return (i);	
+}
+
 
 void	please_enter(char **line_true, size_t *i, t_command *com)
 {
@@ -135,7 +164,8 @@ void	please_enter(char **line_true, size_t *i, t_command *com)
 	line = ft_strjoin_gnl(tmp, tmp2);
 	free(tmp2);
 	*line_true = ft_strjoin_gnl(*line_true, line);
-	check_mistakes(line_true, com);
+	check_mistakes_inside(&line, i, line_true, com);
+	// check_mistakes(line_true, com);
 }
 
 size_t	find_len_to_ss(char *line)
