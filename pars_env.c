@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 20:27:57 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/02 20:48:28 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/03 11:47:58 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,13 @@ void	no_such_env(t_command *com, size_t len)
 		com->env_var = NULL;
 		com->env_var = ft_strdup("");
 	}
+}
+
+void	change_env(t_command *com)
+{
+	change_env_var_meaning(com);
+	com->comd->arg->arg = ft_strdup(com->env_var);
+	free(com->env_var);
+	com->env_var = NULL;
+	com->no_var = 0;
 }

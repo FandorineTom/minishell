@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/02 21:58:02 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/03 12:05:23 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	check_result(t_command *com)
 	t_arg	*new;
 
 	new = com->comd->arg;
-	if (!com->comd->no_command)
+	if (!com->comd->no_command && new)
 	{
 		if (!(ft_strncmp(new->arg, "echo\0", 5)) || !(ft_strncmp(new->arg, \
 		"cd\0", 3)) || !(ft_strncmp(new->arg, "pwd\0", 4)) || !(ft_strncmp(\
@@ -75,221 +75,221 @@ void	pars_pipes(char *line, t_command *com) // пока не понимаю, з�
 	com->comd->no_command = com->pipe_count + 1; // надо вспомнить зачем это и как можно использовать
 }
 
-void	pars_tockens(char **line, t_command *com)
-{
-	t_arg	*new;
+// void	pars_tockens(char **line, t_command *com)
+// {
+// 	t_arg	*new;
 
-	new = NULL;
-	while (**line == ' ')
-		(*line)++;
-	if (!check_command(line, com))
-		com->comd->no_command = 0;
-	while (line && *line && **line && **line != ';' && **line != '|')
-	{
-		init_arg(com);
-		if (!check_env_var(line, com))
-			com->no_var = 0;
-		if (!com->no_var)
-			check_tockens(line, com);
-		else
-		{
-			change_env_var_meaning(com);
-			com->comd->arg->arg = ft_strdup(com->env_var);
-			free(com->env_var);
-			com->env_var = NULL;
-			com->no_var = 0;
-		}
-		if (com->comd->arg->arg)
-			ft_argadd_back(&new, com->comd->arg);
-		while (**line == ' ')
-			(*line)++;
-	}
-	com->comd->arg = new;
-	if (**line == '|')
-		activate_pipe(line, com);
-}
+// 	new = NULL;
+// 	while (**line == ' ')
+// 		(*line)++;
+// 	if (!check_command(line, com))
+// 		com->comd->no_command = 0;
+// 	while (line && *line && **line && **line != ';' && **line != '|')
+// 	{
+// 		init_arg(com);
+// 		if (!check_env_var(line, com))
+// 			com->no_var = 0;
+// 		if (!com->no_var)
+// 			check_tockens(line, com);
+// 		else
+// 		{
+// 			change_env_var_meaning(com);
+// 			com->comd->arg->arg = ft_strdup(com->env_var);
+// 			free(com->env_var);
+// 			com->env_var = NULL;
+// 			com->no_var = 0;
+// 		}
+// 		if (com->comd->arg->arg)
+// 			ft_argadd_back(&new, com->comd->arg);
+// 		while (**line == ' ')
+// 			(*line)++;
+// 	}
+// 	com->comd->arg = new;
+// 	if (**line == '|')
+// 		activate_pipe(line, com);
+// }
 
-void	check_tockens(char **line, t_command *com)
-{
-	size_t	len;
+// void	check_tockens(char **line, t_command *com)
+// {
+// 	size_t	len;
 	
-	while (**line == ' ')
-		(*line)++;
-	len = ft_strlen_space(*line); // вынести выяснение длины в отдельную функцию
-	if (len > ft_strlen_char(*line, ';') && !check_open_quotes(line, ft_strlen_char(*line, ';')))
-		len = ft_strlen_char(*line, ';');
-	if (len > ft_strlen_char(*line, '$') && !check_open_quotes(line, ft_strlen_char(*line, '$')))
-		len = ft_strlen_char(*line, '$');
-	if (len > ft_strlen_char(*line + 1, '"') + 1 && !check_open_quotes(line, ft_strlen_char(*line + 1, '"') + 1))
-		len = ft_strlen_char(*line + 1, '"') + 1;
-	if (len > ft_strlen_char(*line + 1, '\'') + 1 && !check_open_quotes(line, ft_strlen_char(*line + 1, '\'') + 1))
-		len = ft_strlen_char(*line + 1, '\'') + 1;
-	if (len > ft_strlen_char(*line, '>') && !check_open_quotes(line, ft_strlen_char(*line, '>')))
-		len = ft_strlen_char(*line, '>');
-	if (len > ft_strlen_char(*line, '<') && !check_open_quotes(line, ft_strlen_char(*line, '<')))
-		len = ft_strlen_char(*line, '<');
-	if (len > ft_strlen_char(*line, '\\') && !check_open_quotes(line, ft_strlen_char(*line, '\\')))
-		len = ft_strlen_char(*line, '\\');
-	if (!len)
-		com->comd->arg->no_arg = 0;
-	else if (**line != '|' && **line != '"' && **line != '\'' && **line != '\\' && **line != '>' && **line != '<')
-	{
-		com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, ft_substr(*line, 0, len));
-		(*line) += len;	
-	}
-	// else if (**line == '"')
-	if (**line == '"')
-		pars_double_quotes(line, com); // это различают спецсимволы
-	// else if (**line == '\'')
-	if (**line == '\'')
-		pars_single_quotes(line, com);
-	else if (**line == '\\') // нужно ли тут элс
-		pars_esc_nq(line, com);
-	if (**line == '$')
-	{
-		check_env_var(line, com);
-		len = ft_strlen(com->env_var);
-		change_env_var_meaning(com);
-		com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, com->env_var);
-		// (*line) += len;
-	}
-	if (**line == '>')
-		pars_redirect(line, com); // нужно на следующий лист comd переходить
-	if (**line == '<')
-		pars_reverse_redirect(line, com);
-	if (**line && **line != ' ' && **line != ';' && **line != '|') // нужно на следующий лист comd переходить
-		check_tockens(line, com);
-	// else if (**line == '>')
-	// 	pars_redirect(line, com);
-	// else if (**line == '<')
-	// 	pars_reverse_redirect(line, com);
-	// check_pipe(line, com);
-}
+// 	while (**line == ' ')
+// 		(*line)++;
+// 	len = ft_strlen_space(*line); // вынести выяснение длины в отдельную функцию
+// 	if (len > ft_strlen_char(*line, ';') && !check_open_quotes(line, ft_strlen_char(*line, ';')))
+// 		len = ft_strlen_char(*line, ';');
+// 	if (len > ft_strlen_char(*line, '$') && !check_open_quotes(line, ft_strlen_char(*line, '$')))
+// 		len = ft_strlen_char(*line, '$');
+// 	if (len > ft_strlen_char(*line + 1, '"') + 1 && !check_open_quotes(line, ft_strlen_char(*line + 1, '"') + 1))
+// 		len = ft_strlen_char(*line + 1, '"') + 1;
+// 	if (len > ft_strlen_char(*line + 1, '\'') + 1 && !check_open_quotes(line, ft_strlen_char(*line + 1, '\'') + 1))
+// 		len = ft_strlen_char(*line + 1, '\'') + 1;
+// 	if (len > ft_strlen_char(*line, '>') && !check_open_quotes(line, ft_strlen_char(*line, '>')))
+// 		len = ft_strlen_char(*line, '>');
+// 	if (len > ft_strlen_char(*line, '<') && !check_open_quotes(line, ft_strlen_char(*line, '<')))
+// 		len = ft_strlen_char(*line, '<');
+// 	if (len > ft_strlen_char(*line, '\\') && !check_open_quotes(line, ft_strlen_char(*line, '\\')))
+// 		len = ft_strlen_char(*line, '\\');
+// 	if (!len)
+// 		com->comd->arg->no_arg = 0;
+// 	else if (**line != '|' && **line != '"' && **line != '\'' && **line != '\\' && **line != '>' && **line != '<')
+// 	{
+// 		com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, ft_substr(*line, 0, len));
+// 		(*line) += len;	
+// 	}
+// 	// else if (**line == '"')
+// 	if (**line == '"')
+// 		pars_double_quotes(line, com); // это различают спецсимволы
+// 	// else if (**line == '\'')
+// 	if (**line == '\'')
+// 		pars_single_quotes(line, com);
+// 	else if (**line == '\\') // нужно ли тут элс
+// 		pars_esc_nq(line, com);
+// 	if (**line == '$')
+// 	{
+// 		check_env_var(line, com);
+// 		len = ft_strlen(com->env_var);
+// 		change_env_var_meaning(com);
+// 		com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, com->env_var);
+// 		// (*line) += len;
+// 	}
+// 	if (**line == '>')
+// 		pars_redirect(line, com); // нужно на следующий лист comd переходить
+// 	if (**line == '<')
+// 		pars_reverse_redirect(line, com);
+// 	if (**line && **line != ' ' && **line != ';' && **line != '|') // нужно на следующий лист comd переходить
+// 		check_tockens(line, com);
+// 	// else if (**line == '>')
+// 	// 	pars_redirect(line, com);
+// 	// else if (**line == '<')
+// 	// 	pars_reverse_redirect(line, com);
+// 	// check_pipe(line, com);
+// }
 
-void 	pars_dollar(t_command *com, size_t len_str)
-{
-	char	*buf; // сюда записываю переработанные куски.
-	char	*buf_end;
-	size_t	len_slash;
-	size_t	len_dol;
-	size_t	len_var;
+// void 	pars_dollar(t_command *com, size_t len_str)
+// {
+// 	char	*buf; // сюда записываю переработанные куски.
+// 	char	*buf_end;
+// 	size_t	len_slash;
+// 	size_t	len_dol;
+// 	size_t	len_var;
 
-	buf = NULL;
-	buf_end = NULL;
-	while (com->comd->arg->arg && *com->comd->arg->arg)
-	{
-		len_slash = ft_strlen_char(com->comd->arg->arg, '\\');
-		len_dol = ft_strlen_char(com->comd->arg->arg, '$');
-		if (len_slash < len_str && len_slash < len_dol && len_str != 1)
-		{
-			buf = ft_strjoin_gnl(buf, ft_substr(com->comd->arg->arg, 0, len_slash)); //тут должна скопировать до бекслеша
-			com->comd->arg->arg += len_slash;
-		}
-		else if (len_str == 1)
-		{
-			buf = ft_substr(com->comd->arg->arg, 0, 1);
-			com->comd->arg->arg += 1;
-		}
-		else // если ни слеша, ни доллара, то строчка скопируется до конца
-		{
-			buf = ft_strjoin_gnl(buf, ft_substr(com->comd->arg->arg, 0, ft_strlen_char(com->comd->arg->arg, '$'))); // тут должна скопировать до знака доллар
-			com->comd->arg->arg += ft_strlen_char(com->comd->arg->arg, '$');
-		}
-		if (*com->comd->arg->arg == '\\' && com->comd->arg->arg[1] == '$')
-		{
-			buf = ft_strjoin_gnl(buf, "$");
-			com->comd->arg->arg += 2; // сместила на текст после $
-		}
-		else if (*com->comd->arg->arg == '$')
-		{
-			len_var = ft_strlen_space(com->comd->arg->arg); // тут или до пробела, или до экранирования - что из этого будет ближе
-			if (len_var > ft_strlen_char(com->comd->arg->arg, '\\'))
-				len_var = ft_strlen_char(com->comd->arg->arg, '\\');
-			if (len_var > ft_strlen_char(com->comd->arg->arg, '"'))
-				len_var = ft_strlen_char(com->comd->arg->arg, '"');
-			if (len_var > ft_strlen_char(com->comd->arg->arg, '\''))
-				len_var = ft_strlen_char(com->comd->arg->arg, '\'');
-			buf_end = ft_substr(com->comd->arg->arg, len_var, ft_strlen(com->comd->arg->arg) - len_var); // тут лучше просто переместить указатель, возможно? чтобы новую память не выделять
-			com->env_var = ft_substr(com->comd->arg->arg, 1, len_var - 1);
-			if (len_var > 1)
-				change_env_var_meaning(com);
-			buf = ft_strjoin_gnl(buf, com->env_var);
-			com->comd->arg->arg += len_var;
-			free(com->env_var);
-			com->env_var = NULL;
-			// free(com->comd->arg->arg);
-			com->comd->arg->arg = buf_end;
-		}
-		else if (*com->comd->arg->arg == '\\')
-		{
-			while (*com->comd->arg->arg == '\\')
-			{
-				buf = ft_strjoin_gnl(buf, "\\");
-				com->comd->arg->arg++;
-			}
-		}
-	}
-	// if (com->comd->arg->arg)
-	// 	free(com->comd->arg->arg);
-	com->comd->arg->arg = buf;
-}
+// 	buf = NULL;
+// 	buf_end = NULL;
+// 	while (com->comd->arg->arg && *com->comd->arg->arg)
+// 	{
+// 		len_slash = ft_strlen_char(com->comd->arg->arg, '\\');
+// 		len_dol = ft_strlen_char(com->comd->arg->arg, '$');
+// 		if (len_slash < len_str && len_slash < len_dol && len_str != 1)
+// 		{
+// 			buf = ft_strjoin_gnl(buf, ft_substr(com->comd->arg->arg, 0, len_slash)); //тут должна скопировать до бекслеша
+// 			com->comd->arg->arg += len_slash;
+// 		}
+// 		else if (len_str == 1)
+// 		{
+// 			buf = ft_substr(com->comd->arg->arg, 0, 1);
+// 			com->comd->arg->arg += 1;
+// 		}
+// 		else // если ни слеша, ни доллара, то строчка скопируется до конца
+// 		{
+// 			buf = ft_strjoin_gnl(buf, ft_substr(com->comd->arg->arg, 0, ft_strlen_char(com->comd->arg->arg, '$'))); // тут должна скопировать до знака доллар
+// 			com->comd->arg->arg += ft_strlen_char(com->comd->arg->arg, '$');
+// 		}
+// 		if (*com->comd->arg->arg == '\\' && com->comd->arg->arg[1] == '$')
+// 		{
+// 			buf = ft_strjoin_gnl(buf, "$");
+// 			com->comd->arg->arg += 2; // сместила на текст после $
+// 		}
+// 		else if (*com->comd->arg->arg == '$')
+// 		{
+// 			len_var = ft_strlen_space(com->comd->arg->arg); // тут или до пробела, или до экранирования - что из этого будет ближе
+// 			if (len_var > ft_strlen_char(com->comd->arg->arg, '\\'))
+// 				len_var = ft_strlen_char(com->comd->arg->arg, '\\');
+// 			if (len_var > ft_strlen_char(com->comd->arg->arg, '"'))
+// 				len_var = ft_strlen_char(com->comd->arg->arg, '"');
+// 			if (len_var > ft_strlen_char(com->comd->arg->arg, '\''))
+// 				len_var = ft_strlen_char(com->comd->arg->arg, '\'');
+// 			buf_end = ft_substr(com->comd->arg->arg, len_var, ft_strlen(com->comd->arg->arg) - len_var); // тут лучше просто переместить указатель, возможно? чтобы новую память не выделять
+// 			com->env_var = ft_substr(com->comd->arg->arg, 1, len_var - 1);
+// 			if (len_var > 1)
+// 				change_env_var_meaning(com);
+// 			buf = ft_strjoin_gnl(buf, com->env_var);
+// 			com->comd->arg->arg += len_var;
+// 			free(com->env_var);
+// 			com->env_var = NULL;
+// 			// free(com->comd->arg->arg);
+// 			com->comd->arg->arg = buf_end;
+// 		}
+// 		else if (*com->comd->arg->arg == '\\')
+// 		{
+// 			while (*com->comd->arg->arg == '\\')
+// 			{
+// 				buf = ft_strjoin_gnl(buf, "\\");
+// 				com->comd->arg->arg++;
+// 			}
+// 		}
+// 	}
+// 	// if (com->comd->arg->arg)
+// 	// 	free(com->comd->arg->arg);
+// 	com->comd->arg->arg = buf;
+// }
 
-void	pars_redirect(char **line, t_command *com) // дописать
-{
-	t_arg	*new;
-	t_redir	*tmp;
-	t_arg	*buf;
+// void	pars_redirect(char **line, t_command *com) // дописать
+// {
+// 	t_arg	*new;
+// 	t_redir	*tmp;
+// 	t_arg	*buf;
 
-	tmp = NULL;
-	new = com->comd->arg;
-	while (new->next) // докручиваем до последнего элемента, чтобы знать, какой следующий и какой файл нам нужен
-		new = new->next;
-	while (line && *line && **line && **line != ';' && **line != '|')
-	{
-		init_redirect(com);
-		if (**line == '>' && *(*line + 1) == '>')
-		{
-			com->comd->redir->type_red = 3;
-			com->comd->redir->r_redir = 1;
-		// и нужно в следующий лист comd запихнуть, что там есть левый редирект
-			(*line) += 2;
-		}
-		else if (**line == '>' && *(*line + 1) != '>' && *(*line + 1) != '<')
-		{
-			com->comd->redir->type_red = 1;
-			com->comd->redir->r_redir = 1;
-			// и нужно в следующий лист comd запихнуть, что там есть левый редирект
-			(*line)++;
-		}
-		else if (**line == '<' && *(*line + 1) == '>')
-		{
-			com->comd->redir->type_red = 4;
-			com->comd->redir->r_redir = 1;
-			// и нужно в следующий лист comd запихнуть, что там есть левый редирект
-			(*line) += 2;
-		}
-		check_tockens(line, com);
-		buf = com->comd->arg;
-		while (buf && buf->previous != new)
-			buf = buf->next;
-		if (buf->previous == new)
-		{
-			com->comd->redir->file_name = ft_strdup(com->comd->arg->arg);
+// 	tmp = NULL;
+// 	new = com->comd->arg;
+// 	while (new->next) // докручиваем до последнего элемента, чтобы знать, какой следующий и какой файл нам нужен
+// 		new = new->next;
+// 	while (line && *line && **line && **line != ';' && **line != '|')
+// 	{
+// 		init_redirect(com);
+// 		if (**line == '>' && *(*line + 1) == '>')
+// 		{
+// 			com->comd->redir->type_red = 3;
+// 			com->comd->redir->r_redir = 1;
+// 		// и нужно в следующий лист comd запихнуть, что там есть левый редирект
+// 			(*line) += 2;
+// 		}
+// 		else if (**line == '>' && *(*line + 1) != '>' && *(*line + 1) != '<')
+// 		{
+// 			com->comd->redir->type_red = 1;
+// 			com->comd->redir->r_redir = 1;
+// 			// и нужно в следующий лист comd запихнуть, что там есть левый редирект
+// 			(*line)++;
+// 		}
+// 		else if (**line == '<' && *(*line + 1) == '>')
+// 		{
+// 			com->comd->redir->type_red = 4;
+// 			com->comd->redir->r_redir = 1;
+// 			// и нужно в следующий лист comd запихнуть, что там есть левый редирект
+// 			(*line) += 2;
+// 		}
+// 		check_tockens(line, com);
+// 		buf = com->comd->arg;
+// 		while (buf && buf->previous != new)
+// 			buf = buf->next;
+// 		if (buf->previous == new)
+// 		{
+// 			com->comd->redir->file_name = ft_strdup(com->comd->arg->arg);
 			
-		}
-		if (com->comd->redir->type_red)
-			ft_redadd_back(&tmp, com->comd->redir);
-	}
-	com->comd->redir = tmp;
-}
+// 		}
+// 		if (com->comd->redir->type_red)
+// 			ft_redadd_back(&tmp, com->comd->redir);
+// 	}
+// 	com->comd->redir = tmp;
+// }
 
-void	pars_reverse_redirect(char **line, t_command *com)
-{
-	com->comd->redir->type_red = 2;
-	com->comd->redir->r_redir = 1;
-	// и нужно в следующий лист comd запихнуть, что там есть левый редирект
-	(*line)++;
-}
+// void	pars_reverse_redirect(char **line, t_command *com)
+// {
+// 	com->comd->redir->type_red = 2;
+// 	com->comd->redir->r_redir = 1;
+// 	// и нужно в следующий лист comd запихнуть, что там есть левый редирект
+// 	(*line)++;
+// }
 
 // void	activate_pipe(char **line, t_command *com)
 // {

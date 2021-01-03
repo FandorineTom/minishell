@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/02 21:40:21 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/03 11:46:36 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ void				define_quotes(int *quotes, char *line, int i);
 int					check_env_var(char **line, t_command *com);
 void				change_env_var_meaning(t_command *com);
 void				no_such_env(t_command *com, size_t len);
+void				change_env(t_command *com);
 void				check_tockens(char **line, t_command *com);
 void				work_comman(t_command *com);
 void				init_com(t_command *com);
@@ -139,6 +140,7 @@ void				init_redirect(t_command *com);
 size_t				ft_strlen_space(char *str);
 size_t				ft_strlen_char(char *str, char c);
 size_t				find_len_to_ss(char *line);
+size_t				find_len_tockens(char **line);
 int					check_open_quotes(char **line, size_t len);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strchr(const char *str, int sym);
