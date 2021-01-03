@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/03 13:31:17 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/03 21:44:34 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <dirent.h>
 # include "./headers/get_next_line.h"
 # include "libft/libft.h"
+
+int					g_for_exit;
 
 typedef struct		s_pipe
 {
@@ -170,6 +172,7 @@ int					cmd_cd(t_command *com);
 int					cmd_pwd(void);
 int					cmd_env(t_command *com);
 int					error_message(char *message, int exit_code);
+char				**error_message2(char *message);
 int					cmd_export(t_command *com);
 char				*detect_env_var(t_command *com);
 t_env				*new_node(char *var, char *mean);
@@ -179,5 +182,6 @@ int					cmd_unset(t_command *com);
 int					cmd_exit(void);
 void				signal_handler(t_command *com);
 void				*ctrl_d(t_command *com);
+char				*find_bin(t_command *com);
 
 #endif

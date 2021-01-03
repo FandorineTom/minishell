@@ -1,19 +1,132 @@
 #include "minishell.h"
 
+int		check_if_my(char *cmd)
+{
+	const char	*my_str[7] = {"echo",
+							"cd",
+							"pwd",
+							"export",
+							"unset",
+							"env",
+							"exit"};
+	int			i;
+
+	i = 0;
+	while(i < 7)
+	{
+		if (!ft_strcmp(cmd, my_str[i]))
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+char	**envp_to_mass(t_command *com)
+{
+	char	**envp;
+	t_env	*tmp;
+	int		len;
+
+	tmp = com->env_def;
+	len = 0;
+	while (tmp)
+	{
+		len++;
+		tmp = tmp->next;
+	}
+	if (!(envp = (char **)ft_calloc(sizeof(char *), len + 1)))
+		return ((error_message2(strerror(errno))));
+	tmp = com->env_def;
+	len = 0;
+	while (tmp)
+	{
+		if (!(envp[len] = ft_strjoin(tmp->env, "=")))
+			return(error_message2(strerror(errno)));
+		if (!(envp[len] = ft_strjoin(envp[len], tmp->meaning)))
+			return(error_message2(strerror(errno)));
+		len++;
+		tmp = tmp->next;
+	}
+	envp[len] = NULL;
+	return (envp);
+}
+
+char	**transfer_to_mass(t_command *com)
+{
+	char	**args;
+	t_arg	*tmp_a;
+	int		len;
+	int		i;
+
+	len = 0;
+	i = 0;
+	tmp_a = com->comd->arg;
+	while (tmp_a)
+	{
+		len++;
+		tmp_a = tmp_a->next;
+	}
+	if (!(args = (char **)ft_calloc(sizeof(char *), len + 1)))
+		return (error_message2(strerror(errno)));
+	tmp_a = com->comd->arg;
+	while (tmp_a)
+	{
+		if (!(args[i++] = ft_strdup(tmp_a->arg)))
+			return(error_message2(strerror(errno)));
+		tmp_a = tmp_a->next;
+	}
+	args[i] = NULL;
+	return (args);
+}
+
+void	open_fork(t_command *com)
+{
+	int			status;
+	pid_t		pid;
+	char		*path;
+	int			i;
+	char		**args;
+	char		**envp;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		path = find_bin(com);
+		args = transfer_to_mass(com);
+		envp = envp_to_mass(com);
+		i = execve(path, args, envp);
+		printf("%i\n", i);
+	}
+	else if (pid > 0)
+		wait(&status);
+	if (pid < 0)
+		g_for_exit = error_message(strerror(errno), 1);
+}
+
 void	cmd_start(t_command *com)
 {
-	if (com->comd->no_command && !ft_strncmp(com->comd->cmnd, "echo", 4))
-		cmd_echo(com);
-	else if (com->comd->no_command && !ft_strncmp(com->comd->cmnd, "cd", 2))
-		cmd_cd(com);
-	else if (com->comd->no_command && !ft_strncmp(com->comd->cmnd, "pwd", 3))
-		cmd_pwd();
-	else if (com->comd->no_command && !ft_strncmp(com->comd->cmnd, "export", 6))
-		cmd_export(com);
-	else if (com->comd->no_command && !ft_strncmp(com->comd->cmnd, "unset", 5))
-		cmd_unset(com);
-	else if (com->comd->no_command && !ft_strncmp(com->comd->cmnd, "env", 3))
-		cmd_env(com);
-	if (com->comd->no_command && !ft_strncmp(com->comd->cmnd, "exit", 4))
-		cmd_exit();
+	int		cmd_num;
+
+	if (com->comd->no_command)
+	{
+		cmd_num = check_if_my(com->comd->cmnd);
+		if (cmd_num == 0)
+			cmd_echo(com);
+		else if (cmd_num == 1)
+			cmd_cd(com);
+		else if (cmd_num == 2)
+			cmd_pwd();
+		else if (cmd_num == 3)
+			cmd_export(com);
+		else if (cmd_num == 4)
+			cmd_unset(com);
+		else if (cmd_num == 5)
+			cmd_env(com);
+		else if (cmd_num == 6)
+			cmd_exit();
+	}
+	else if (!com->comd->no_command && com->comd->arg)
+		open_fork(com);
+	else
+		return ;
 }

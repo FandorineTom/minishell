@@ -47,23 +47,23 @@ char	*find_bin(t_command *com)
 	int		i;
 	t_env	*tmp;
 
-	tmp = com->env_var;
-	i = 0;
+	tmp = com->env_def;
 	while (tmp)
 	{
 		if (!ft_strcmp("PATH", tmp->env))
-			path[i++] = ft_split(tmp->meaning, ':');
+			path = ft_split(tmp->meaning, ':');
 		tmp = tmp->next;
 	}
 	i = -1;
 	while(path && path[++i])
 	{
-		if (find_file(path[i], com->comd->cmnd))
+		if (find_file(path[i], com->comd->arg->arg))
 		{
-			help = ft_strjoin("/", com->comd->cmnd);
+			help = ft_strjoin("/", com->comd->arg->arg);
 			to_ret = ft_strjoin(path[i], help);
 			return(to_ret + free_mas(path) + free_str(&help));
 		}
 	}
 	free_mas(path);
+	return (NULL); //надо подумать, что возвращать, если ничего не нашел
 }
