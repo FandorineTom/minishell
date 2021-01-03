@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/01 21:29:37 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/02 23:32:09 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <unistd.h>
 # include <sys/errno.h>
 # include <string.h>
+# include <dirent.h>
 # include "./headers/get_next_line.h"
 # include "libft/libft.h"
 
@@ -160,5 +161,7 @@ char				*find_meaning(t_command *com);
 int					error_export(t_command *com);
 int					cmd_unset(t_command *com);
 int					cmd_exit(void);
+void				signal_handler(t_command *com);
+void				*ctrl_d(t_command *com);
 
 #endif
