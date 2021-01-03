@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:45:37 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/30 17:02:01 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/02 21:44:42 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	init_comd(t_command *com)
 void	init_redirect(t_command *com)
 {
 	com->comd->redir = (t_redir*)malloc(sizeof(t_redir));
-	com->comd->redir->fd1 = 0; // проверить, чтобы именно эти были значения по умолчанию
+	com->comd->redir->fd1 = 0;
 	com->comd->redir->fd2 = 1;
 	com->comd->redir->file_name = NULL;
 	com->comd->redir->l_redir = 0;

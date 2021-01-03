@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/13 14:08:41 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/16 16:30:44 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/02 21:42:46 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,73 @@
 
 void	pars_double_quotes(char **line, t_command *com)
 {
-	size_t 	len;
+	size_t	len;
 	size_t	len_env;
 	char	*buf;
-	
-	len = ft_strlen_char(*line + 1, '"'); // длина от первого символа в кавычках до закрытых кавычек или до конца строки
-	while (*(*line + len) == '\\') // если перед кавычкой экранирование
-		len = len + ft_strlen_char(*line + len + 2, '"') + 1; // переходим на следующую кавычку
+
+	len = ft_strlen_char(*line + 1, '"');
+	while (*(*line + len) == '\\')
+		len = len + ft_strlen_char(*line + len + 2, '"') + 1;
 	len_env = 0;
-	if (len == ft_strlen(*line + 1) && (*line)[len - 1] != '"') // если в строке нет второй кавычки
+	if (len == ft_strlen(*line + 1) && (*line)[len - 1] != '"')
 	{
 		com->comd->arg->arg = ft_substr(*line, 1, len);
 		(*line) += len + 1;
 	}
-	else // если что-то в кавычках есть
-	{
-		com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, ft_substr(*line, 1, len));
-		if (ft_strchr(com->comd->arg->arg, '$'))
-			// pars_dollar(com, len);
-            pars_dollar(com, ft_strlen(com->comd->arg->arg));
-		if (ft_strchr(com->comd->arg->arg, '\\'))
-			pars_escaping(com, len);
-		(*line) += len + 2;
-	}
+	else
+		double_quotes_utils(com, line, len);
 	if (**line != ' ')
 	{
 		buf = com->comd->arg->arg;
-        com->comd->arg->arg = NULL;
+		com->comd->arg->arg = NULL;
 		check_tockens(line, com);
 		com->comd->arg->arg = ft_strjoin_gnl(buf, com->comd->arg->arg);
 	}
+}
+
+int		check_open_quotes(char **line, size_t len)
+{
+	size_t	len_qu;
+	size_t	len_qu_2;
+
+	len_qu = ft_strlen_char(*line, '\'');
+	if (len_qu != ft_strlen(*line))
+		len_qu_2 = ft_strlen_char(*line + len_qu + 1, '\'');
+	else
+		len_qu_2 = 0;
+	if (len > len_qu && len < len_qu_2)
+		return (1);
+	len_qu = ft_strlen_char(*line, '"');
+	if (len_qu != ft_strlen(*line))
+		len_qu_2 = ft_strlen_char(*line + len_qu + 1, '"');
+	else
+		len_qu_2 = 0;
+	if (len > len_qu && len < len_qu_2)
+		return (1);
+	return (0);
+}
+
+void	pars_single_quotes(char **line, t_command *com)
+{
+	size_t	len;
+
+	while (**line == '\'')
+	{
+		len = ft_strlen_char(*line + 1, '\'');
+		if (len)
+			com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, \
+			ft_substr(*line, 1, len));
+		(*line) += len + 2;
+	}
+}
+
+void	double_quotes_utils(t_command *com, char **line, size_t len)
+{
+	com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, \
+		ft_substr(*line, 1, len));
+	if (ft_strchr(com->comd->arg->arg, '$'))
+		pars_dollar(com, ft_strlen(com->comd->arg->arg));
+	if (ft_strchr(com->comd->arg->arg, '\\'))
+		pars_escaping(com, len);
+	(*line) += len + 2;
 }

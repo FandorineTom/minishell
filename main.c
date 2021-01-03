@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/03 13:29:41 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/03 13:31:21 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 		com.com_ret = 0;
 		com.error = 0;
 		// copy_env(env, &com); // может это можно вынести из цикла (только тогда надо заранее инициализировать ком)
-		check_mistakes(line, &com);
+		check_mistakes(&line, &com);
 		while (line && *line && !com.error)
 		{
 			if (!com.error)
@@ -71,11 +71,14 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 			// check_parser(com); // это просто для проверки парсера
 			if (!com.error)
 				cmd_start(&com);
+			if (*line == ';' && *(line + 1) == '\0')
+				break ;
 			// возможно тут нужно поработать с пайпами, т.е если есть правый, то закрыть, открыть fd
 			// тут исполняется одна распарсенная команда до точки с запятой и идет дальше
 			// а тут возможно нужно переоткрыть пайпы
 			//тут нужно вернуть fdшники на свои места
 		}
+		init_com(&com);
 		// work_comman(&com);
 		// free_all(&com, 1);
 	}

@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/02 23:32:09 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/03 13:31:17 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,16 +105,30 @@ void				pars_pipes(char *line, t_command *com);
 void				pars_tockens(char **line, t_command *com);
 void				pars_single_quotes(char **line, t_command *com);
 void				pars_double_quotes(char **line, t_command *com);
+void				double_quotes_utils(t_command *com, char **line,\
+						size_t len);
 void				pars_esc_nq(char **line, t_command *com);
 void				check_result(t_command *com);
-void    			check_mistakes(char *line, t_command *com);
+void				check_mistakes(char **line_true, t_command *com);
 void				check_mistakes_quotes(char **line);
-void				check_mistakes_inside(char **line, size_t *i);
+void				check_mistakes_inside(char **line, size_t *i, \
+						char **line_true, t_command *com);
+void				check_line_mistakes(char **line, size_t *i, \
+						char **line_true, t_command *com);
+void				check_multyline(char **line, size_t *i, \
+					char **line_true, t_command *com);
+size_t				skip_sp(char *line);
+void				rewrite_line(char **line_true, char **line);
+void				please_enter(char **line_true, size_t *i, t_command *com);
 int					check_command(char **line, t_command *com);
 int					check_echo_flag(char **line, t_command *com);
-int 				check_which_command(char **line, t_command *com, char *command, int i);
-int 				check_env_var(char **line, t_command *com);
+int					check_which_command(char **line, t_command *com, \
+						char *command, int i);
+void				define_quotes(int *quotes, char *line, int i);
+int					check_env_var(char **line, t_command *com);
 void				change_env_var_meaning(t_command *com);
+void				no_such_env(t_command *com, size_t len);
+void				change_env(t_command *com);
 void				check_tockens(char **line, t_command *com);
 void				work_comman(t_command *com);
 void				init_com(t_command *com);
@@ -127,6 +141,7 @@ void				init_redirect(t_command *com);
 size_t				ft_strlen_space(char *str);
 size_t				ft_strlen_char(char *str, char c);
 size_t				find_len_to_ss(char *line);
+size_t				find_len_tockens(char **line);
 int					check_open_quotes(char **line, size_t len);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strchr(const char *str, int sym);
@@ -138,18 +153,19 @@ void				ft_redadd_back(t_redir **lst, t_redir *new);
 void				free_all(t_command *com, int i); // если приходит 1 то чистится все, кроме списка переменных окружения, если 0, то чистится все
 void				free_comd(t_comd *comd);
 void				free_flag(t_flag *flag);
-void 				free_arg(t_arg *arg);
+void				free_arg(t_arg *arg);
 void				free_pipe(t_pipe *pipes);
 void				free_env(t_env *env_def);
 int					check_flag_n(char *line, int quotes);
-void 				pars_dollar(t_command *com, size_t len_str);
+void				pars_dollar(t_command *com, size_t len_str);
+void				start_dollar(t_command *com, char **buf, char **buf_end);
 void				pars_escaping(t_command *com, size_t len_str);
 void				pars_redirect(char **line, t_command *com);
 void				pars_reverse_redirect(char **line, t_command *com);
 void				activate_pipe(char **line, t_command *com);
 char				*ft_itoa(int n);
 void				cmd_start(t_command *com);
-void	 			cmd_echo(t_command *com);
+void				cmd_echo(t_command *com);
 int					cmd_cd(t_command *com);
 int					cmd_pwd(void);
 int					cmd_env(t_command *com);

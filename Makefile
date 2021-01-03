@@ -6,7 +6,7 @@
 #    By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/13 20:15:44 by scopycat          #+#    #+#              #
-#    Updated: 2021/01/02 20:04:57 by snorthmo         ###   ########.fr        #
+#    Updated: 2021/01/03 13:31:19 by snorthmo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,16 @@ get_next_line_utils.c\
 inits.c\
 parser.c\
 parse_quotes.c\
+pars_command.c\
+pars_dollar.c\
+pars_env.c\
+pars_escaping.c\
+pars_lib_utils.c\
+pars_pipes.c\
+pars_redirect.c \
+pars_structs_utils.c\
+pars_tockens.c\
+sys_mistakes_utils.c\
 cmd_echo.c\
 cmd_start.c\
 cmd_cd.c\
