@@ -84,7 +84,6 @@ void	open_fork(t_command *com)
 	int			status;
 	pid_t		pid;
 	char		*path;
-	int			i;
 	char		**args;
 	char		**envp;
 
@@ -94,13 +93,12 @@ void	open_fork(t_command *com)
 		path = find_bin(com);
 		args = transfer_to_mass(com);
 		envp = envp_to_mass(com);
-		i = execve(path, args, envp);
-		printf("%i\n", i);
+		execve(path, args, envp); // надо тут освободить все, если результат этой функции = -1
 	}
 	else if (pid > 0)
-		wait(&status);
+		wait(&status); // а тут надо посмотреть через WEXITSTATUS и прочие что возвращается и выходить соответсвенно
 	if (pid < 0)
-		g_for_exit = error_message(strerror(errno), 1);
+		g_for_exit = error_message(strerror(errno), 1); // а отсюда по идее надо выходить совсем и завершать программу? 
 }
 
 void	cmd_start(t_command *com)
@@ -128,5 +126,5 @@ void	cmd_start(t_command *com)
 	else if (!com->comd->no_command && com->comd->arg)
 		open_fork(com);
 	else
-		return ;
+		return ; // здесь выходит если нет команды и нет вообще ничего, что мы делаем в этом случае и может ли такое быть
 }
