@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/05 00:47:40 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/06 13:28:27 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 {
 	char		*line;
 	t_command	com;
+	char		*tmp;
 
 	(void)argc;
 	(void)argv;
@@ -57,8 +58,9 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 	copy_env(env, &com);
 	while (1) // тут может быть на какой-то сигнал прекращение цикла записать
 	{
-		write(1, "my_minishell: ", 14); // тут надо что-то поизящнее зафигачить и чтобы оно висело и выводилось после (может, тупо, while (1))
+		write(1, "our_minishell_almost_work: ", 27); // тут надо что-то поизящнее зафигачить и чтобы оно висело и выводилось после (может, тупо, while (1))
 		get_next_line(0, &line);
+		tmp = line;
 		// init_com(&com);
 		com.com_ret = 0;
 		com.error = 0;
@@ -79,6 +81,8 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 			//тут нужно вернуть fdшники на свои места
 		}
 		init_com(&com);
+		free(tmp);
+		tmp = NULL;
 		// work_comman(&com);
 		// free_all(&com, 1);
 	}

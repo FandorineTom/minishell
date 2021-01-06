@@ -6,41 +6,22 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 11:27:49 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/03 12:53:48 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/06 13:25:30 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void 	pars_dollar(t_command *com, size_t len_str)
+void	pars_dollar(t_command *com, size_t len_str)
 {
 	char	*buf;
 	char	*buf_end;
-	size_t	len_slash;
 
 	buf = NULL;
 	buf_end = NULL;
 	while (com->comd->arg->arg && *com->comd->arg->arg)
 	{
-		len_slash = ft_strlen_char(com->comd->arg->arg, '\\');
-		if (len_slash < len_str && len_slash < ft_strlen_char(\
-			com->comd->arg->arg, '$') && len_str != 1)
-		{
-			buf = ft_strjoin_gnl(buf, ft_substr(com->comd->arg->arg, 0, \
-				len_slash));
-			com->comd->arg->arg += len_slash;
-		}
-		else if (len_str == 1)
-		{
-			buf = ft_substr(com->comd->arg->arg, 0, 1);
-			com->comd->arg->arg += 1;
-		}
-		else
-		{
-			buf = ft_strjoin_gnl(buf, ft_substr(com->comd->arg->arg, 0, \
-				ft_strlen_char(com->comd->arg->arg, '$')));
-			com->comd->arg->arg += ft_strlen_char(com->comd->arg->arg, '$');
-		}
+		pars_dollar_2(com, len_str, &buf);
 		if (*com->comd->arg->arg == '\\' && com->comd->arg->arg[1] == '$')
 		{
 			buf = ft_strjoin_gnl(buf, "$");
@@ -58,6 +39,31 @@ void 	pars_dollar(t_command *com, size_t len_str)
 		}
 	}
 	com->comd->arg->arg = buf;
+}
+
+void	pars_dollar_2(t_command *com, size_t len_str, char **buf)
+{
+	size_t	len_slash;
+
+	len_slash = ft_strlen_char(com->comd->arg->arg, '\\');
+	if (len_slash < len_str && len_slash < ft_strlen_char(\
+		com->comd->arg->arg, '$') && len_str != 1)
+	{
+		*buf = ft_strjoin_gnl(*buf, ft_substr(com->comd->arg->arg, 0, \
+			len_slash));
+		com->comd->arg->arg += len_slash;
+	}
+	else if (len_str == 1)
+	{
+		*buf = ft_substr(com->comd->arg->arg, 0, 1);
+		com->comd->arg->arg += 1;
+	}
+	else
+	{
+		*buf = ft_strjoin_gnl(*buf, ft_substr(com->comd->arg->arg, 0, \
+			ft_strlen_char(com->comd->arg->arg, '$')));
+		com->comd->arg->arg += ft_strlen_char(com->comd->arg->arg, '$');
+	}
 }
 
 void	start_dollar(t_command *com, char **buf, char **buf_end)

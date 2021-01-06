@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/03 21:44:34 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/06 13:20:45 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ void				free_pipe(t_pipe *pipes);
 void				free_env(t_env *env_def);
 int					check_flag_n(char *line, int quotes);
 void				pars_dollar(t_command *com, size_t len_str);
+void				pars_dollar_2(t_command *com, size_t len_str, char **buf);
 void				start_dollar(t_command *com, char **buf, char **buf_end);
 void				pars_escaping(t_command *com, size_t len_str);
 void				pars_redirect(char **line, t_command *com);
