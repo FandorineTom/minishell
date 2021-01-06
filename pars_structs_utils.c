@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 20:09:29 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/02 20:15:41 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/06 21:52:48 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_envadd_back(t_env **lst, t_env *new)
 	if (!new || !lst)
 		return ;
 	bonus = *lst;
-	if (bonus)
+	if (bonus && *lst != new)
 	{
 		while (bonus->next)
 			bonus = bonus->next;
@@ -62,7 +62,7 @@ void	ft_comdadd_back(t_comd **lst, t_comd *new)
 	if (!new || !lst)
 		return ;
 	bonus = *lst;
-	if (bonus)
+	if (bonus && *lst != new)
 	{
 		while (bonus->next)
 		{
@@ -86,7 +86,7 @@ void	ft_redadd_back(t_redir **lst, t_redir *new)
 	if (!new || !lst)
 		return ;
 	bonus = *lst;
-	if (bonus)
+	if (bonus && *lst != new)
 	{
 		while (bonus->next)
 		{
@@ -100,4 +100,25 @@ void	ft_redadd_back(t_redir **lst, t_redir *new)
 	}
 	else
 		*lst = new;
+}
+
+void	ft_argdel_list(t_arg **old)
+{
+	t_arg	*nxt;
+	t_arg	*prvs;
+
+	prvs = (*old)->previous;
+	nxt = (*old)->next;
+	if (prvs)
+		prvs->next = nxt;
+	if (nxt)
+		nxt->previous = prvs;
+	if ((*old)->arg)
+		free((*old)->arg);
+	(*old)->arg = NULL;
+	free(*old);
+	if (prvs)
+		*old = prvs;
+	else
+		*old = nxt;
 }
