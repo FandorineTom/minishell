@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 20:09:29 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/06 21:52:48 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/07 10:33:27 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ft_argadd_back(t_arg **lst, t_arg *new)
 	if (!new || !lst)
 		return ;
 	bonus = *lst;
-	if (bonus)
+	if (bonus && *lst != new)
 	{
 		while (bonus->next)
 		{

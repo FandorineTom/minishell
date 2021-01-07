@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/06 19:00:21 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:18:07 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,13 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 	{
 		write(1, "our_minishell_almost_work: ", 27); // тут надо что-то поизящнее зафигачить и чтобы оно висело и выводилось после (может, тупо, while (1))
 		get_next_line(0, &line);
-		tmp = line;
+		
 		// init_com(&com);
 		com.com_ret = 0;
 		com.error = 0;
 		// copy_env(env, &com); // может это можно вынести из цикла (только тогда надо заранее инициализировать ком)
 		check_mistakes(&line, &com);
+		tmp = line;
 		while (line && *line && !com.error)
 		{
 			if (!com.error)

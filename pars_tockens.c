@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 11:30:57 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/06 21:54:43 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:37:58 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,8 @@
 void	pars_tockens(char **line, t_command *com)
 {
 	t_arg			*new;
-	static size_t	i = 0;
 
-	if (!i++)
-		new = NULL;
-	else
-		new = com->comd->arg;
-	// if (com->comd->arg)
-	// 	new = com->comd->arg;
-	// else
-	// {
-	// 	new = NULL;
-	// 	com->comd->arg = NULL;
-	// }
-	
+	new = com->comd->arg;
 	while (**line == ' ')
 		(*line)++;
 	com->comd->no_command = check_command(line, com);
@@ -45,9 +33,8 @@ void	pars_tockens(char **line, t_command *com)
 	while (line && *line && **line && **line != ';' && **line != '|' &&
 			**line != '>' && **line != '<')
 	{
-		// while (com->comd->arg)
-		// 	com->comd->arg = com->comd->arg->next;
-		init_arg(com);
+		if (com->comd->arg && com->comd->arg->arg)
+			init_arg(com);
 		if (!check_env_var(line, com))
 			com->no_var = 0;
 		if (!com->no_var)
@@ -58,7 +45,6 @@ void	pars_tockens(char **line, t_command *com)
 			ft_argadd_back(&new, com->comd->arg);
 		while (**line == ' ')
 			(*line)++;
-		// init_arg(com);
 	}
 	com->comd->arg = new;
 	if (**line == '|')
@@ -96,10 +82,6 @@ void	check_tockens(char **line, t_command *com)
 		change_env_var_meaning(com);
 		com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, com->env_var);
 	}
-	// if (**line == '>')
-	// 	pars_redirect(line, com);
-	// if (**line == '<')
-	// 	pars_reverse_redirect(line, com);
 	if (**line && **line != ' ' && **line != ';' && **line != '|' && **line != '>' && **line != '<')
 		check_tockens(line, com);
 }

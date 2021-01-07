@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 20:27:57 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/06 13:24:48 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:37:02 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	change_env_var_meaning(t_command *com)
 	len = ft_strlen_space(com->env_var);
 	while (com->env_def)
 	{
-		if (!(ft_strncmp(com->env_def->env, com->env_var, len)) && len)
+		if (!(ft_strncmp(com->env_def->env, com->env_var, len + 1)) && len)
 		{
 			free(com->env_var);
 			com->env_var = NULL;
