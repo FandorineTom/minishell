@@ -8,4 +8,5 @@ libft/*.o
 test_dir/
 minishell_guide_jeldora
 workspace.code-workspace
-
+a.out
+test.c
