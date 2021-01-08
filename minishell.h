@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/06 21:08:24 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/08 22:33:53 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ char				*ft_itoa(int n);
 void				cmd_start(t_command *com);
 void				cmd_echo(t_command *com);
 int					cmd_cd(t_command *com);
-int					cmd_pwd(void);
+int					cmd_pwd(t_command *com);
 int					cmd_env(t_command *com);
 int					error_message(char *message, int exit_code);
 char				**error_message2(char *message);

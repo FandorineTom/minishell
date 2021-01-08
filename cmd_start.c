@@ -113,7 +113,7 @@ void	cmd_start(t_command *com)
 		else if (cmd_num == 1)
 			cmd_cd(com);
 		else if (cmd_num == 2)
-			cmd_pwd();
+			cmd_pwd(com);
 		else if (cmd_num == 3)
 			cmd_export(com);
 		else if (cmd_num == 4)
