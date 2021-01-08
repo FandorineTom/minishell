@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/03 12:05:23 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/07 11:22:27 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,11 @@ void	check_result(t_command *com)
 	t_arg	*new;
 
 	new = com->comd->arg;
-	if (!com->comd->no_command && new)
+	if (new && !new->arg) // костыль - надо найти, откуда лишний лист возникает
+		new = new->next;
+	if (com->comd->cmnd)
+		com->comd->no_command = 1;
+	if (!com->comd->no_command && new && new->arg)
 	{
 		if (!(ft_strncmp(new->arg, "echo\0", 5)) || !(ft_strncmp(new->arg, \
 		"cd\0", 3)) || !(ft_strncmp(new->arg, "pwd\0", 4)) || !(ft_strncmp(\

@@ -11,12 +11,12 @@ void	 cmd_echo(t_command *com)
 		flag = 1;
 	while (tmp && tmp->next)
 	{
-		ft_putstr(tmp->arg);
-		ft_putchar(' ');
+		ft_putstr_fd(tmp->arg, com->comd->redir->fd2);
+		ft_putchar_fd(' ', com->comd->redir->fd2);
 		tmp = tmp->next;
 	}
 	if (tmp && tmp->arg)
-		ft_putstr(tmp->arg);
+		ft_putstr_fd(tmp->arg, com->comd->redir->fd2);
 	if (!flag)
-		ft_putchar('\n');
+		ft_putchar_fd('\n', com->comd->redir->fd2);
 }

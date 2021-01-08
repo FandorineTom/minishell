@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/05 17:07:06 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/08 21:35:47 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 {
 	char		*line;
 	t_command	com;
+	char		*tmp;
 
 	(void)argc;
 	(void)argv;
@@ -57,20 +58,26 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 	copy_env(env, &com);
 	while (1) // тут может быть на какой-то сигнал прекращение цикла записать
 	{
-		write(1, "my_minishell: ", 14); // тут надо что-то поизящнее зафигачить и чтобы оно висело и выводилось после (может, тупо, while (1))
+		write(1, "our_minishell_almost_work: ", 27); // тут надо что-то поизящнее зафигачить и чтобы оно висело и выводилось после (может, тупо, while (1))
 		get_next_line(0, &line);
+		
 		// init_com(&com);
 		com.com_ret = 0;
 		com.error = 0;
 		// copy_env(env, &com); // может это можно вынести из цикла (только тогда надо заранее инициализировать ком)
 		check_mistakes(&line, &com);
+		tmp = line;
 		while (line && *line && !com.error)
 		{
 			if (!com.error)
 				parser(&line, &com); // тут надо прописать так, чтобы обрабатывать только до ; и потом снова вызывать парсер, а строку обрезать
+			if (com.comd->redir && com.comd->redir->r_redir)
+				file_open(&com);
 			// check_parser(com); // это просто для проверки парсера
 			if (!com.error)
 				cmd_start(&com);
+			if (com.comd->redir && com.comd->redir->r_redir)
+				file_close(&com);
 			if (*line == ';' && *(line + 1) == '\0')
 				break ;
 			// возможно тут нужно поработать с пайпами, т.е если есть правый, то закрыть, открыть fd
@@ -79,6 +86,8 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 			//тут нужно вернуть fdшники на свои места
 		}
 		init_com(&com);
+		free(tmp);
+		tmp = NULL;
 		// work_comman(&com);
 		// free_all(&com, 1);
 	}

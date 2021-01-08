@@ -6,65 +6,80 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 11:29:32 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/03 11:31:09 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:38:27 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	pars_redirect(char **line, t_command *com) // дописать
+void	pars_redirect(char **line, t_command *com)
 {
 	t_arg	*new;
 	t_redir	*tmp;
 	t_arg	*buf;
+	int		i;
 
-	tmp = NULL;
+	tmp = com->comd->redir;
 	new = com->comd->arg;
-	while (new->next) // докручиваем до последнего элемента, чтобы знать, какой следующий и какой файл нам нужен
+	i = 1;
+	while (new && new->next && (i++)) // докручиваем до последнего элемента, чтобы знать, какой следующий и какой файл нам нужен
 		new = new->next;
+	if (i == 1 && new && !new->arg)
+		i = 0;
 	while (line && *line && **line && **line != ';' && **line != '|')
 	{
-		init_redirect(com);
+		if (com->comd->redir && com->comd->redir->r_redir)
+			init_redirect(com);
 		if (**line == '>' && *(*line + 1) == '>')
 		{
-			com->comd->redir->type_red = 3;
-			com->comd->redir->r_redir = 1;
-		// и нужно в следующий лист comd запихнуть, что там есть левый редирект
+			fill_redirect(com, 3);
 			(*line) += 2;
 		}
 		else if (**line == '>' && *(*line + 1) != '>' && *(*line + 1) != '<')
 		{
-			com->comd->redir->type_red = 1;
-			com->comd->redir->r_redir = 1;
-			// и нужно в следующий лист comd запихнуть, что там есть левый редирект
+			fill_redirect(com, 1);
 			(*line)++;
 		}
 		else if (**line == '<' && *(*line + 1) == '>')
 		{
-			com->comd->redir->type_red = 4;
-			com->comd->redir->r_redir = 1;
-			// и нужно в следующий лист comd запихнуть, что там есть левый редирект
+			fill_redirect(com, 4);
 			(*line) += 2;
-		}
-		check_tockens(line, com);
-		buf = com->comd->arg;
-		while (buf && buf->previous != new)
-			buf = buf->next;
-		if (buf->previous == new)
-		{
-			com->comd->redir->file_name = ft_strdup(com->comd->arg->arg);
-			
 		}
 		if (com->comd->redir->type_red)
 			ft_redadd_back(&tmp, com->comd->redir);
+		pars_tockens(line, com);
+		buf = com->comd->arg;
+		while (buf && buf->previous != new && i)
+			buf = buf->next;
+		if ((buf->previous == new || !i) && buf && buf->arg)
+		{
+			com->comd->redir->file_name = ft_strdup(buf->arg);
+			ft_argdel_list(&buf);
+		}
+		if (!i)
+			com->comd->arg = buf;
 	}
 	com->comd->redir = tmp;
 }
 
 void	pars_reverse_redirect(char **line, t_command *com)
 {
-	com->comd->redir->type_red = 2;
-	com->comd->redir->r_redir = 1;
-	// и нужно в следующий лист comd запихнуть, что там есть левый редирект
+	fill_redirect(com, 2);
 	(*line)++;
+}
+
+void	fill_redirect(t_command *com, size_t type_r)
+{
+	t_redir	*tmp;
+
+	com->comd->redir->type_red = type_r;
+	com->comd->redir->r_redir = 1;
+	tmp = com->comd->redir;
+	com->comd->redir = com->comd->redir->next;
+	if (!com->comd->redir)
+		init_redirect(com);
+	com->comd->redir->l_redir = 1; // это не работает
+	com->comd->redir->previous = tmp;
+	com->comd->redir = com->comd->redir->previous;
+	tmp = NULL;
 }

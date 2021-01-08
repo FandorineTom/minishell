@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+         #
+#    By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/13 20:15:44 by scopycat          #+#    #+#              #
-#    Updated: 2021/01/03 15:01:06 by snorthmo         ###   ########.fr        #
+#    Updated: 2021/01/06 17:35:55 by scopycat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ pars_pipes.c\
 pars_redirect.c \
 pars_structs_utils.c\
 pars_tockens.c\
+redirect.c\
 sys_mistakes_utils.c\
 cmd_echo.c\
 cmd_start.c\

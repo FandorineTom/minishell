@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:45:37 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/02 21:44:42 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/07 16:45:50 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	init_comd(t_command *com)
 	com->comd = (t_comd*)malloc(sizeof(t_comd));
 	com->comd->cmnd = NULL;
 	init_flag(com);
-	// init_redirect(com);
+	init_redirect(com);
+	init_arg(com);
 	com->comd->no_command = 1;
 	com->comd->env_var = NULL;
 	com->comd->pipe_l = 0;

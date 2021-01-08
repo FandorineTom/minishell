@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/03 21:44:34 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/06 21:08:24 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/errno.h>
 # include <string.h>
 # include <dirent.h>
+# include <fcntl.h>
 # include "./headers/get_next_line.h"
 # include "libft/libft.h"
 
@@ -152,6 +153,7 @@ void				ft_envadd_back(t_env **lst, t_env *new);
 void				ft_argadd_back(t_arg **lst, t_arg *new);
 void				ft_comdadd_back(t_comd **lst, t_comd *new);
 void				ft_redadd_back(t_redir **lst, t_redir *new);
+void				ft_argdel_list(t_arg **old);
 void				free_all(t_command *com, int i); // если приходит 1 то чистится все, кроме списка переменных окружения, если 0, то чистится все
 void				free_comd(t_comd *comd);
 void				free_flag(t_flag *flag);
@@ -160,10 +162,14 @@ void				free_pipe(t_pipe *pipes);
 void				free_env(t_env *env_def);
 int					check_flag_n(char *line, int quotes);
 void				pars_dollar(t_command *com, size_t len_str);
+void				pars_dollar_2(t_command *com, size_t len_str, char **buf);
 void				start_dollar(t_command *com, char **buf, char **buf_end);
 void				pars_escaping(t_command *com, size_t len_str);
 void				pars_redirect(char **line, t_command *com);
 void				pars_reverse_redirect(char **line, t_command *com);
+void				fill_redirect(t_command *com, size_t type_r);
+void				file_open(t_command *com);
+void				file_close(t_command *com);
 void				activate_pipe(char **line, t_command *com);
 char				*ft_itoa(int n);
 void				cmd_start(t_command *com);
