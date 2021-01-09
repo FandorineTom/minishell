@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 20:27:57 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/07 16:37:02 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/09 16:38:03 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int		check_env_var(char **line, t_command *com)
 		i = ft_strlen_char(*line, '"');
 	if (i > ft_strlen_char(*line, ';'))
 		i = ft_strlen_char(*line, ';');
+	if (i > ft_strlen_char(*line + 1, '$') + 1)
+		i = ft_strlen_char(*line + 1, '$') + 1;
 	if (**line == '$')
 	{
 		if (!(com->env_var = ft_substr(*line, 1, i - 1)))
