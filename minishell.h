@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/08 22:33:53 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/09 18:04:13 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@
 # include "libft/libft.h"
 
 int					g_for_exit;
+int					g_tmp_fd[2];
+int					g_fdin;
+int					g_fdout;
 
 typedef struct		s_pipe
 {
@@ -61,7 +64,7 @@ typedef	struct		s_redir
 	char			*file_name;
 	size_t			type_red;
 	size_t			r_redir;
-	size_t			l_redir;
+	size_t			l_redir; // не нужен, удалить
 }					t_redir;
 
 typedef struct		s_comd
@@ -189,5 +192,9 @@ int					cmd_exit(void);
 void				signal_handler(t_command *com);
 void				*ctrl_d(t_command *com);
 char				*find_bin(t_command *com);
+void				save_stdin_out(void);
+void				redirect_input(t_command *com);
+void				redirect_output(t_command *com);
+void				return_stdin_out(void);
 
 #endif

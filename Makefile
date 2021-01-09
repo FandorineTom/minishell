@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+         #
+#    By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/13 20:15:44 by scopycat          #+#    #+#              #
-#    Updated: 2021/01/06 17:35:55 by scopycat         ###   ########.fr        #
+#    Updated: 2021/01/09 17:37:56 by snorthmo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ cmd_unset.c\
 cmd_exit.c\
 signal.c\
 minishell.c\
+fd_utils.c\
 error.c
 
 OBJ = $(FUNC:.c=.o)

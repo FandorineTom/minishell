@@ -107,6 +107,8 @@ void	cmd_start(t_command *com)
 
 	if (com->comd->no_command)
 	{
+		redirect_input(com);
+		redirect_output(com);
 		cmd_num = check_if_my(com->comd->cmnd);
 		if (cmd_num == 0)
 			cmd_echo(com);
