@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 11:30:57 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/07 16:37:58 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/09 16:44:31 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	pars_tockens(char **line, t_command *com)
 {
 	t_arg			*new;
+	char			*tmp;
 
 	new = com->comd->arg;
 	while (**line == ' ')
@@ -41,6 +42,13 @@ void	pars_tockens(char **line, t_command *com)
 			check_tockens(line, com);
 		else
 			change_env(com);
+		if (**line == '$' && com->comd->arg && com->comd->arg->arg)
+		{
+			tmp = com->comd->arg->arg;	
+			check_env_var(line, com);
+			change_env(com);
+			com->comd->arg->arg = ft_strjoin_gnl(tmp, com->comd->arg->arg);
+		}
 		if (com->comd->arg->arg)
 			ft_argadd_back(&new, com->comd->arg);
 		while (**line == ' ')
@@ -49,10 +57,10 @@ void	pars_tockens(char **line, t_command *com)
 	com->comd->arg = new;
 	if (**line == '|')
 		activate_pipe(line, com);
-	if (**line == '>')
+	if (**line == '>' || **line == '<')
 		pars_redirect(line, com);
-	if (**line == '<')
-		pars_reverse_redirect(line, com);
+	// if (**line == '<')
+	// 	pars_reverse_redirect(line, com);
 }
 
 void	check_tockens(char **line, t_command *com)

@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 11:29:32 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/07 16:38:27 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/09 16:44:48 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,11 @@ void	pars_redirect(char **line, t_command *com)
 			fill_redirect(com, 4);
 			(*line) += 2;
 		}
+		else if (**line == '<' && *(*line + 1) != '>')
+		{
+			fill_redirect(com, 2);
+			(*line) += 1;
+		}
 		if (com->comd->redir->type_red)
 			ft_redadd_back(&tmp, com->comd->redir);
 		pars_tockens(line, com);
@@ -62,11 +67,11 @@ void	pars_redirect(char **line, t_command *com)
 	com->comd->redir = tmp;
 }
 
-void	pars_reverse_redirect(char **line, t_command *com)
-{
-	fill_redirect(com, 2);
-	(*line)++;
-}
+// void	pars_reverse_redirect(char **line, t_command *com)
+// {
+// 	fill_redirect(com, 2);
+// 	(*line)++;
+// }
 
 void	fill_redirect(t_command *com, size_t type_r)
 {
