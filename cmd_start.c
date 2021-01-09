@@ -105,17 +105,17 @@ void	cmd_start(t_command *com)
 {
 	int		cmd_num;
 
+	redirect_input(com);
+	redirect_output(com);
 	if (com->comd->no_command)
 	{
-		redirect_input(com);
-		redirect_output(com);
 		cmd_num = check_if_my(com->comd->cmnd);
 		if (cmd_num == 0)
 			cmd_echo(com);
 		else if (cmd_num == 1)
 			cmd_cd(com);
 		else if (cmd_num == 2)
-			cmd_pwd(com);
+			cmd_pwd();
 		else if (cmd_num == 3)
 			cmd_export(com);
 		else if (cmd_num == 4)

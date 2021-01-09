@@ -6,12 +6,11 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 21:52:59 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/08 22:29:31 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/09 18:08:18 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include
 
 int		ft_putchar(char c)
 {

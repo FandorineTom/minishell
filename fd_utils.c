@@ -16,16 +16,16 @@ void	return_stdin_out(void)
 
 void	redirect_input(t_command *com)
 {
-	if (com->comd->pipe_l)
+	if (com->comd->redir->type_red == 2)
 	{
-		dup2(com->comd->redir->fd1, 0);
-		close(com->comd->redir->fd1);
+		dup2(com->comd->redir->fd2, 0);
+		close(com->comd->redir->fd2);
 	}
 }
 
 void	redirect_output(t_command *com)
 {
-	if (com->comd->pipe_r)
+	if (com->comd->redir->type_red == 1 || com->comd->redir->type_red == 3)
 	{
 		dup2(com->comd->redir->fd2, 1);
 		close(com->comd->redir->fd2);
