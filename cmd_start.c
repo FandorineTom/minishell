@@ -104,29 +104,53 @@ void	open_fork(t_command *com)
 void	cmd_start(t_command *com)
 {
 	int		cmd_num;
+	int		fdpipe[2];
+	t_comd	*tmp;
 
 	redirect_input(com);
-	redirect_output(com);
-	if (com->comd->no_command)
+	while (com->comd)
 	{
-		cmd_num = check_if_my(com->comd->cmnd);
-		if (cmd_num == 0)
-			cmd_echo(com);
-		else if (cmd_num == 1)
-			cmd_cd(com);
-		else if (cmd_num == 2)
-			cmd_pwd();
-		else if (cmd_num == 3)
-			cmd_export(com);
-		else if (cmd_num == 4)
-			cmd_unset(com);
-		else if (cmd_num == 5)
-			cmd_env(com);
-		else if (cmd_num == 6)
-			cmd_exit();
+		dup2(g_fdin, 0);
+		close(g_fdin);
+		if (!com->comd->next)
+		{
+			tmp = com->comd;
+			redirect_output(com);
+		}
+		else
+		{
+			pipe(fdpipe);
+			g_fdin = fdpipe[0];
+			g_fdout = fdpipe[1];
+		}
+		dup2(g_fdout, 1);
+		close(g_fdout);
+		if (com->comd->no_command)
+		{
+			cmd_num = check_if_my(com->comd->cmnd);
+			if (cmd_num == 0)
+				cmd_echo(com);
+			else if (cmd_num == 1)
+				cmd_cd(com);
+			else if (cmd_num == 2)
+				cmd_pwd();
+			else if (cmd_num == 3)
+				cmd_export(com);
+			else if (cmd_num == 4)
+				cmd_unset(com);
+			else if (cmd_num == 5)
+				cmd_env(com);
+			else if (cmd_num == 6)
+				cmd_exit();
+		}
+		else if (!com->comd->no_command && com->comd->arg)
+			open_fork(com);
+		else
+			return ;// здесь выходит если нет команды и нет вообще ничего, что мы делаем в этом случае и может ли такое быть
+		com->comd = com->comd->next;
 	}
-	else if (!com->comd->no_command && com->comd->arg)
-		open_fork(com);
-	else
-		return ; // здесь выходит если нет команды и нет вообще ничего, что мы делаем в этом случае и может ли такое быть
+	com->comd = tmp;
 }
+	
+
+ 

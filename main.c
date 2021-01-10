@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/09 15:22:10 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/10 03:36:08 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 			// check_parser(com); // это просто для проверки парсера
 			if (!com.error)
 				cmd_start(&com);
-			if (com.comd->redir && com.comd->redir->r_redir)
-				file_close(&com);
+			// if (com.comd->redir && com.comd->redir->r_redir)
+			// 	file_close(&com);                           я закрываю их сразу же после использования, предлагаю здесь убрать
 			if (*line == ';' && *(line + 1) == '\0')
 				break ;
 			return_stdin_out();

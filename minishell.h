@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/09 18:10:55 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/10 00:27:43 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef	struct		s_redir
 {
 	struct s_redir	*next;
 	struct s_redir	*previous;
-	int				fd1;
+	int				fd1; // вот это вроде тоже не используется, да? 
 	int				fd2;
 	char			*file_name;
 	size_t			type_red;

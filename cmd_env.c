@@ -10,10 +10,10 @@ int		cmd_env(t_command *com)
 		tmp = com->env_def;
 	while (tmp)
 	{
-		ft_putstr_fd(tmp->env, 1);
-		ft_putchar_fd('=', 1);
-		ft_putstr_fd(tmp->meaning, 1);
-		ft_putchar_fd('\n', 1);
+		ft_putstr(tmp->env);
+		ft_putchar('=');
+		ft_putstr(tmp->meaning);
+		ft_putchar('\n');
 		tmp = tmp->next;
 	}
 	return (0);
