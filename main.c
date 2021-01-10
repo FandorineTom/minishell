@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/10 17:29:13 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/10 21:34:45 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,9 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 		{
 			if (!com.error)
 				parser(&line, &com); // тут надо прописать так, чтобы обрабатывать только до ; и потом снова вызывать парсер, а строку обрезать
-			if (com.comd->redir && com.comd->redir->r_redir)
-				file_open(&com);
+			// if (com.comd->redir && com.comd->redir->r_redir)
+			// 	file_open(&com);
+			start_redirect(&com);
 			// check_parser(com); // это просто для проверки парсера
 			if (!com.error)
 				cmd_start(&com);
