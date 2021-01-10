@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/10 00:27:43 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/10 16:43:21 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ void				free_all(t_command *com, int i); // если приходит 1 то ч�
 void				free_comd(t_comd *comd);
 void				free_flag(t_flag *flag);
 void				free_arg(t_arg *arg);
+void				free_redirect(t_redir *redir);
 void				free_pipe(t_pipe *pipes);
 void				free_env(t_env *env_def);
 int					check_flag_n(char *line, int quotes);
