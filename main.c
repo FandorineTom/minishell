@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/10 03:36:08 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/10 16:58:06 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 	init_env_d(&com);
 	// init_env_def(com.env_def);
 	copy_env(env, &com);
+	save_stdin_out();
 	while (1) // тут может быть на какой-то сигнал прекращение цикла записать
 	{
 		write(1, "our_minishell_almost_work: ", 27); // тут надо что-то поизящнее зафигачить и чтобы оно висело и выводилось после (может, тупо, while (1))
@@ -67,7 +68,6 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 		// copy_env(env, &com); // может это можно вынести из цикла (только тогда надо заранее инициализировать ком)
 		check_mistakes(&line, &com);
 		tmp = line;
-		save_stdin_out();
 		while (line && *line && !com.error)
 		{
 			if (!com.error)
@@ -87,11 +87,12 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 			// а тут возможно нужно переоткрыть пайпы
 			//тут нужно вернуть fdшники на свои места
 		}
+		free_all(&com, 1);
+		activate_pipe(NULL, NULL);
 		init_com(&com);
 		free(tmp);
 		tmp = NULL;
 		// work_comman(&com);
-		// free_all(&com, 1);
 	}
 	free_all(&com, 0);
 	return (0);

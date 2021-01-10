@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int		check_if_my(char *cmd)
+void	check_if_my(char *cmd, t_command *com)
 {
 	const char	*my_str[7] = {"echo",
 							"cd",
@@ -10,15 +10,29 @@ int		check_if_my(char *cmd)
 							"env",
 							"exit"};
 	int			i;
+	int			cmd_num;
 
 	i = 0;
 	while(i < 7)
 	{
 		if (!ft_strcmp(cmd, my_str[i]))
-			return (i);
+			cmd_num = i;
 		i++;
 	}
-	return (-1);
+	if (cmd_num == 0)
+		cmd_echo(com);
+	else if (cmd_num == 1)
+		cmd_cd(com);
+	else if (cmd_num == 2)
+		cmd_pwd();
+	else if (cmd_num == 3)
+		cmd_export(com);
+	else if (cmd_num == 4)
+		cmd_unset(com);
+	else if (cmd_num == 5)
+		cmd_env(com);
+	else if (cmd_num == 6)
+		cmd_exit();
 }
 
 char	**envp_to_mass(t_command *com)
@@ -103,20 +117,17 @@ void	open_fork(t_command *com)
 
 void	cmd_start(t_command *com)
 {
-	int		cmd_num;
 	int		fdpipe[2];
 	t_comd	*tmp;
 
+	tmp = com->comd;
 	redirect_input(com);
 	while (com->comd)
 	{
 		dup2(g_fdin, 0);
 		close(g_fdin);
 		if (!com->comd->next)
-		{
-			tmp = com->comd;
 			redirect_output(com);
-		}
 		else
 		{
 			pipe(fdpipe);
@@ -126,23 +137,7 @@ void	cmd_start(t_command *com)
 		dup2(g_fdout, 1);
 		close(g_fdout);
 		if (com->comd->no_command)
-		{
-			cmd_num = check_if_my(com->comd->cmnd);
-			if (cmd_num == 0)
-				cmd_echo(com);
-			else if (cmd_num == 1)
-				cmd_cd(com);
-			else if (cmd_num == 2)
-				cmd_pwd();
-			else if (cmd_num == 3)
-				cmd_export(com);
-			else if (cmd_num == 4)
-				cmd_unset(com);
-			else if (cmd_num == 5)
-				cmd_env(com);
-			else if (cmd_num == 6)
-				cmd_exit();
-		}
+			check_if_my(com->comd->cmnd, com);
 		else if (!com->comd->no_command && com->comd->arg)
 			open_fork(com);
 		else
