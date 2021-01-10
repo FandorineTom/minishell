@@ -124,6 +124,8 @@ void	cmd_start(t_command *com)
 	redirect_input(com);
 	while (com->comd)
 	{
+		// if (com->comd->redir && com->comd->redir->r_redir)
+		// 	file_open(com);
 		dup2(g_fdin, 0);
 		close(g_fdin);
 		if (!com->comd->next)

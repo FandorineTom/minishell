@@ -18,7 +18,7 @@ void	redirect_input(t_command *com)
 {
 	if (com->comd->redir->type_red == 2)
 	{
-		dup2(com->comd->redir->fd2, g_fdin);
+		g_fdin = dup(com->comd->redir->fd2);
 		close(com->comd->redir->fd2);
 	}
 	else
@@ -29,7 +29,7 @@ void	redirect_output(t_command *com)
 {
 	if (com->comd->redir->type_red == 1 || com->comd->redir->type_red == 3)
 	{
-		dup2(com->comd->redir->fd2, g_fdout);
+		g_fdout = dup(com->comd->redir->fd2);
 		close(com->comd->redir->fd2);
 	}
 	else
