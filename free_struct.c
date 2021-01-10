@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 18:40:09 by scopycat          #+#    #+#             */
-/*   Updated: 2020/12/08 18:53:26 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/10 16:41:26 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	free_comd(t_comd *comd)
 			free(buf->cmnd);
 		buf->cmnd = NULL;
 		free_flag(buf->flag);
+		free_redirect(buf->redir);
 		free_arg(buf->arg);
 		if (buf->env_var)
 			free(buf->env_var);
@@ -43,7 +44,23 @@ void	free_comd(t_comd *comd)
 		free(buf);
 		buf = NULL;
 	}
+}
 	
+void	free_redirect(t_redir *red)
+{
+	t_redir	*buf;
+
+	while (red)
+	{
+		buf = red;
+		red = red->next;
+		if (buf->file_name)
+			free(buf->file_name);
+		buf->file_name = NULL;
+		free(buf);
+		buf = NULL;
+	}
+}
 	// buf = comd;
 	// while (buf)
 	// {
@@ -62,7 +79,7 @@ void	free_comd(t_comd *comd)
 	// 		buf = NULL;
 	// }
 	// comd = NULL;
-}
+
 
 void	free_flag(t_flag *flag)
 {
