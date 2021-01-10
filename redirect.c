@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/06 17:35:45 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/09 17:10:52 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/10 18:28:11 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,18 @@ void	file_close(t_command *com)
 		com->comd->redir = com->comd->redir->next;
 	}
 	com->comd->redir = tmp;
+}
+
+void	start_redirect(t_command *com)
+{
+	while (com->comd && com->comd->next)
+	{
+		if (com->comd->redir && com->comd->redir->r_redir)
+			file_open(com);
+		com->comd = com->comd->next;	
+	}
+	if (com->comd->redir && com->comd->redir->r_redir)
+		file_open(com);
+	while (com->comd->previous)
+		com->comd = com->comd->previous;
 }
