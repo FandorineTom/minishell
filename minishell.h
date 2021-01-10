@@ -6,7 +6,7 @@
 /*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/10 16:43:21 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/10 18:27:53 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ void				start_dollar(t_command *com, char **buf, char **buf_end);
 void				pars_escaping(t_command *com, size_t len_str);
 void				pars_redirect(char **line, t_command *com);
 void				pars_reverse_redirect(char **line, t_command *com);
+void				start_redirect(t_command *com);
 void				fill_redirect(t_command *com, size_t type_r);
 void				file_open(t_command *com);
 void				file_close(t_command *com);
