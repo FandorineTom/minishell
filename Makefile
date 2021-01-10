@@ -6,7 +6,7 @@
 #    By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/13 20:15:44 by scopycat          #+#    #+#              #
-#    Updated: 2021/01/09 17:37:56 by snorthmo         ###   ########.fr        #
+#    Updated: 2021/01/10 23:55:01 by snorthmo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ cmd_cd.c\
 cmd_pwd.c\
 cmd_env.c\
 cmd_export.c\
+cmd_export_noargs.c\
 cmd_unset.c\
 cmd_exit.c\
 signal.c\

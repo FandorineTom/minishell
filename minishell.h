@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/10 18:27:53 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/10 23:53:08 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,5 +198,7 @@ void				save_stdin_out(void);
 void				redirect_input(t_command *com);
 void				redirect_output(t_command *com);
 void				return_stdin_out(void);
+int					minishell_loop(t_command * com);
+int					cmd_export_noargs(t_command *com);
 
 #endif

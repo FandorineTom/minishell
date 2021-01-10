@@ -66,6 +66,8 @@ int		cmd_export(t_command *com)
 
 	tmp = com->env_def;
 	flag = 0;
+	if (!com->comd->arg->arg)
+		return (cmd_export_noargs(com));
 	if (!(var_tochange = detect_env_var(com)))
 		return (0);								// обработать эту ошибку тут!! Это если в аргументах нет =
 	mean = find_meaning(com);

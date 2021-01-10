@@ -1,24 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_start.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/10 21:52:08 by snorthmo          #+#    #+#             */
+/*   Updated: 2021/01/10 21:53:26 by snorthmo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	check_if_my(char *cmd, t_command *com)
 {
-	const char	*my_str[7] = {"echo",
-							"cd",
-							"pwd",
-							"export",
-							"unset",
-							"env",
+	const char	*my_str[7] = {"echo", "cd", "pwd", "export", "unset", "env",
 							"exit"};
 	int			i;
 	int			cmd_num;
 
-	i = 0;
-	while(i < 7)
-	{
+	i = -1;
+	while(++i < 7)
 		if (!ft_strcmp(cmd, my_str[i]))
 			cmd_num = i;
-		i++;
-	}
 	if (cmd_num == 0)
 		cmd_echo(com);
 	else if (cmd_num == 1)
@@ -124,8 +128,6 @@ void	cmd_start(t_command *com)
 	redirect_input(com);
 	while (com->comd)
 	{
-		// if (com->comd->redir && com->comd->redir->r_redir)
-		// 	file_open(com);
 		dup2(g_fdin, 0);
 		close(g_fdin);
 		if (!com->comd->next)
