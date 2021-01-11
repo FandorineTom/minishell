@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:45:37 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/09 16:15:34 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/11 19:14:59 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	init_comd(t_command *com)
 	com->comd->env_var = NULL;
 	com->comd->pipe_l = 0;
 	com->comd->pipe_r = 0;
+	com->comd->error_redir = 0;
 	com->comd->next = NULL;
 	com->comd->previous = NULL;
 }

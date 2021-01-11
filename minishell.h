@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/10 23:53:08 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/11 19:14:35 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct		s_comd
 	size_t			pipe_l;
 	t_redir			*redir;
 	size_t			no_command; // изначально 1, если команды не найдены, то обнуляется
+	size_t			error_redir;
 }					t_comd;
 
 typedef struct		s_env
@@ -175,6 +176,7 @@ void				start_redirect(t_command *com);
 void				fill_redirect(t_command *com, size_t type_r);
 void				file_open(t_command *com);
 void				file_close(t_command *com);
+void				error_redirect(t_command *com);
 void				activate_pipe(char **line, t_command *com);
 char				*ft_itoa(int n);
 void				cmd_start(t_command *com);
