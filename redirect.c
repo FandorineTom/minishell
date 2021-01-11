@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/06 17:35:45 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/11 19:24:41 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/11 21:56:51 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,12 @@ void	file_open(t_command *com)
 
 void	error_redirect(t_command *com)
 {
-	com->comd->redir->fd2 = 0;
+	com->comd->redir->fd2 = 1;
 	ft_putstr(com->comd->redir->file_name);
 	write(2, ": No such file or directory\n", 28);
 	com->comd->error_redir = 1;
+	com->comd->redir->type_red = 0;
+	// com->comd->redir->r_redir = 0;
 }
 
 void	file_close(t_command *com)
