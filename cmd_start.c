@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 21:52:08 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/12 13:17:01 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/12 14:40:40 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,11 +110,20 @@ void	open_fork(t_command *com)
 	{
 		path = find_bin(com);
 		args = transfer_to_mass(com);
-		envp = envp_to_mass(com);
+		envp = envp_to_mass(com); // надо все потом освободить...
 		execve(path, args, envp); // надо тут освободить все, если результат этой функции = -1
 	}
 	else if (pid > 0)
+	{
 		wait(&status); // а тут надо посмотреть через WEXITSTATUS и прочие что возвращается и выходить соответсвенно
+		g_for_exit = WEXITSTATUS(status);
+		if ((WIFSIGNALED(status)))
+		{
+			if (status == 131)
+				ft_putendl_fd("^\\Quit (core dumped)", 2);
+			g_for_exit = (status != 131) ? 130 : status;
+		}
+	}
 	if (pid < 0)
 		g_for_exit = error_message(strerror(errno), 1); // а отсюда по идее надо выходить совсем и завершать программу? 
 }
@@ -122,15 +131,28 @@ void	open_fork(t_command *com)
 void	cmd_start(t_command *com)
 {
 	int		fdpipe[2];
+	int		flag;
 	t_comd	*tmp;
+	t_redir	*tmp_r;
 
 	if (com->comd->error_redir)
 		return ; // это если нет такого файла или еще какая-то ошибка с файлом
+	tmp_r = com->comd->redir;
+	flag = 0;
+	while (com->comd->redir)
+	{
+		if (com->comd->redir->type_red == 2)
+		{
+			redirect_input(com);
+			flag = 1;
+			break ;
+		}
+		com->comd->redir = com->comd->redir->previous;
+	}
+	com->comd->redir = tmp_r;
+	if (!flag)
+		redirect_input(com);
 	tmp = com->comd;
-	while (tmp->redir->previous)
-		tmp->redir = tmp->redir->previous;
-	if (redirect_input(com))
-		tmp->redir = tmp->redir->next;
 	while (com->comd)
 	{
 		dup2(g_fdin, 0);
