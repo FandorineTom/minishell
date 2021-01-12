@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 21:52:08 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/10 21:53:26 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/12 13:03:51 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,8 @@ void	cmd_start(t_command *com)
 	int		fdpipe[2];
 	t_comd	*tmp;
 
+	if (com->comd->error_redir)
+		return ; // это если нет такого файла или еще какая-то ошибка с файлом
 	tmp = com->comd;
 	redirect_input(com);
 	while (com->comd)
