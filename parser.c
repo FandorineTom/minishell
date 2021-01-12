@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/09 17:11:07 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/12 20:07:14 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	check_result(t_command *com)
 		{
 			com->comd->cmnd = ft_strdup(new->arg);
 			com->comd->arg = com->comd->arg->next;
-			com->comd->arg->previous = NULL;
+			if (com->comd->arg)
+				com->comd->arg->previous = NULL;
 			free(new);
 			new = com->comd->arg;
 			com->comd->no_command = 1;

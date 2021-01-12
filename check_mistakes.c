@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_mistakes.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 18:49:22 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/02 20:05:50 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/12 20:36:45 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ void	check_line_mistakes(char **line, size_t *i, char **line_true, \
 	size_t	len_qu;
 
 	len = find_len_to_ss(*line);
-	len_qu = ft_strlen_char(*line, '\'');
-	if (len_qu > ft_strlen_char(*line, '"'))
-		len_qu = ft_strlen_char(*line, '"');
+	len_qu = ft_strlen_char_slash(*line, '\'');
+	if (len_qu > ft_strlen_char_slash(*line, '"'))
+		len_qu = ft_strlen_char_slash(*line, '"');
 	if (len <= len_qu)
 		*line += len;
 	else
@@ -62,15 +62,27 @@ void	check_line_mistakes(char **line, size_t *i, char **line_true, \
 		check_mistakes_inside(line, i, line_true, com);
 }
 
+size_t	ft_strlen_char_slash(char *str, char c)
+{
+	size_t	i;
+
+	i = 0;
+	if (!str)
+		return (i);
+	while (str[i] && (str[i] != c || (str[i] == c && str[i - 1] == '\\')))
+		i++;
+	return (i);
+}
+
 void	check_mistakes_quotes(char **line)
 {
 	size_t	len_q_one;
 	size_t	i;
 
 	i = 0;
-	len_q_one = ft_strlen_char(*line, '\'');
-	if (len_q_one > ft_strlen_char(*line, '"') && (i = 1))
-		len_q_one = ft_strlen_char(*line, '"');
+	len_q_one = ft_strlen_char_slash(*line, '\'');
+	if (len_q_one > ft_strlen_char_slash(*line, '"') && (i = 1))
+		len_q_one = ft_strlen_char_slash(*line, '"');
 	if (i && ft_strchr(*line + len_q_one + 1, '"'))
 		*line = ft_strchr(*line + len_q_one + 1, '"') + 1;
 	else if (!i && ft_strchr(*line + len_q_one + 1, '\''))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/12 16:02:30 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/12 20:30:00 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ void				init_env_def(t_env *env);
 void				init_redirect(t_command *com);
 size_t				ft_strlen_space(char *str);
 size_t				ft_strlen_char(char *str, char c);
+size_t				ft_strlen_char_slash(char *str, char c);
 size_t				find_len_to_ss(char *line);
 size_t				find_len_tockens(char **line);
 int					check_open_quotes(char **line, size_t len);
