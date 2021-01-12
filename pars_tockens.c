@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars_tockens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 11:30:57 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/09 16:44:31 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/13 00:50:00 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,8 @@ size_t		find_len_tockens(char **line)
 	if (len > ft_strlen_char(*line, '\\') && !check_open_quotes(line, \
 		ft_strlen_char(*line, '\\')))
 		len = ft_strlen_char(*line, '\\');
+	if (len > ft_strlen_char(*line, '|') && !check_open_quotes(line, \
+		ft_strlen_char(*line, '|')))
+		len = ft_strlen_char(*line, '|');
 	return (len);
 }
