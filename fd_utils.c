@@ -14,15 +14,17 @@ void	return_stdin_out(void)
 	close(g_tmp_fd[1]);
 }
 
-void	redirect_input(t_command *com)
+int		redirect_input(t_command *com)
 {
 	if (com->comd->redir->type_red == 2)
 	{
 		g_fdin = dup(com->comd->redir->fd2);
 		close(com->comd->redir->fd2);
+		return (1);
 	}
 	else
 		g_fdin = dup(g_tmp_fd[0]);
+	return (0);
 }
 
 void	redirect_output(t_command *com)
