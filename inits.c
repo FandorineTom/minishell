@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:45:37 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/11 19:14:59 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/12 16:59:16 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	init_com(t_command *com)
 	int i;
 	
 	i = 0;
+	g_for_exit = 0;
 	init_comd(com);
 	// init_arg(com);
 	// init_env_d(com);

@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 21:52:08 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/12 14:40:40 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/12 17:26:20 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,27 +105,38 @@ void	open_fork(t_command *com)
 	char		**args;
 	char		**envp;
 
+	path = find_bin(com);
+	args = transfer_to_mass(com);
+	envp = envp_to_mass(com);
 	pid = fork();
 	if (pid == 0)
 	{
-		path = find_bin(com);
-		args = transfer_to_mass(com);
-		envp = envp_to_mass(com); // надо все потом освободить...
-		execve(path, args, envp); // надо тут освободить все, если результат этой функции = -1
+		if (execve(path, args, envp) == -1)
+		{
+			(void)(ft_putstr_fd(com->comd->arg->arg, 2) + ft_putstr_fd(": ", 2));
+			free(path);
+			free_mas(args);
+			free_mas(envp);
+			free_all(com, 1);
+			exit(error_message("command not found\n", 127));
+		}
 	}
 	else if (pid > 0)
 	{
-		wait(&status); // а тут надо посмотреть через WEXITSTATUS и прочие что возвращается и выходить соответсвенно
+		wait(&status);
 		g_for_exit = WEXITSTATUS(status);
 		if ((WIFSIGNALED(status)))
 		{
 			if (status == 131)
-				ft_putendl_fd("^\\Quit (core dumped)", 2);
+				ft_putstr_fd("^\\Quit: 3\n", 2);
 			g_for_exit = (status != 131) ? 130 : status;
 		}
 	}
 	if (pid < 0)
-		g_for_exit = error_message(strerror(errno), 1); // а отсюда по идее надо выходить совсем и завершать программу? 
+		g_for_exit = error_message(strerror(errno), 1);
+	free(path);
+	free_mas(args);
+	free_mas(envp);
 }
 
 void	cmd_start(t_command *com)
@@ -171,8 +182,6 @@ void	cmd_start(t_command *com)
 			check_if_my(com->comd->cmnd, com);
 		else if (!com->comd->no_command && com->comd->arg)
 			open_fork(com);
-		else
-			return ;// здесь выходит если нет команды и нет вообще ничего, что мы делаем в этом случае и может ли такое быть
 		com->comd = com->comd->next;
 	}
 	com->comd = tmp;

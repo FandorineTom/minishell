@@ -2,7 +2,7 @@
 
 int     error_message(char *message, int exit_code)
 {
-    ft_putstr(message);
+    ft_putstr_fd(message, 2);
     errno = 0;
     return(exit_code);
 }
