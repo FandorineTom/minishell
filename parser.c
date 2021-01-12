@@ -6,7 +6,7 @@
 /*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/12 20:07:14 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/13 00:34:53 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,14 @@ void	check_result(t_command *com)
 			}
 		}
 	}
+	while (com->comd->arg && com->comd->arg->next)
+	{
+		if (com->comd->arg && (com->comd->arg->next || com->comd->arg->previous) && com->comd->arg->arg && !com->comd->arg->arg[0])
+			ft_argdel_list(&com->comd->arg);
+		com->comd->arg = com->comd->arg->next;
+	}
+	while (com->comd->arg && com->comd->arg->previous)
+		com->comd->arg = com->comd->arg->previous;
 }
 
 void	pars_pipes(char *line, t_command *com) // пока не понимаю, зачем мне эта функция
