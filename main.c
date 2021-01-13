@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/13 17:18:16 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/13 17:23:17 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ int	minishell_loop(t_command * com)
 	{
 		write(1, "our_minishell_almost_work: ", 27); // тут надо что-то поизящнее зафигачить и чтобы оно висело и выводилось после (может, тупо, while (1))
 		// signal(sig, function); это функция, которая обрабатывает сигналы
-		get_next_line(0, &line);
+		if (!(get_next_line(0, &line)))
+			exit(0);
 		com->com_ret = 0;
 		com->error = 0;
 		check_mistakes(&line, com);
