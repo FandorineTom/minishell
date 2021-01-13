@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/13 16:41:33 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/13 17:51:17 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <string.h>
 # include <dirent.h>
 # include <fcntl.h>
+# include <signal.h>
 # include "./headers/get_next_line.h"
 # include "libft/libft.h"
 
@@ -203,5 +204,6 @@ void				redirect_output(t_command *com);
 void				return_stdin_out(void);
 int					minishell_loop(t_command * com);
 int					cmd_export_noargs(t_command *com);
+void				function(int signal);
 
 #endif

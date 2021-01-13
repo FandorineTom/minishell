@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/13 13:28:48 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/13 17:51:09 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,14 @@ int	minishell_loop(t_command * com)
 {
 	char	*tmp;
 	char	*line;
+	// int		sig = 9;
 
 	while (1) // тут может быть на какой-то сигнал прекращение цикла записать
 	{
-		write(1, "our_minishell_almost_work: ", 27); // вот это название надо будет поменять еще и в ошибке экспорта !!!!
-		get_next_line(0, &line);
+		write(1, "our_minishell_almost_work: ", 27); // тут надо что-то поизящнее зафигачить и чтобы оно висело и выводилось после (может, тупо, while (1))
+		// signal(sig, function); это функция, которая обрабатывает сигналы
+		if (!(get_next_line(0, &line)))
+			exit(0);
 		// com->com_ret = 0;
 		com->error = 0;
 		check_mistakes(&line, com);
@@ -135,6 +138,15 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 	return (0);
 }
 
+// void	function(int signal) // нужно написать функцию function_signal2, которая в зависимости от кода будет печатать промпт
+// {
+// 	printf("%d\n", signal);
+// 	if (signal == 2)
+// 		signal(SIGINT, function_signal2);
+// 	if (signal == 3)
+// 		signal(SIGOUT, function_signal2);
+
+// }
 // изменение в дочернем процессе не меняет ничего в родительском
 // в парсере нужно сделать, если есть переменная окружения, то 
 // сравнить с имеющимися - и если она равна команде, то заполнить команду
