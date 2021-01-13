@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:45:37 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/12 16:59:16 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/13 13:28:34 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	init_com(t_command *com)
 	int i;
 	
 	i = 0;
-	g_for_exit = 0;
 	init_comd(com);
 	// init_arg(com);
 	// init_env_d(com);

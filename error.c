@@ -23,11 +23,11 @@ int    error_export(t_command *com)
 	{
 		if (!ft_isalpha(tmp->arg[0]))
 		{
-			ft_putstr("my_minishell: export: `");
-			ft_putstr(tmp->arg);
-			ft_putstr("': not a valid identifier\n");
+			ft_putstr_fd("our_minishell_almost_work: export: `", 2);
+			ft_putstr_fd(tmp->arg, 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
 		}
 		tmp = tmp->next;
 	}
-    return (0);
+    return (1);
 }
