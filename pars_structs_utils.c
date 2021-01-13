@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 20:09:29 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/07 10:33:27 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/13 17:58:36 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ void	ft_comdadd_back(t_comd **lst, t_comd *new)
 		while (bonus->next)
 		{
 			buf = bonus;
-			bonus->previous = bonus;
 			bonus = bonus->next;
+			bonus->previous = buf;
 		}
 		bonus->next = new;
 		new->previous = bonus;
@@ -91,8 +91,9 @@ void	ft_redadd_back(t_redir **lst, t_redir *new)
 		while (bonus->next)
 		{
 			buf = bonus;
-			bonus->previous = bonus;
 			bonus = bonus->next;
+			bonus->previous = buf;
+			
 		}
 		bonus->next = new;
 		new->previous = bonus;
