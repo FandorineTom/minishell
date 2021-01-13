@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_mistakes.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 18:49:22 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/12 20:36:45 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/13 18:14:46 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ void	check_mistakes_inside(char **line, size_t *i, char **line_true, \
 	size_t	len;
 	size_t	len_q;
 
+	while (**line == ' ')
+		(*line)++;
 	len = find_len_to_ss(*line);
 	len_q = ft_strlen_char(*line, '\'');
 	if (len_q > ft_strlen_char(*line, '"'))
