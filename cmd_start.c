@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 21:52:08 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/12 17:26:20 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/13 16:43:38 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,17 @@ void	check_if_my(char *cmd, t_command *com)
 		if (!ft_strcmp(cmd, my_str[i]))
 			cmd_num = i;
 	if (cmd_num == 0)
-		cmd_echo(com);
+		com->com_ret = cmd_echo(com);
 	else if (cmd_num == 1)
 		cmd_cd(com);
 	else if (cmd_num == 2)
-		cmd_pwd();
+		com->com_ret = cmd_pwd(com);
 	else if (cmd_num == 3)
-		cmd_export(com);
+		com->com_ret = cmd_export(com);
 	else if (cmd_num == 4)
-		cmd_unset(com);
+		com->com_ret = cmd_unset(com);
 	else if (cmd_num == 5)
-		cmd_env(com);
+		com->com_ret = cmd_env(com);
 	else if (cmd_num == 6)
 		cmd_exit();
 }
@@ -124,16 +124,16 @@ void	open_fork(t_command *com)
 	else if (pid > 0)
 	{
 		wait(&status);
-		g_for_exit = WEXITSTATUS(status);
+		com->com_ret = WEXITSTATUS(status);
 		if ((WIFSIGNALED(status)))
 		{
 			if (status == 131)
 				ft_putstr_fd("^\\Quit: 3\n", 2);
-			g_for_exit = (status != 131) ? 130 : status;
+			com->com_ret = (status != 131) ? 130 : status;
 		}
 	}
 	if (pid < 0)
-		g_for_exit = error_message(strerror(errno), 1);
+		com->com_ret = error_message(strerror(errno), 1);
 	free(path);
 	free_mas(args);
 	free_mas(envp);

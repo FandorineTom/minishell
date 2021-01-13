@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/13 17:05:10 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/13 17:51:17 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 # include "./headers/get_next_line.h"
 # include "libft/libft.h"
 
-int					g_for_exit;
 int					g_tmp_fd[2];
 int					g_fdin;
 int					g_fdout;
@@ -182,9 +181,9 @@ void				error_redirect(t_command *com);
 void				activate_pipe(char **line, t_command *com);
 char				*ft_itoa(int n);
 void				cmd_start(t_command *com);
-void				cmd_echo(t_command *com);
+int					cmd_echo(t_command *com);
 int					cmd_cd(t_command *com);
-int					cmd_pwd(void);
+int					cmd_pwd(t_command *com);
 int					cmd_env(t_command *com);
 int					error_message(char *message, int exit_code);
 char				**error_message2(char *message);

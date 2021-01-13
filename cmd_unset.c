@@ -6,9 +6,12 @@ int		cmd_unset(t_command *com)
 	t_env	*to_del;
 
 	tmp = com->env_def;
+	if (!com->comd->arg || !com->comd->arg->arg)
+		return (0);
 	while (com->env_def)
 	{
-		to_del = com->env_def->next;
+		if (!(to_del = com->env_def->next))
+			break ;
 		if (!ft_strcmp(com->comd->arg->arg, to_del->env))
 		{
 			free(to_del->meaning);

@@ -2,12 +2,16 @@
 
 int		cmd_env(t_command *com)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
-	if (!com->env_def->env)
-		tmp = com->env_def->next;
-	else
-		tmp = com->env_def;
+	tmp = com->env_def;
+	if (com->comd->arg && com->comd->arg->arg)
+	{
+		ft_putstr_fd("env: ", 2);
+		ft_putstr_fd(com->comd->arg->arg, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		return (127);
+	}
 	while (tmp)
 	{
 		ft_putstr(tmp->env);

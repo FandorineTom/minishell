@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/13 17:23:17 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/13 17:51:09 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	minishell_loop(t_command * com)
 		// signal(sig, function); это функция, которая обрабатывает сигналы
 		if (!(get_next_line(0, &line)))
 			exit(0);
-		com->com_ret = 0;
+		// com->com_ret = 0;
 		com->error = 0;
 		check_mistakes(&line, com);
 		tmp = line;
@@ -93,6 +93,7 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 	init_env_d(&com);
 	// init_env_def(com.env_def);
 	copy_env(env, &com);
+	com.com_ret = 0;
 	minishell_loop(&com);
 	// while (1) // тут может быть на какой-то сигнал прекращение цикла записать
 	// {

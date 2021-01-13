@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	 cmd_echo(t_command *com)
+int	 cmd_echo(t_command *com)
 {
 	int		flag;
 	t_arg	*tmp;
@@ -19,4 +19,5 @@ void	 cmd_echo(t_command *com)
 		ft_putstr(tmp->arg);
 	if (!flag)
 		ft_putchar('\n');
+	return (0);
 }
