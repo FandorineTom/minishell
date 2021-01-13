@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/12 20:30:00 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/13 17:05:10 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <string.h>
 # include <dirent.h>
 # include <fcntl.h>
+# include <signal.h>
 # include "./headers/get_next_line.h"
 # include "libft/libft.h"
 
@@ -204,5 +205,6 @@ void				redirect_output(t_command *com);
 void				return_stdin_out(void);
 int					minishell_loop(t_command * com);
 int					cmd_export_noargs(t_command *com);
+void				function(int signal);
 
 #endif
