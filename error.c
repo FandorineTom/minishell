@@ -14,20 +14,20 @@ char	**error_message2(char *message)
     return(NULL);
 }
 
-int    error_export(t_command *com)
+int    error_export(char *arg)
 {
-    t_arg	*tmp;
+//     t_arg	*tmp;
 
-    tmp = com->comd->arg;
-	while (tmp)
-	{
-		if (!ft_isalpha(tmp->arg[0]))
+//     tmp = com->comd->arg;
+// 	while (tmp)
+// 	{
+		if (!ft_isalpha(arg[0]))
 		{
 			ft_putstr_fd("our_minishell_almost_work: export: `", 2);
-			ft_putstr_fd(tmp->arg, 2);
+			ft_putstr_fd(arg, 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 		}
-		tmp = tmp->next;
-	}
+	// 	tmp = tmp->next;
+	// }
     return (1);
 }
