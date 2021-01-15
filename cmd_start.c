@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 21:52:08 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/13 16:43:38 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/15 15:06:25 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char	**transfer_to_mass(t_command *com)
 	return (args);
 }
 
-void	open_fork(t_command *com)
+int		open_fork(t_command *com)
 {
 	int			status;
 	pid_t		pid;
@@ -105,9 +105,12 @@ void	open_fork(t_command *com)
 	char		**args;
 	char		**envp;
 
-	path = find_bin(com);
-	args = transfer_to_mass(com);
-	envp = envp_to_mass(com);
+	if (!(path = find_bin(com)))
+		return (error_path(com));
+	if (!(args = transfer_to_mass(com)))
+		return (error_message("malloc error", 2));
+	if (!(envp = envp_to_mass(com)))
+		return (error_message("malloc error", 2));
 	pid = fork();
 	if (pid == 0)
 	{
@@ -129,14 +132,15 @@ void	open_fork(t_command *com)
 		{
 			if (status == 131)
 				ft_putstr_fd("^\\Quit: 3\n", 2);
-			com->com_ret = (status != 131) ? 130 : status;
+			return ((status != 131) ? 130 : status);
 		}
 	}
 	if (pid < 0)
-		com->com_ret = error_message(strerror(errno), 1);
+		return (error_message(strerror(errno), 1));
 	free(path);
 	free_mas(args);
 	free_mas(envp);
+	return (com->com_ret);
 }
 
 void	cmd_start(t_command *com)
@@ -181,7 +185,7 @@ void	cmd_start(t_command *com)
 		if (com->comd->no_command)
 			check_if_my(com->comd->cmnd, com);
 		else if (!com->comd->no_command && com->comd->arg)
-			open_fork(com);
+			com->com_ret = open_fork(com);
 		com->comd = com->comd->next;
 	}
 	com->comd = tmp;

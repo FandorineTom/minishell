@@ -48,6 +48,7 @@ char	*find_bin(t_command *com)
 	t_env	*tmp;
 
 	tmp = com->env_def;
+	path = NULL;
 	while (tmp)
 	{
 		if (!ft_strcmp("PATH", tmp->env))
@@ -64,6 +65,7 @@ char	*find_bin(t_command *com)
 			return(to_ret + free_mas(path) + free_str(&help));
 		}
 	}
-	free_mas(path);
+	if (path)
+		free_mas(path);
 	return (NULL); //надо подумать, что возвращать, если ничего не нашел
 }

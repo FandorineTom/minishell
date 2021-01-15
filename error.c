@@ -14,7 +14,15 @@ char	**error_message2(char *message)
     return(NULL);
 }
 
-int    error_export(char *arg)
+int		error_path(t_command *com)
+{
+	ft_putstr_fd("our_minishell_almost_work: ", 2);
+	ft_putstr_fd(com->comd->arg->arg, 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
+	return (127);
+}
+
+int		error_export(char *arg)
 {
 //     t_arg	*tmp;
 
