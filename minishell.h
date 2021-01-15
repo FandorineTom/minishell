@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/14 15:13:28 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/15 14:12:06 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,5 +205,6 @@ void				return_stdin_out(void);
 int					minishell_loop(t_command * com);
 int					cmd_export_noargs(t_command *com);
 void				function(int signal);
+char				**envp_to_mass(t_command *com);
 
 #endif
