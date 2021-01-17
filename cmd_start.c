@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 21:52:08 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/15 15:06:25 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/18 01:20:23 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ int		open_fork(t_command *com)
 	pid = fork();
 	if (pid == 0)
 	{
+		g_b_flag = 1;
 		if (execve(path, args, envp) == -1)
 		{
 			(void)(ft_putstr_fd(com->comd->arg->arg, 2) + ft_putstr_fd(": ", 2));
@@ -140,6 +141,7 @@ int		open_fork(t_command *com)
 	free(path);
 	free_mas(args);
 	free_mas(envp);
+	g_b_flag = 0;
 	return (com->com_ret);
 }
 

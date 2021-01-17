@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/15 15:02:05 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/18 01:19:50 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 int					g_tmp_fd[2];
 int					g_fdin;
 int					g_fdout;
+int					g_c_flag;
+int					g_b_flag;
 
 typedef struct		s_pipe
 {

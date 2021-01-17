@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/13 17:51:09 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/18 01:20:08 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,17 @@ int	minishell_loop(t_command * com)
 {
 	char	*tmp;
 	char	*line;
-	// int		sig = 9;
 
+	if (g_c_flag)
+		free_all(com, 1);
 	while (1) // тут может быть на какой-то сигнал прекращение цикла записать
 	{
 		write(1, "our_minishell_almost_work: ", 27); // тут надо что-то поизящнее зафигачить и чтобы оно висело и выводилось после (может, тупо, while (1))
-		// signal(sig, function); это функция, которая обрабатывает сигналы
 		if (!(get_next_line(0, &line)))
-			exit(0);
-		// com->com_ret = 0;
+			ctrl_d(com);
 		com->error = 0;
 		check_mistakes(&line, com);
 		tmp = line;
-		// signal_handler(com);
 		save_stdin_out();
 		while (line && *line && !com->error)
 		{
@@ -94,6 +92,9 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 	// init_env_def(com.env_def);
 	copy_env(env, &com);
 	com.com_ret = 0;
+	g_c_flag = 0;
+	g_b_flag = 0;
+	signal_handler(&com);
 	minishell_loop(&com);
 	// while (1) // тут может быть на какой-то сигнал прекращение цикла записать
 	// {
