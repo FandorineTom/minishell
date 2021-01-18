@@ -6,11 +6,11 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 13:04:29 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/15 01:43:14 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/18 13:16:20 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 char	*detect_env_var(t_command *com, t_arg *arg)
 {

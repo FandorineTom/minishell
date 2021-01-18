@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/18 01:19:50 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/18 14:12:44 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ t_env				*new_node(char *var, char *mean);
 char				*find_meaning(t_command *com, t_arg *arg);
 int					error_export(char * arg);
 int					cmd_unset(t_command *com);
-int					cmd_exit(void);
+void				cmd_exit(t_command *com);
 void				signal_handler(t_command *com);
 void				*ctrl_d(t_command *com);
 char				*find_bin(t_command *com);

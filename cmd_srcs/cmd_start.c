@@ -6,11 +6,11 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 21:52:08 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/18 01:20:23 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/18 14:44:26 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	check_if_my(char *cmd, t_command *com)
 {
@@ -26,7 +26,7 @@ void	check_if_my(char *cmd, t_command *com)
 	if (cmd_num == 0)
 		com->com_ret = cmd_echo(com);
 	else if (cmd_num == 1)
-		cmd_cd(com);
+		com->com_ret = cmd_cd(com);
 	else if (cmd_num == 2)
 		com->com_ret = cmd_pwd(com);
 	else if (cmd_num == 3)
@@ -36,7 +36,7 @@ void	check_if_my(char *cmd, t_command *com)
 	else if (cmd_num == 5)
 		com->com_ret = cmd_env(com);
 	else if (cmd_num == 6)
-		cmd_exit();
+		cmd_exit(com);
 }
 
 char	**envp_to_mass(t_command *com)
@@ -122,7 +122,7 @@ int		open_fork(t_command *com)
 			free_mas(args);
 			free_mas(envp);
 			free_all(com, 1);
-			exit(error_message("command not found\n", 127));
+			exit(error_message("command not found", 127));
 		}
 	}
 	else if (pid > 0)
