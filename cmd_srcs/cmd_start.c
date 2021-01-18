@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 21:52:08 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/18 14:44:26 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/18 15:30:42 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,3 @@ void	cmd_start(t_command *com)
 	}
 	com->comd = tmp;
 }
-	
-
- 

@@ -6,13 +6,13 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:09:47 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/18 14:09:48 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/18 15:38:58 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	 cmd_echo(t_command *com)
+int		cmd_echo(t_command *com)
 {
 	int		flag;
 	t_arg	*tmp;
