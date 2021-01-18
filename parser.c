@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/13 00:34:53 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/18 17:51:05 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,14 @@ void	parser(char **line, t_command *com)
 	while (line && *line && **line && **line != ';')
 	{
 		pars_tockens(line, com);
+		while (com->comd && com->comd->next)
+		{
+			check_result(com);
+			com->comd = com->comd->next;
+		}
 		check_result(com);
+		while (com->comd->previous)
+			com->comd = com->comd->previous;
 	}
 	write(1, "end of parser\n", 14); // чисто для теста, потом нужно убрать
 }
