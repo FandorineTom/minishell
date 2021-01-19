@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:30 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/18 15:41:09 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/19 14:10:31 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	**error_message2(char *message)
 
 int		error_path(t_command *com)
 {
-	ft_putstr_fd("our_minishell_almost_work: ", 2);
+	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(com->comd->arg->arg, 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
 	return (127);
@@ -39,7 +39,7 @@ int		error_export(char *arg)
 {
 	if (!ft_isalpha(arg[0]))
 	{
-		ft_putstr_fd("our_minishell_almost_work: export: `", 2);
+		ft_putstr_fd("minishell: export: `", 2);
 		ft_putstr_fd(arg, 2);
 		ft_putstr_fd("': not a valid identifier\n", 2);
 	}

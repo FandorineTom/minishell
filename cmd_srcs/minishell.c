@@ -6,17 +6,19 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:41 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/18 14:10:41 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/19 17:39:57 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		free_mas(char **mass)
+int			free_mas(char **mass)
 {
 	int		i;
 
 	i = 0;
+	if (!mass)
+		return (0);
 	while (mass && mass[i])
 		free(mass[i++]);
 	free(mass);
@@ -24,7 +26,7 @@ int		free_mas(char **mass)
 	return (0);
 }
 
-int		free_str(char **str)
+int			free_str(char **str)
 {
 	if (*str)
 		free(*str);
@@ -51,11 +53,10 @@ static int	find_file(char *path, char *cmd)
 	return (0);
 }
 
-char	*find_bin(t_command *com)
+char		*find_bin(t_command *com)
 {
 	char	**path;
 	char	*to_ret;
-	char	*help;
 	int		i;
 	t_env	*tmp;
 
@@ -68,16 +69,15 @@ char	*find_bin(t_command *com)
 		tmp = tmp->next;
 	}
 	i = -1;
-	while(path && path[++i])
+	while (path && path[++i])
 	{
 		if (find_file(path[i], com->comd->arg->arg))
 		{
-			help = ft_strjoin("/", com->comd->arg->arg);
-			to_ret = ft_strjoin(path[i], help);
-			return(to_ret + free_mas(path) + free_str(&help));
+			to_ret = ft_strjoin("/", com->comd->arg->arg);
+			to_ret = ft_strjoin(path[i], to_ret);
+			return (to_ret + free_mas(path));
 		}
 	}
-	if (path)
-		free_mas(path);
-	return (NULL); //надо подумать, что возвращать, если ничего не нашел
+	free_mas(path);
+	return (NULL);
 }

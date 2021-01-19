@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:13 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/18 14:10:14 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/19 17:24:27 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,13 @@ t_env	*sort_list(t_env *lst)
 {
 	t_env	*new_lst;
 	t_env	*node;
-	t_env	*current;
-	t_env	*tmp;
+	t_env	*cur;
 
 	new_lst = NULL;
-	tmp = lst;
-	while (tmp)
+	while (lst)
 	{
-		node = tmp;
-		tmp = tmp->next;
+		node = lst;
+		lst = lst->next;
 		if (new_lst == NULL || ft_strcmp(node->env, new_lst->env) < 0)
 		{
 			node->next = new_lst;
@@ -32,11 +30,11 @@ t_env	*sort_list(t_env *lst)
 		}
 		else
 		{
-			current = new_lst;
-			while (current->next && ft_strcmp(node->env, current->next->env) >= 0)
-				current = current->next;
-            node->next = current->next;
-            current->next = node;
+			cur = new_lst;
+			while (cur->next && ft_strcmp(node->env, cur->next->env) >= 0)
+				cur = cur->next;
+			node->next = cur->next;
+			cur->next = node;
 		}
 	}
 	return (new_lst);
@@ -49,6 +47,11 @@ t_env	*copy_env_lst(t_env *env)
 	t_env	*buf;
 
 	tmp = env;
+	buf = (t_env*)malloc(sizeof(t_env));
+	buf->env = ft_strdup(tmp->env);
+	buf->meaning = ft_strdup(tmp->meaning);
+	buf->next = NULL;
+	tmp = tmp->next;
 	while (tmp)
 	{
 		new = (t_env*)malloc(sizeof(t_env));

@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 21:52:08 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/19 13:42:01 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/19 15:54:35 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	check_if_my(char *cmd, t_command *com)
 	int			cmd_num;
 
 	i = -1;
-	while(++i < 7)
+	while (++i < 7)
 		if (!ft_strcmp(cmd, my_str[i]))
 			cmd_num = i;
 	if (cmd_num == 0)
@@ -59,9 +59,9 @@ char	**envp_to_mass(t_command *com)
 	while (tmp)
 	{
 		if (!(envp[len] = ft_strjoin(tmp->env, "=")))
-			return(error_message2(strerror(errno)));
+			return (error_message2(strerror(errno)));
 		if (!(envp[len] = ft_strjoin(envp[len], tmp->meaning)))
-			return(error_message2(strerror(errno)));
+			return (error_message2(strerror(errno)));
 		len++;
 		tmp = tmp->next;
 	}
@@ -90,7 +90,7 @@ char	**transfer_to_mass(t_command *com)
 	while (tmp_a)
 	{
 		if (!(args[i++] = ft_strdup(tmp_a->arg)))
-			return(error_message2(strerror(errno)));
+			return (error_message2(strerror(errno)));
 		tmp_a = tmp_a->next;
 	}
 	args[i] = NULL;
@@ -172,7 +172,7 @@ void	cmd_start(t_command *com)
 	tmp = com->comd;
 	while (com->comd)
 	{
-		dup2(g_fdin, 0); // тут он перенаправляет вывод на пайп, а не в файл, а баш в файл. Странная команда echo 123 > test | echo 345 >> test не работает
+		dup2(g_fdin, 0);
 		close(g_fdin);
 		if (com->comd->redir->type_red == 1 || com->comd->redir->type_red == 3 || !com->comd->next)
 			redirect_output(com);

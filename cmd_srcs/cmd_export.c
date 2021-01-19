@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 13:04:29 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/18 13:16:20 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/19 17:26:28 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*detect_env_var(t_command *com, t_arg *arg)
 
 	i = 0;
 	var = NULL;
-	while(arg->arg[i] && arg->arg[i] != '=')
+	while (arg->arg[i] && arg->arg[i] != '=')
 		i++;
 	if (arg->arg[i] || (ft_isalpha(arg->arg[0]) && !arg->arg[i] \
 	&& arg->arg[i - 1] == '='))
@@ -43,7 +43,7 @@ char	*find_meaning(t_command *com, t_arg *arg)
 
 	i = 0;
 	mean = NULL;
-	while(arg->arg[i] && arg->arg[i] != '=')
+	while (arg->arg[i] && arg->arg[i] != '=')
 		i++;
 	if (arg->arg[i] == '=')
 		i++;
@@ -74,13 +74,40 @@ t_env	*new_node(char *var, char *mean)
 	return (elem);
 }
 
+int		find_export(t_command *com, t_arg *tmp_a, int flag, t_env *tmp)
+{
+	char	*var_tochange;
+	char	*mean;
+
+	if ((var_tochange = detect_env_var(com, tmp_a)))
+	{
+		mean = find_meaning(com, tmp_a);
+		while (com->env_def && !flag)
+		{
+			if (!ft_strcmp(var_tochange, com->env_def->env))
+			{
+				free(com->env_def->meaning);
+				com->env_def->meaning = ft_strdup(mean);
+				flag = 1;
+			}
+			com->env_def = com->env_def->next;
+		}
+		com->env_def = tmp;
+		if (!flag)
+			ft_envadd_back(&com->env_def, new_node(var_tochange, mean));
+		free(var_tochange);
+		free(mean);
+		var_tochange = NULL;
+		mean = NULL;
+	}
+	return (0);
+}
+
 int		cmd_export(t_command *com)
 {
 	t_env	*tmp;
-	char	*var_tochange;
-	char	*mean;
-	int		flag;
 	t_arg	*tmp_a;
+	int		flag;
 
 	tmp = com->env_def;
 	tmp_a = com->comd->arg;
@@ -91,27 +118,8 @@ int		cmd_export(t_command *com)
 		flag = 0;
 		if (!ft_isalpha(tmp_a->arg[0]))
 			com->com_ret = error_export(tmp_a->arg);
-		else if ((var_tochange = detect_env_var(com, tmp_a)))
-		{
-			mean = find_meaning(com, tmp_a);
-			while (com->env_def && !flag)
-			{
-				if (!ft_strcmp(var_tochange, com->env_def->env))
-				{
-					free(com->env_def->meaning);
-					com->env_def->meaning = ft_strdup(mean);
-					flag = 1;
-				}
-				com->env_def = com->env_def->next;
-			}
-			com->env_def = tmp;
-			if (!flag)
-				ft_envadd_back(&com->env_def, new_node(var_tochange, mean)); 
-			free(var_tochange);
-			free(mean);
-			var_tochange = NULL;
-			mean = NULL;
-		}
+		else
+			find_export(com, tmp_a, flag, tmp);
 		tmp_a = tmp_a->next;
 	}
 	return (0);

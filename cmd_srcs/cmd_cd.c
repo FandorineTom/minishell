@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:09:36 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/18 15:05:54 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/19 14:09:46 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ int		change_tilda(t_command *com)
 	{
 		if (!ft_strcmp("HOME", tmp->env))
 		{
-			path = ft_substr(com->comd->arg->arg, 1, ft_strlen(com->comd->arg->arg));
+			path = ft_substr(com->comd->arg->arg, 1, \
+			ft_strlen(com->comd->arg->arg));
 			path = ft_strjoin(tmp->meaning, path);
 			if (chdir(path) < 0)
 				com->com_ret = error_message(strerror(errno), -1);
@@ -78,7 +79,7 @@ int		cmd_cd(t_command *com)
 
 	getcwd(pwd, 1024);
 	if (!check_home(com))
-		return (error_message("our_minishell_almost_work: cd: HOME not set", 1));
+		return (error_message("minishell: cd: HOME not set", 1));
 	tmp = com->env_def;
 	while (tmp)
 	{
