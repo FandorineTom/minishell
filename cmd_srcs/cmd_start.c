@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 21:52:08 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/18 15:30:42 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/19 13:42:01 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,18 +172,20 @@ void	cmd_start(t_command *com)
 	tmp = com->comd;
 	while (com->comd)
 	{
-		dup2(g_fdin, 0);
+		dup2(g_fdin, 0); // тут он перенаправляет вывод на пайп, а не в файл, а баш в файл. Странная команда echo 123 > test | echo 345 >> test не работает
 		close(g_fdin);
-		if (!com->comd->next)
+		if (com->comd->redir->type_red == 1 || com->comd->redir->type_red == 3 || !com->comd->next)
 			redirect_output(com);
-		else
+		else if (com->comd->next)
 		{
 			pipe(fdpipe);
 			g_fdin = fdpipe[0];
-			g_fdout = fdpipe[1];
+			if (!g_fdout)
+				g_fdout = fdpipe[1];
 		}
 		dup2(g_fdout, 1);
 		close(g_fdout);
+		g_fdout = 0;
 		if (com->comd->no_command)
 			check_if_my(com->comd->cmnd, com);
 		else if (!com->comd->no_command && com->comd->arg)
