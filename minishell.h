@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/20 14:25:53 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/20 17:18:47 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <unistd.h>
-# include <sys/errno.h>
+# include <errno.h>
+# include <limits.h>
 # include <string.h>
 # include <dirent.h>
 # include <fcntl.h>
@@ -210,5 +211,6 @@ char				**envp_to_mass(t_command *com);
 char				**transfer_to_mass(t_command *com);
 void				check_if_my(char *cmd, t_command *com);
 int					error_path(t_command *com);
+int					prompt_message(void);
 
 #endif

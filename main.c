@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/19 15:59:58 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/20 17:28:14 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,41 @@ void	check_parser(t_command com)
 		com.comd->arg = com.comd->arg->previous;
 }
 
-int	minishell_loop(t_command * com)
+int		prompt_message(void)
+{
+	char		*path;
+	int			size;
+
+	size = 256;
+	path = NULL;
+	while (!(path = getcwd(NULL, size)))
+	{
+		size *= 2;
+		if (size >= INT_MAX / 2)
+			return (error_message("Not enough memory for path!", 2));
+	}
+	path = ft_strjoin("~", path);
+	ft_putstr("minishell: ");
+	ft_putstr(path);
+	ft_putstr("$ ");
+	free(path);
+	return (0);
+}
+
+int		minishell_loop(t_command *com)
 {
 	char	*tmp;
 	char	*line;
 
-	if (g_c_flag)
+	if (g_c_flag == 1)
 		free_all(com, 1);
-	g_c_flag = 0;
 	while (1) // тут может быть на какой-то сигнал прекращение цикла записать
 	{
-		write(1, "minishell: ", 11); // тут надо что-то поизящнее зафигачить и чтобы оно висело и выводилось после (может, тупо, while (1))
+		if (g_c_flag != 1)
+			if (prompt_message())
+				ctrl_d(com);
+		g_c_flag = 0;
+		// write(1, "minishell: ", 11); // тут надо что-то поизящнее зафигачить и чтобы оно висело и выводилось после (может, тупо, while (1))
 		if (!(get_next_line(0, &line)))
 			ctrl_d(com);
 		com->error = 0;
@@ -93,7 +117,7 @@ int	main(int argc, char **argv, char **env) // нужно как-то приня
 	// init_env_def(com.env_def);
 	copy_env(env, &com);
 	com.com_ret = 0;
-	g_c_flag = 0;
+	g_c_flag = 2;
 	g_b_flag = 0;
 	signal_handler(&com);
 	minishell_loop(&com);
