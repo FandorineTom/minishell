@@ -6,7 +6,7 @@
 #    By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/13 20:15:44 by scopycat          #+#    #+#              #
-#    Updated: 2021/01/18 13:14:10 by snorthmo         ###   ########.fr        #
+#    Updated: 2021/01/20 13:05:41 by snorthmo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,7 @@ cmd_srcs/cmd_exit.c\
 cmd_srcs/signal.c\
 cmd_srcs/minishell.c\
 cmd_srcs/fd_utils.c\
+cmd_srcs/cmd_utils.c\
 cmd_srcs/error.c
 
 OBJ = $(FUNC:.c=.o)

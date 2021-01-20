@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/18 14:12:44 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/20 14:25:53 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ typedef struct		s_env
 	struct s_env	*next;
 	char			*env;
 	char			*meaning; 
-
 }					t_env;
 
 
@@ -208,6 +207,8 @@ int					minishell_loop(t_command * com);
 int					cmd_export_noargs(t_command *com);
 void				function(int signal);
 char				**envp_to_mass(t_command *com);
+char				**transfer_to_mass(t_command *com);
+void				check_if_my(char *cmd, t_command *com);
 int					error_path(t_command *com);
 
 #endif

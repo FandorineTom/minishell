@@ -6,100 +6,43 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 21:52:08 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/19 15:54:35 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/20 15:44:08 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	check_if_my(char *cmd, t_command *com)
+void	child_process(char *path, char **args, char **envp, t_command *com)
 {
-	const char	*my_str[7] = {"echo", "cd", "pwd", "export", "unset", "env",
-							"exit"};
-	int			i;
-	int			cmd_num;
-
-	i = -1;
-	while (++i < 7)
-		if (!ft_strcmp(cmd, my_str[i]))
-			cmd_num = i;
-	if (cmd_num == 0)
-		com->com_ret = cmd_echo(com);
-	else if (cmd_num == 1)
-		com->com_ret = cmd_cd(com);
-	else if (cmd_num == 2)
-		com->com_ret = cmd_pwd(com);
-	else if (cmd_num == 3)
-		com->com_ret = cmd_export(com);
-	else if (cmd_num == 4)
-		com->com_ret = cmd_unset(com);
-	else if (cmd_num == 5)
-		com->com_ret = cmd_env(com);
-	else if (cmd_num == 6)
-		cmd_exit(com);
+	g_b_flag = 1;
+	if (execve(path, args, envp) == -1)
+	{
+		(void)(ft_putstr_fd(com->comd->arg->arg, 2) + ft_putstr_fd(": ", 2));
+		free(path);
+		free_mas(args);
+		free_mas(envp);
+		free_all(com, 1);
+		exit(error_message("command not found", 127));
+	}
 }
 
-char	**envp_to_mass(t_command *com)
+int		parent_process(t_command *com)
 {
-	char	**envp;
-	t_env	*tmp;
-	int		len;
+	int		status;
 
-	tmp = com->env_def;
-	len = 0;
-	while (tmp)
+	wait(&status);
+	com->com_ret = WEXITSTATUS(status);
+	if ((WIFSIGNALED(status)))
 	{
-		len++;
-		tmp = tmp->next;
+		if (status == 131)
+			ft_putstr_fd("^\\Quit: 3\n", 2);
+		return ((status != 131) ? 130 : status);
 	}
-	if (!(envp = (char **)ft_calloc(sizeof(char *), len + 1)))
-		return ((error_message2(strerror(errno))));
-	tmp = com->env_def;
-	len = 0;
-	while (tmp)
-	{
-		if (!(envp[len] = ft_strjoin(tmp->env, "=")))
-			return (error_message2(strerror(errno)));
-		if (!(envp[len] = ft_strjoin(envp[len], tmp->meaning)))
-			return (error_message2(strerror(errno)));
-		len++;
-		tmp = tmp->next;
-	}
-	envp[len] = NULL;
-	return (envp);
-}
-
-char	**transfer_to_mass(t_command *com)
-{
-	char	**args;
-	t_arg	*tmp_a;
-	int		len;
-	int		i;
-
-	len = 0;
-	i = 0;
-	tmp_a = com->comd->arg;
-	while (tmp_a)
-	{
-		len++;
-		tmp_a = tmp_a->next;
-	}
-	if (!(args = (char **)ft_calloc(sizeof(char *), len + 1)))
-		return (error_message2(strerror(errno)));
-	tmp_a = com->comd->arg;
-	while (tmp_a)
-	{
-		if (!(args[i++] = ft_strdup(tmp_a->arg)))
-			return (error_message2(strerror(errno)));
-		tmp_a = tmp_a->next;
-	}
-	args[i] = NULL;
-	return (args);
+	return (com->com_ret);
 }
 
 int		open_fork(t_command *com)
 {
-	int			status;
 	pid_t		pid;
 	char		*path;
 	char		**args;
@@ -113,29 +56,9 @@ int		open_fork(t_command *com)
 		return (error_message("malloc error", 2));
 	pid = fork();
 	if (pid == 0)
-	{
-		g_b_flag = 1;
-		if (execve(path, args, envp) == -1)
-		{
-			(void)(ft_putstr_fd(com->comd->arg->arg, 2) + ft_putstr_fd(": ", 2));
-			free(path);
-			free_mas(args);
-			free_mas(envp);
-			free_all(com, 1);
-			exit(error_message("command not found", 127));
-		}
-	}
+		child_process(path, args, envp, com);
 	else if (pid > 0)
-	{
-		wait(&status);
-		com->com_ret = WEXITSTATUS(status);
-		if ((WIFSIGNALED(status)))
-		{
-			if (status == 131)
-				ft_putstr_fd("^\\Quit: 3\n", 2);
-			return ((status != 131) ? 130 : status);
-		}
-	}
+		com->com_ret = parent_process(com);
 	if (pid < 0)
 		return (error_message(strerror(errno), 1));
 	free(path);
@@ -145,36 +68,16 @@ int		open_fork(t_command *com)
 	return (com->com_ret);
 }
 
-void	cmd_start(t_command *com)
+void	start_pipe(t_command *com)
 {
 	int		fdpipe[2];
-	int		flag;
-	t_comd	*tmp;
-	t_redir	*tmp_r;
 
-	if (com->comd->error_redir)
-		return ; // это если нет такого файла или еще какая-то ошибка с файлом
-	tmp_r = com->comd->redir;
-	flag = 0;
-	while (com->comd->redir)
-	{
-		if (com->comd->redir->type_red == 2)
-		{
-			redirect_input(com);
-			flag = 1;
-			break ;
-		}
-		com->comd->redir = com->comd->redir->previous;
-	}
-	com->comd->redir = tmp_r;
-	if (!flag)
-		redirect_input(com);
-	tmp = com->comd;
 	while (com->comd)
 	{
 		dup2(g_fdin, 0);
 		close(g_fdin);
-		if (com->comd->redir->type_red == 1 || com->comd->redir->type_red == 3 || !com->comd->next)
+		if (com->comd->redir->type_red == 1 || com->comd->redir->type_red == 3\
+		|| !com->comd->next)
 			redirect_output(com);
 		else if (com->comd->next)
 		{
@@ -192,5 +95,32 @@ void	cmd_start(t_command *com)
 			com->com_ret = open_fork(com);
 		com->comd = com->comd->next;
 	}
+}
+
+void	cmd_start(t_command *com)
+{
+	int		flag;
+	t_comd	*tmp;
+	t_redir	*tmp_r;
+
+	if (com->comd->error_redir)
+		return ;
+	tmp_r = com->comd->redir;
+	flag = 0;
+	while (com->comd->redir)
+	{
+		if (com->comd->redir->type_red == 2)
+		{
+			redirect_input(com);
+			flag = 1;
+			break ;
+		}
+		com->comd->redir = com->comd->redir->previous;
+	}
+	com->comd->redir = tmp_r;
+	if (!flag)
+		redirect_input(com);
+	tmp = com->comd;
+	start_pipe(com);
 	com->comd = tmp;
 }
