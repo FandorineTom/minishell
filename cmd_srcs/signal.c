@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:45 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/20 17:32:01 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/20 18:03:10 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ void	ctrl_c(int sig)
 {
 	sig = 0;
 	write(1, "\n\r", 2);
-	if (g_b_flag)
-		exit(errno);
 	g_c_flag = 1;
 	prompt_message();
 }
@@ -33,8 +31,16 @@ void	ctrl_b(int sig)
 {
 	sig = 0;
 	g_c_flag = 1;
-	ft_putstr_fd("Quit: 3\n", 2);
-	prompt_message();
+	if (g_b_flag)
+	{
+		ft_putstr_fd("Quit: 3\n", 2);
+		prompt_message();
+	}
+	else
+	{
+		g_c_flag = 2;
+		write(0, "\b\b  \b\b", 6);
+	}
 }
 
 void	signal_handler(t_command *com)

@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 21:52:08 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/20 15:44:08 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/20 18:03:30 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	child_process(char *path, char **args, char **envp, t_command *com)
 {
-	g_b_flag = 1;
 	if (execve(path, args, envp) == -1)
 	{
 		(void)(ft_putstr_fd(com->comd->arg->arg, 2) + ft_putstr_fd(": ", 2));
@@ -35,7 +34,7 @@ int		parent_process(t_command *com)
 	if ((WIFSIGNALED(status)))
 	{
 		if (status == 131)
-			ft_putstr_fd("^\\Quit: 3\n", 2);
+			ft_putstr_fd("Quit: 3\n", 2);
 		return ((status != 131) ? 130 : status);
 	}
 	return (com->com_ret);
@@ -55,6 +54,7 @@ int		open_fork(t_command *com)
 	if (!(envp = envp_to_mass(com)))
 		return (error_message("malloc error", 2));
 	pid = fork();
+	g_b_flag = 1;
 	if (pid == 0)
 		child_process(path, args, envp, com);
 	else if (pid > 0)
