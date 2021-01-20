@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/20 17:28:14 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/21 00:59:01 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ int		prompt_message(void)
 		if (size >= INT_MAX / 2)
 			return (error_message("Not enough memory for path!", 2));
 	}
-	path = ft_strjoin("~", path);
-	ft_putstr("minishell: ");
+	ft_putstr("minishell: ~");
 	ft_putstr(path);
 	ft_putstr("$ ");
 	free(path);
