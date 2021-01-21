@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:09:36 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/19 14:09:46 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/21 02:14:23 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,6 @@ int		cmd_cd(t_command *com)
 	if (com->comd->arg->arg[0] == '~')
 		return (change_tilda(com));
 	if (chdir(com->comd->arg->arg) < 0)
-		error_message(strerror(errno), -1);
-	return (0);
+		com->com_ret = error_message(strerror(errno), 1);
+	return (com->com_ret);
 }
