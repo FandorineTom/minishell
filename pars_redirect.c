@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 11:29:32 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/09 18:03:53 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/21 10:44:58 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ void	pars_redirect(char **line, t_command *com)
 		if (com->comd->redir->type_red)
 			ft_redadd_back(&tmp, com->comd->redir);
 		pars_tockens(line, com);
+		while (com->comd && com->comd->next && !com->comd->next->redir->file_name)
+			com->comd = com->comd->next;
 		buf = com->comd->arg;
-		while (buf && buf->previous != new && i)
+		while (buf && buf->previous != new && i && buf->next)
 			buf = buf->next;
 		if ((buf->previous == new || !i) && buf && buf->arg)
 		{
