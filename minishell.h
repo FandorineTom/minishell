@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/20 17:18:47 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/21 14:09:10 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct		s_flag
 {
 	struct s_flag	*next;
 	char			*flag;
-	size_t			no_flag; // изначально 1, если флаги не найдены, то обнуляется
+	size_t			no_flag;
 }					t_flag;
 
 typedef struct		s_arg
@@ -52,10 +52,8 @@ typedef struct		s_arg
 	struct s_arg	*next;
 	struct s_arg	*previous;
 	char			*arg;
-	char			*path; // вспомнить, зачем это
-	// t_pipe			*pipes; // тут это скорее всего не нужно
-	size_t			wildcard; // для бонуса если 0, но звездочки нет, если 1, то есть и можно вспомнить matchtomatch
-	size_t			no_arg; // изначально  1, если аргументы не найдены, то обнуляется // не нужна в целом
+	char			*path;
+	size_t			no_arg;
 }					t_arg;
 
 typedef	struct		s_redir
@@ -77,11 +75,11 @@ typedef struct		s_comd
 	char			*cmnd;
 	t_flag			*flag;
 	t_arg			*arg;
-	char			*env_var; // переменная для команды
+	char			*env_var;
 	size_t			pipe_r;
 	size_t			pipe_l;
 	t_redir			*redir;
-	size_t			no_command; // изначально 1, если команды не найдены, то обнуляется
+	size_t			no_command;
 	size_t			error_redir;
 }					t_comd;
 
@@ -89,35 +87,32 @@ typedef struct		s_env
 {
 	struct s_env	*next;
 	char			*env;
-	char			*meaning; 
+	char			*meaning;
 }					t_env;
-
 
 typedef struct		s_command
 {
 	t_comd			*comd;
-	// t_arg			*arg;
-	char			*env_var; // переменная, которая просто выводится (или исполняется)
+	char			*env_var;
 	t_env			*env_def;
 	size_t			error;
 	size_t			quotes_op;
-	// size_t			no_command; //обнуляется, если нет команды. изначально количество pipe + 1
-	// size_t			no_arg; // обнуляется, если нет аргументов. изначально количество pipe + 1
-	size_t			no_var; // обнуляется, если нет переменной окружения. изначально количество pipe + 1
+	size_t			no_var;
 	size_t			pipe_count;
-	size_t			process[100]; // сюда пишутся переменные, которые возвращает fork
+	size_t			process[100];
 	size_t			com_ret;
 }					t_command;
 
 void				parser(char **line, t_command *com);
-void				pars_pipes(char *line, t_command *com);
 void				pars_tockens(char **line, t_command *com);
+void				pars_tockens_2(t_command *com, char **line, t_arg *new);
 void				pars_single_quotes(char **line, t_command *com);
 void				pars_double_quotes(char **line, t_command *com);
 void				double_quotes_utils(t_command *com, char **line,\
 						size_t len);
 void				pars_esc_nq(char **line, t_command *com);
 void				check_result(t_command *com);
+void				check_result_utils(t_command *com, t_arg *new);
 void				check_mistakes(char **line_true, t_command *com);
 void				check_mistakes_quotes(char **line);
 void				check_mistakes_inside(char **line, size_t *i, \
@@ -139,6 +134,7 @@ void				change_env_var_meaning(t_command *com);
 void				no_such_env(t_command *com, size_t len);
 void				change_env(t_command *com);
 void				check_tockens(char **line, t_command *com);
+void				check_tockens_ss(char **line, t_command *com);
 void				work_comman(t_command *com);
 void				init_com(t_command *com);
 void				init_comd(t_command *com);
@@ -152,6 +148,7 @@ size_t				ft_strlen_char(char *str, char c);
 size_t				ft_strlen_char_slash(char *str, char c);
 size_t				find_len_to_ss(char *line);
 size_t				find_len_tockens(char **line);
+size_t				find_len_tockens_2(size_t len, char **line);
 int					check_open_quotes(char **line, size_t len);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strchr(const char *str, int sym);
@@ -161,7 +158,7 @@ void				ft_argadd_back(t_arg **lst, t_arg *new);
 void				ft_comdadd_back(t_comd **lst, t_comd *new);
 void				ft_redadd_back(t_redir **lst, t_redir *new);
 void				ft_argdel_list(t_arg **old);
-void				free_all(t_command *com, int i); // если приходит 1 то чистится все, кроме списка переменных окружения, если 0, то чистится все
+void				free_all(t_command *com, int i);
 void				free_comd(t_comd *comd);
 void				free_flag(t_flag *flag);
 void				free_arg(t_arg *arg);
@@ -175,8 +172,10 @@ void				start_dollar(t_command *com, char **buf, char **buf_end);
 void				pars_escaping(t_command *com, size_t len_str);
 void				pars_redirect(char **line, t_command *com);
 void				pars_reverse_redirect(char **line, t_command *com);
+void				which_redirect(char **line, t_command *com);
 void				start_redirect(t_command *com);
 void				fill_redirect(t_command *com, size_t type_r);
+void				fill_file_name(t_command *com, int i, t_arg *new);
 void				file_open(t_command *com);
 void				file_close(t_command *com);
 void				error_redirect(t_command *com);
@@ -193,7 +192,7 @@ int					cmd_export(t_command *com);
 char				*detect_env_var(t_command *com, t_arg *arg);
 t_env				*new_node(char *var, char *mean);
 char				*find_meaning(t_command *com, t_arg *arg);
-int					error_export(char * arg);
+int					error_export(char *arg);
 int					cmd_unset(t_command *com);
 void				cmd_exit(t_command *com);
 void				signal_handler(t_command *com);
@@ -204,7 +203,7 @@ void				save_stdin_out(void);
 int					redirect_input(t_command *com);
 void				redirect_output(t_command *com);
 void				return_stdin_out(void);
-int					minishell_loop(t_command * com);
+int					minishell_loop(t_command *com);
 int					cmd_export_noargs(t_command *com);
 void				function(int signal);
 char				**envp_to_mass(t_command *com);

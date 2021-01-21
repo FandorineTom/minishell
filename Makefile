@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+         #
+#    By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/13 20:15:44 by scopycat          #+#    #+#              #
-#    Updated: 2021/01/20 13:05:41 by snorthmo         ###   ########.fr        #
+#    Updated: 2021/01/21 14:20:48 by scopycat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,25 +15,28 @@ FLAG = -g -Wall -Wextra -Werror
 NAME = libminishell.a
 
 FUNC = main.c\
-check_mistakes.c\
-free_struct.c\
-ft_itoa.c\
-get_next_line.c\
-get_next_line_utils.c\
-inits.c\
-parser.c\
-parse_quotes.c\
-pars_command.c\
-pars_dollar.c\
-pars_env.c\
-pars_escaping.c\
-pars_lib_utils.c\
-pars_pipes.c\
-pars_redirect.c \
-pars_structs_utils.c\
-pars_tockens.c\
-redirect.c\
-sys_mistakes_utils.c\
+parser_srsc/check_mistakes.c\
+parser_srsc/free_struct.c\
+parser_srsc/free_struct_2.c\
+parser_srsc/ft_itoa.c\
+parser_srsc/get_next_line.c\
+parser_srsc/get_next_line_utils.c\
+parser_srsc/inits.c\
+parser_srsc/inits_2.c\
+parser_srsc/parser.c\
+parser_srsc/parse_quotes.c\
+parser_srsc/pars_command.c\
+parser_srsc/pars_dollar.c\
+parser_srsc/pars_env.c\
+parser_srsc/pars_escaping.c\
+parser_srsc/pars_lib_utils.c\
+parser_srsc/pars_pipes.c\
+parser_srsc/pars_redirect.c \
+parser_srsc/pars_structs_utils.c\
+parser_srsc/pars_tockens.c\
+parser_srsc/pars_tocken_utils.c\
+parser_srsc/redirect.c\
+parser_srsc/sys_mistakes_utils.c\
 cmd_srcs/cmd_echo.c\
 cmd_srcs/cmd_start.c\
 cmd_srcs/cmd_cd.c\
