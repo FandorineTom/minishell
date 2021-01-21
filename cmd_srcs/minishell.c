@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:41 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/19 17:39:57 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/21 02:35:16 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ int			free_mas(char **mass)
 	if (!mass)
 		return (0);
 	while (mass && mass[i])
-		free(mass[i++]);
+	{
+		free(mass[i]);
+		mass[i++] = NULL;
+	}
 	free(mass);
 	mass = NULL;
 	return (0);
@@ -57,6 +60,7 @@ char		*find_bin(t_command *com)
 {
 	char	**path;
 	char	*to_ret;
+	char	*tmp_line;
 	int		i;
 	t_env	*tmp;
 
@@ -73,8 +77,10 @@ char		*find_bin(t_command *com)
 	{
 		if (find_file(path[i], com->comd->arg->arg))
 		{
-			to_ret = ft_strjoin("/", com->comd->arg->arg);
+			to_ret = ft_strjoin("/", com->comd->arg->arg); // сюда добавить временную переменную и освобождать ее
+			tmp_line = to_ret;
 			to_ret = ft_strjoin(path[i], to_ret);
+			free(tmp_line);
 			return (to_ret + free_mas(path));
 		}
 	}

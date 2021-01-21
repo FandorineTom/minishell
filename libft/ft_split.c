@@ -3,113 +3,113 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/22 22:15:26 by snorthmo          #+#    #+#             */
-/*   Updated: 2020/05/14 21:56:08 by snorthmo         ###   ########.fr       */
+/*   Created: 2021/01/21 02:47:46 by snorthmo          #+#    #+#             */
+/*   Updated: 2021/01/21 02:48:24 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_word_count(char const *s, char c)
+static int	ft_count_words(char const *s, char c)
 {
-	size_t	index;
-	int		words;
+	int i;
+	int words;
+	int marker;
 
-	index = 0;
+	i = 0;
 	words = 0;
-	while (s[index])
+	while (s[i])
 	{
-		while (s[index] == c)
-			index++;
-		if (s[index] != c && s[index] != '\0')
+		marker = 0;
+		while (s[i] && s[i] == c)
+			i++;
+		while (s[i] && s[i] != c)
+		{
+			marker = 1;
+			i++;
+		}
+		if (marker > 0)
 			words++;
-		while (s[index] && s[index] != c)
-			index++;
 	}
 	return (words);
 }
 
-static int	ft_words_maxlen(char const *s, char c)
+static int	ft_word_len(char const *s, char c)
 {
-	int		maxlen;
-	int		len;
-	size_t	index;
+	int i;
+	int len;
+	int max_len;
 
-	maxlen = 0;
-	index = 0;
-	while (s[index])
+	i = 0;
+	max_len = 0;
+	while (s[i])
 	{
 		len = 0;
-		while (s[index] == c)
-			index++;
-		while (s[index] && s[index] != c)
+		while (s[i] && s[i] == c)
+			i++;
+		while (s[i] && s[i] != c)
 		{
 			len++;
-			index++;
+			i++;
 		}
-		if (len > maxlen)
-			maxlen = len;
+		if (max_len < len)
+			max_len = len;
 	}
-	return (maxlen);
+	return (max_len);
 }
 
-static void	ft_actually_split(char const *s, char c, char **result)
+static void	ft_strsplit(char const *s, char **str, char c)
 {
-	size_t	index;
-	size_t	i;
-	size_t	j;
+	int i;
+	int j;
+	int k;
+	int marker;
 
-	index = 0;
 	i = 0;
-	while (s[index])
+	j = 0;
+	while (s[i])
 	{
-		j = 0;
-		while (s[index] == c)
-			index++;
-		while (s[index] && s[index] != c)
+		k = 0;
+		marker = 0;
+		while (s[i] && s[i] == c)
+			i++;
+		while (s[i] && s[i] != c)
 		{
-			result[i][j] = s[index];
-			index++;
-			j++;
+			str[j][k++] = s[i++];
+			marker++;
 		}
-		i++;
+		if (marker > 0)
+			j++;
 	}
 }
 
-static char	**free_mem(char **str)
+static char	**memfree(char **str)
 {
-	unsigned int i;
-
-	i = 0;
-	while (str[i])
-		free(str[i++]);
+	while (*str)
+		free(*str);
 	free(str);
 	return (NULL);
 }
 
 char		**ft_split(char const *s, char c)
 {
-	char	**result;
 	int		words;
+	int		len;
 	int		i;
-	int		words_len;
+	char	**str;
 
 	if (!s)
 		return (NULL);
-	words = ft_word_count(s, c);
-	if (!(result = (char **)malloc(sizeof(char *) * words + 1)))
+	words = ft_count_words(s, c);
+	if (!(str = (char **)ft_calloc((words + 1), sizeof(char *))))
 		return (NULL);
-	result[words] = NULL;
+	len = ft_word_len(s, c);
 	i = 0;
-	words_len = ft_words_maxlen(s, c);
 	while (i < words)
-	{
-		if (!(result[i] = ft_calloc((words_len + 1), sizeof(char))))
-			return (free_mem(result));
-		i++;
-	}
-	ft_actually_split(s, c, result);
-	return (result);
+		if (!(str[i++] = (char *)ft_calloc((len + 1), sizeof(char))))
+			return (memfree(str));
+	ft_strsplit(s, str, c);
+	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:45 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/20 18:03:10 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/21 01:29:14 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ctrl_c(int sig)
 {
-	sig = 0;
+	(void)sig;
 	write(1, "\n\r", 2);
 	g_c_flag = 1;
 	prompt_message();
@@ -29,7 +29,7 @@ void	*ctrl_d(t_command *com)
 
 void	ctrl_b(int sig)
 {
-	sig = 0;
+	(void)sig;
 	g_c_flag = 1;
 	if (g_b_flag)
 	{

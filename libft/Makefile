@@ -6,7 +6,7 @@
 #    By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/13 18:05:17 by snorthmo          #+#    #+#              #
-#    Updated: 2021/01/15 14:49:42 by snorthmo         ###   ########.fr        #
+#    Updated: 2021/01/21 02:46:13 by snorthmo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRC_B = ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
 	ft_strtrimwhole_bonus.c 
 OBJ = $(SRC:.c=.o)
 OBJ_B = $(SRC_B:.c=.o)
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -g -Wall -Werror -Wextra
 
 .PHONY: all bonus so clean fclean re
 
