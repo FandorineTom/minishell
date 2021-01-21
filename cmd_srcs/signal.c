@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:45 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/21 01:29:14 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/21 17:34:46 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	ctrl_b(int sig)
 void	signal_handler(t_command *com)
 {
 	signal(SIGINT, ctrl_c);
-	if (g_c_flag)
+	if (g_c_flag == 1)
 		com->com_ret = 130;
 	signal(SIGQUIT, ctrl_b);
 }

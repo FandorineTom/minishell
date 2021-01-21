@@ -6,13 +6,13 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:00 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/21 16:36:26 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/21 17:42:43 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-size_t	ft_isnumber(char *s)
+int		ft_isnumber(char *s)
 {
 	int	i;
 	int	res;
@@ -47,8 +47,6 @@ void	cmd_exit(t_command *com)
 				ft_putstr_fd(": numeric argument required\n", 2);
 			}
 		}
-		else
-			com->com_ret = 0;
 	}
 	else
 	{
