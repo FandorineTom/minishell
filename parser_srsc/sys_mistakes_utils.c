@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 19:08:15 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 14:23:04 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/21 18:38:21 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,16 @@ size_t	find_len_to_ss(char *line)
 	size_t	len;
 
 	len = ft_strlen(line);
-	if (len > ft_strlen_char(line, ';'))
-		len = ft_strlen_char(line, ';');
-	if (len > ft_strlen_char(line, '>'))
-		len = ft_strlen_char(line, '>');
-	if (len > ft_strlen_char(line, '<'))
-		len = ft_strlen_char(line, '<');
-	if (len > ft_strlen_char(line, '|'))
-		len = ft_strlen_char(line, '|');
-	if (len > ft_strlen_char(line, '&'))
-		len = ft_strlen_char(line, '&');
+	if (len > ft_strlen_char_slash(line, ';'))
+		len = ft_strlen_char_slash(line, ';');
+	if (len > ft_strlen_char_slash(line, '>'))
+		len = ft_strlen_char_slash(line, '>');
+	if (len > ft_strlen_char_slash(line, '<'))
+		len = ft_strlen_char_slash(line, '<');
+	if (len > ft_strlen_char_slash(line, '|'))
+		len = ft_strlen_char_slash(line, '|');
+	if (len > ft_strlen_char_slash(line, '&'))
+		len = ft_strlen_char_slash(line, '&');
 	return (len);
 }
 

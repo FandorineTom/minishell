@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 18:49:22 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 14:23:34 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/21 18:44:35 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	check_mistakes(char **line_true, t_command *com)
 		check_line_mistakes(&line, &i, line_true, com);
 	if (i)
 		com->error = 258;
+	line = NULL;
 }
 
 void	check_line_mistakes(char **line, size_t *i, char **line_true, \
@@ -48,7 +49,7 @@ void	check_line_mistakes(char **line, size_t *i, char **line_true, \
 	if (len <= len_qu)
 		*line += len;
 	else
-		check_mistakes_quotes(line);
+		check_mistakes_quotes(line, i);
 	if (((**line == '>' || **line == '<') && (*(*line + 1) == '\0')) ||
 		((*(*line + 1) == '>' || *(*line + 1) == '<') &&
 		*(*line + 2) == '\0') || ((**line == '>' || **line == '<') &&
@@ -62,19 +63,31 @@ void	check_line_mistakes(char **line, size_t *i, char **line_true, \
 		check_mistakes_inside(line, i, line_true, com);
 }
 
-void	check_mistakes_quotes(char **line)
+void	check_mistakes_quotes(char **line, size_t *i)
 {
 	size_t	len_q_one;
-	size_t	i;
+	size_t	type;
 
-	i = 0;
+	type = 0;
 	len_q_one = ft_strlen_char_slash(*line, '\'');
-	if (len_q_one > ft_strlen_char_slash(*line, '"') && (i = 1))
+	if (len_q_one > ft_strlen_char_slash(*line, '"') && (type = 1))
 		len_q_one = ft_strlen_char_slash(*line, '"');
-	if (i && ft_strchr(*line + len_q_one + 1, '"'))
-		*line = ft_strchr(*line + len_q_one + 1, '"') + 1;
-	else if (!i && ft_strchr(*line + len_q_one + 1, '\''))
-		*line = ft_strchr(*line + len_q_one + 1, '\'') + 1;
+	*line += len_q_one + 1;
+	if (type)
+		len_q_one = ft_strlen_char_slash(*line, '"');
+	else
+		len_q_one = ft_strlen_char(*line, '\'');
+	if (len_q_one >= ft_strlen(*line) && *(*line + len_q_one) != '\'' && !type)
+		*i = write(2, "syntax error with quotes\n", 25);
+	else if (len_q_one >= ft_strlen(*line) && *(*line + len_q_one) != '\"' && type)
+		*i = write(2, "syntax error with quotes\n", 25);
+	else
+		*line += len_q_one + 1;
+	
+	// if (i && ft_strchr(*line + len_q_one + 1, '"'))
+	// 	*line = ft_strchr(*line + len_q_one + 1, '"') + 1;
+	// else if (!i && ft_strchr(*line + len_q_one + 1, '\''))
+	// 	*line = ft_strchr(*line + len_q_one + 1, '\'') + 1;
 }
 
 void	check_mistakes_inside(char **line, size_t *i, char **line_true, \

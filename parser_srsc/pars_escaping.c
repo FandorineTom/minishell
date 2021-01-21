@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 21:27:32 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 15:38:10 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/21 19:07:06 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,15 @@ void	pars_esc_nq(char **line, t_command *com)
 		(*line)++;
 		if (**line == ' ' && ((*line)++))
 			com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, " ");
+		else
+		{
+			com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, \
+			ft_substr(*line, 0, 1));
+			(*line)++;
+		}
 		len = find_len_tockens(line);
+		if (len > ft_strlen_char_slash(*line, '\''))
+			len = ft_strlen_char_slash(*line, '\'');
 		// len = ft_strlen_space(*line);
 		// if (len > ft_strlen_char(*line + 1, '\\') + 1)
 		// 	len = ft_strlen_char(*line + 1, '\\') + 1;

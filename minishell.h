@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 17:24:06 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/21 18:24:40 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,9 @@ void				double_quotes_utils(t_command *com, char **line,\
 void				pars_esc_nq(char **line, t_command *com);
 void				check_result(t_command *com);
 void				check_result_utils(t_command *com, t_arg *new);
+void				check_result_flag(t_command *com, t_arg *new);
 void				check_mistakes(char **line_true, t_command *com);
-void				check_mistakes_quotes(char **line);
+void				check_mistakes_quotes(char **line, size_t *i);
 void				check_mistakes_inside(char **line, size_t *i, \
 						char **line_true, t_command *com);
 void				check_line_mistakes(char **line, size_t *i, \

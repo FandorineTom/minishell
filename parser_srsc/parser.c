@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 14:23:09 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/21 18:28:59 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,16 @@ void	check_result(t_command *com)
 		com->comd->no_command = 1;
 	if (!com->comd->no_command && new && new->arg)
 		check_result_utils(com, new);
+	else if (!com->comd->flag->flag && new && new->arg)
+		check_result_flag(com, new);
 	while (com->comd->arg && com->comd->arg->next)
 	{
 		if (com->comd->arg && (com->comd->arg->next ||
 			com->comd->arg->previous) && com->comd->arg->arg &&
 			!com->comd->arg->arg[0])
 			ft_argdel_list(&com->comd->arg);
-		com->comd->arg = com->comd->arg->next;
+		if (com->comd->arg->next)
+			com->comd->arg = com->comd->arg->next;
 	}
 	while (com->comd->arg && com->comd->arg->previous)
 		com->comd->arg = com->comd->arg->previous;
@@ -76,14 +79,19 @@ void	check_result_utils(t_command *com, t_arg *new)
 		free(new);
 		new = com->comd->arg;
 		com->comd->no_command = 1;
-		while (new && new->arg && !(ft_strncmp(new->arg, "-n\0", 3)))
-		{
-			com->comd->flag->flag = ft_strdup(new->arg);
-			com->comd->flag->no_flag = 1;
-			com->comd->arg = com->comd->arg->next;
-			com->comd->arg->previous = NULL;
-			free(new);
-			new = com->comd->arg;
-		}
+		check_result_flag(com, new);
+	}
+}
+
+void	check_result_flag(t_command *com, t_arg *new)
+{
+	while (new && new->arg && !(ft_strncmp(new->arg, "-n\0", 3)))
+	{
+		com->comd->flag->flag = ft_strdup(new->arg);
+		com->comd->flag->no_flag = 1;
+		com->comd->arg = com->comd->arg->next;
+		com->comd->arg->previous = NULL;
+		free(new);
+		new = com->comd->arg;
 	}
 }
