@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 11:30:57 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 14:23:12 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/21 16:27:45 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,13 @@ void	pars_tockens(char **line, t_command *com)
 	com->comd->no_command = check_command(line, com);
 	if (com->env_var && !com->comd->no_command)
 	{
-		init_arg(com);
+		// init_arg(com);
 		com->comd->arg->arg = ft_strdup(com->env_var);
 		free(com->env_var);
 		com->env_var = NULL;
+		while (**line && **line != ' ' && **line != ';' && **line != '|' &&
+		**line != '>' && **line != '<')
+			check_tockens_ss(line, com);
 		ft_argadd_back(&new, com->comd->arg);
 	}
 	while (**line == ' ')
@@ -92,7 +95,7 @@ void	check_tockens_ss(char **line, t_command *com)
 		pars_double_quotes(line, com);
 	if (**line == '\'')
 		pars_single_quotes(line, com);
-	else if (**line == '\\')
+	if (**line == '\\')
 		pars_esc_nq(line, com);
 	if (**line == '$')
 	{

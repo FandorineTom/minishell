@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 21:27:32 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 14:23:20 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/21 15:38:10 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@ void	pars_esc_nq(char **line, t_command *com)
 {
 	size_t	len;
 
-	while (**line && **line != ' ')
+	while (**line && **line == '\\')
 	{
 		(*line)++;
 		if (**line == ' ' && ((*line)++))
 			com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, " ");
-		len = ft_strlen_space(*line);
-		if (len > ft_strlen_char(*line + 1, '\\') + 1)
-			len = ft_strlen_char(*line + 1, '\\') + 1;
+		len = find_len_tockens(line);
+		// len = ft_strlen_space(*line);
+		// if (len > ft_strlen_char(*line + 1, '\\') + 1)
+		// 	len = ft_strlen_char(*line + 1, '\\') + 1;
 		com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, \
 			ft_substr(*line, 0, len));
 		*line += len;
