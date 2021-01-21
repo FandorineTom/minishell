@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:41 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/21 02:35:16 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/21 15:44:38 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char		*find_bin(t_command *com)
 	{
 		if (find_file(path[i], com->comd->arg->arg))
 		{
-			to_ret = ft_strjoin("/", com->comd->arg->arg); // сюда добавить временную переменную и освобождать ее
+			to_ret = ft_strjoin("/", com->comd->arg->arg);
 			tmp_line = to_ret;
 			to_ret = ft_strjoin(path[i], to_ret);
 			free(tmp_line);

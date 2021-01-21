@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 13:04:29 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/19 17:26:28 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/21 15:28:23 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*detect_env_var(t_command *com, t_arg *arg)
 	{
 		if (!(var = ft_substr(arg->arg, 0, i)))
 		{
-			com->com_ret = error_message(strerror(errno), 2);
+			com->com_ret = error_message(strerror(errno), 4);
 			return (NULL);
 		}
 	}
@@ -52,7 +52,7 @@ char	*find_meaning(t_command *com, t_arg *arg)
 		len = ft_strlen(arg->arg);
 		if (!(mean = ft_substr(arg->arg, i, len - i)))
 		{
-			com->com_ret = error_message(strerror(errno), 2);
+			com->com_ret = error_message(strerror(errno), 4);
 			return (NULL);
 		}
 	}
@@ -65,7 +65,7 @@ t_env	*new_node(char *var, char *mean)
 
 	if (!(elem = (t_env *)malloc(sizeof(t_env))))
 	{
-		error_message(strerror(errno), -1);
+		error_message(strerror(errno), 4);
 		return (NULL);
 	}
 	elem->env = ft_strdup(var);
@@ -116,11 +116,11 @@ int		cmd_export(t_command *com)
 	while (tmp_a)
 	{
 		flag = 0;
-		if (!ft_isalpha(tmp_a->arg[0]))
+		if (!ft_isalpha(tmp_a->arg[0]) && tmp_a->arg[0] != '_')
 			com->com_ret = error_export(tmp_a->arg);
 		else
 			find_export(com, tmp_a, flag, tmp);
 		tmp_a = tmp_a->next;
 	}
-	return (0);
+	return (com->com_ret);
 }

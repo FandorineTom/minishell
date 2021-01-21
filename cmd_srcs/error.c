@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:30 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/19 14:10:31 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/21 15:30:17 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		error_path(t_command *com)
 
 int		error_export(char *arg)
 {
-	if (!ft_isalpha(arg[0]))
+	if (!ft_isalpha(arg[0]) && arg[0] != '_')
 	{
 		ft_putstr_fd("minishell: export: `", 2);
 		ft_putstr_fd(arg, 2);
