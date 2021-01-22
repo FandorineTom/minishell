@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars_tockens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 11:30:57 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 16:27:45 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/22 17:46:22 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	pars_tockens(char **line, t_command *com)
 void	pars_tockens_2(t_command *com, char **line, t_arg *new)
 {
 	char	*tmp;
+	char	*buf;
 
 	if (com->comd->arg && com->comd->arg->arg)
 		init_arg(com);
@@ -60,7 +61,9 @@ void	pars_tockens_2(t_command *com, char **line, t_arg *new)
 		tmp = com->comd->arg->arg;
 		check_env_var(line, com);
 		change_env(com);
-		com->comd->arg->arg = ft_strjoin_gnl(tmp, com->comd->arg->arg);
+		buf = com->comd->arg->arg;
+		com->comd->arg->arg = ft_strjoin_gnl(&tmp, com->comd->arg->arg);
+		free(buf);
 	}
 	if (com->comd->arg->arg)
 		ft_argadd_back(&new, com->comd->arg);
@@ -71,6 +74,7 @@ void	pars_tockens_2(t_command *com, char **line, t_arg *new)
 void	check_tockens(char **line, t_command *com)
 {
 	size_t	len;
+	char	*buf;
 
 	while (**line == ' ')
 		(*line)++;
@@ -79,9 +83,10 @@ void	check_tockens(char **line, t_command *com)
 	else if (**line != '|' && **line != '"' && **line != '\'' &&
 		**line != '\\' && **line != '>' && **line != '<')
 	{
-		com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, \
-			ft_substr(*line, 0, len));
+		com->comd->arg->arg = ft_strjoin_gnl(&com->comd->arg->arg, \
+			(buf = ft_substr(*line, 0, len)));
 		(*line) += len;
+		free(buf);
 	}
 	check_tockens_ss(line, com);
 	if (**line && **line != ' ' && **line != ';' && **line != '|' &&
@@ -101,7 +106,9 @@ void	check_tockens_ss(char **line, t_command *com)
 	{
 		check_env_var(line, com);
 		change_env_var_meaning(com);
-		com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, \
+		com->comd->arg->arg = ft_strjoin_gnl(&com->comd->arg->arg, \
 			com->env_var);
+		free(com->env_var);
+		com->env_var = NULL;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sys_mistakes_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 19:08:15 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 18:38:21 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/21 20:24:30 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	rewrite_line(char **line_true, char **line)
 	buf = ft_substr(*line_true, 0, ft_strlen(*line_true) - \
 			ft_strlen(*line) + 1);
 	free(*line_true);
-	*line_true = ft_strjoin_gnl(buf, buf2);
+	*line_true = ft_strjoin_gnl(&buf, buf2);
 	free(buf2);
 	buf2 = NULL;
 	*line += 2;
@@ -65,9 +65,9 @@ void	please_enter(char **line_true, size_t *i, t_command *com)
 	get_next_line(0, &line);
 	tmp = ft_strdup(" ");
 	tmp2 = line;
-	line = ft_strjoin_gnl(tmp, tmp2);
+	line = ft_strjoin_gnl(&tmp, tmp2);
 	free(tmp2);
-	*line_true = ft_strjoin_gnl(*line_true, line);
+	*line_true = ft_strjoin_gnl(line_true, line);
 	check_mistakes_inside(&line, i, line_true, com);
 }
 

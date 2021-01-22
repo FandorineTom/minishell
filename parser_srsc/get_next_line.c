@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/22 15:32:51 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 14:23:27 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/21 20:34:28 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int			get_next_line(int fd, char **line)
 			if (!(hub = ft_strdup(eof + 1)))
 				return (free_buf(line) * free_buf(&buf) * free_buf(&hub));
 		}
-		if (!(*line = ft_strjoin_gnl(*line, buf)))
+		if (!(*line = ft_strjoin_gnl(line, buf)))
 			return (free_buf(line) * free_buf(&buf) * free_buf(&hub));
 	}
 	free(buf);

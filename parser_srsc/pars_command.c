@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 20:49:55 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 14:23:24 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/21 21:21:58 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,14 +102,23 @@ void	define_quotes(int *quotes, char *line, int i)
 
 int		check_which_command(char **line, t_command *com, char *command, int i)
 {
+	char	*buf;
+	char	*buf_2;
+	
+	buf = ft_strdup(command);
+	buf_2 = ft_strdup(command);
 	if (!(ft_strncmp(*line, command, i)) || !(ft_strncmp(*line, \
-		ft_strjoin_gnl(ft_strdup(command), " "), i)) ||
-		!(ft_strncmp(*line, ft_strjoin_gnl(ft_strdup(command), ";"), i)))
+		(buf = ft_strjoin_gnl(&buf, " ")), i)) ||
+		!(ft_strncmp(*line, (buf_2 = ft_strjoin_gnl(&buf_2, ";")), i)))
 	{
 		if (!(com->comd->cmnd = ft_strdup(command)))
 			return (0);
 		(*line) += i - 1;
+		free(buf);
+		free(buf_2);
 		return (1);
 	}
+	free(buf);
+	free(buf_2);
 	return (0);
 }

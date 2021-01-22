@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars_dollar.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 11:27:49 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 14:23:23 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/21 22:01:19 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,17 @@ void	pars_dollar(t_command *com, size_t len_str)
 {
 	char	*buf;
 	char	*buf_end;
+	char	*tmp;
 
 	buf = NULL;
 	buf_end = NULL;
+	tmp = com->comd->arg->arg;
 	while (com->comd->arg->arg && *com->comd->arg->arg)
 	{
 		pars_dollar_2(com, len_str, &buf);
 		if (*com->comd->arg->arg == '\\' && com->comd->arg->arg[1] == '$')
 		{
-			buf = ft_strjoin_gnl(buf, "$");
+			buf = ft_strjoin_gnl(&buf, "$");
 			com->comd->arg->arg += 2;
 		}
 		else if (*com->comd->arg->arg == '$')
@@ -33,25 +35,28 @@ void	pars_dollar(t_command *com, size_t len_str)
 		{
 			while (*com->comd->arg->arg == '\\')
 			{
-				buf = ft_strjoin_gnl(buf, "\\");
+				buf = ft_strjoin_gnl(&buf, "\\");
 				com->comd->arg->arg++;
 			}
 		}
 	}
 	com->comd->arg->arg = buf;
+	free(tmp);
 }
 
 void	pars_dollar_2(t_command *com, size_t len_str, char **buf)
 {
 	size_t	len_slash;
+	char	*tmp;
 
 	len_slash = ft_strlen_char(com->comd->arg->arg, '\\');
 	if (len_slash < len_str && len_slash < ft_strlen_char(\
 		com->comd->arg->arg, '$') && len_str != 1)
 	{
-		*buf = ft_strjoin_gnl(*buf, ft_substr(com->comd->arg->arg, 0, \
-			len_slash));
+		*buf = ft_strjoin_gnl(buf, (tmp = ft_substr(com->comd->arg->arg, 0, \
+			len_slash)));
 		com->comd->arg->arg += len_slash;
+		free(tmp);
 	}
 	else if (len_str == 1)
 	{
@@ -60,9 +65,10 @@ void	pars_dollar_2(t_command *com, size_t len_str, char **buf)
 	}
 	else
 	{
-		*buf = ft_strjoin_gnl(*buf, ft_substr(com->comd->arg->arg, 0, \
-			ft_strlen_char(com->comd->arg->arg, '$')));
+		*buf = ft_strjoin_gnl(buf, (tmp = ft_substr(com->comd->arg->arg, 0, \
+			ft_strlen_char(com->comd->arg->arg, '$'))));
 		com->comd->arg->arg += ft_strlen_char(com->comd->arg->arg, '$');
+		free(tmp);
 	}
 }
 
@@ -82,8 +88,10 @@ void	start_dollar(t_command *com, char **buf, char **buf_end)
 	com->env_var = ft_substr(com->comd->arg->arg, 1, len_var - 1);
 	if (len_var > 1)
 		change_env_var_meaning(com);
-	*buf = ft_strjoin_gnl(*buf, com->env_var);
-	com->comd->arg->arg += len_var;
+	*buf = ft_strjoin_gnl(buf, com->env_var);
+	// com->comd->arg->arg += len_var;
+	// if (com->comd->arg->arg)
+	// 	free(com->comd->arg->arg);
 	free(com->env_var);
 	com->env_var = NULL;
 	com->comd->arg->arg = *buf_end;

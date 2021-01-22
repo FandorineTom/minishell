@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_quotes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/13 14:08:41 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 14:23:11 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/21 21:33:59 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	pars_double_quotes(char **line, t_command *com)
 		buf = com->comd->arg->arg;
 		com->comd->arg->arg = NULL;
 		check_tockens(line, com);
-		com->comd->arg->arg = ft_strjoin_gnl(buf, com->comd->arg->arg);
+		com->comd->arg->arg = ft_strjoin_gnl(&buf, com->comd->arg->arg);
 	}
 }
 
@@ -63,21 +63,28 @@ int		check_open_quotes(char **line, size_t len)
 void	pars_single_quotes(char **line, t_command *com)
 {
 	size_t	len;
+	char	*buf;
 
 	while (**line == '\'')
 	{
 		len = ft_strlen_char(*line + 1, '\'');
 		if (len)
-			com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, \
-			ft_substr(*line, 1, len));
+		{
+			com->comd->arg->arg = ft_strjoin_gnl(&com->comd->arg->arg, \
+				(buf = ft_substr(*line, 1, len)));
+			free(buf);
+		}
 		(*line) += len + 2;
 	}
 }
 
 void	double_quotes_utils(t_command *com, char **line, size_t len)
 {
-	com->comd->arg->arg = ft_strjoin_gnl(com->comd->arg->arg, \
-		ft_substr(*line, 1, len));
+	char	*buf;
+	
+	com->comd->arg->arg = ft_strjoin_gnl(&com->comd->arg->arg, \
+		(buf = ft_substr(*line, 1, len)));
+	free(buf);
 	if (ft_strchr(com->comd->arg->arg, '$'))
 		pars_dollar(com, ft_strlen(com->comd->arg->arg));
 	if (ft_strchr(com->comd->arg->arg, '\\'))
