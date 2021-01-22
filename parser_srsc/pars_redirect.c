@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars_redirect.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 11:29:32 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 14:23:16 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/21 21:25:20 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ void	fill_redirect(t_command *com, size_t type_r)
 	com->comd->redir->type_red = type_r;
 	com->comd->redir->r_redir = 1;
 	tmp = com->comd->redir;
-	com->comd->redir = com->comd->redir->next;
-	if (!com->comd->redir)
-		init_redirect(com);
-	com->comd->redir->previous = tmp;
-	com->comd->redir = com->comd->redir->previous;
-	tmp = NULL;
+	// com->comd->redir = com->comd->redir->next;
+	// if (!com->comd->redir)
+	// 	init_redirect(com);
+	// com->comd->redir->previous = tmp;
+	// com->comd->redir = com->comd->redir->previous;
+	// tmp = NULL;
 }
 
 void	which_redirect(char **line, t_command *com)
