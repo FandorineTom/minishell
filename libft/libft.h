@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/13 23:48:34 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/21 02:48:19 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/22 13:01:27 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdarg.h>
 # include <string.h>
 # define FT_SIZE_MAX (size_t)~0
 
