@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 18:49:22 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 18:44:35 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/23 16:59:17 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,15 +79,11 @@ void	check_mistakes_quotes(char **line, size_t *i)
 		len_q_one = ft_strlen_char(*line, '\'');
 	if (len_q_one >= ft_strlen(*line) && *(*line + len_q_one) != '\'' && !type)
 		*i = write(2, "syntax error with quotes\n", 25);
-	else if (len_q_one >= ft_strlen(*line) && *(*line + len_q_one) != '\"' && type)
+	else if (len_q_one >= ft_strlen(*line) &&
+		*(*line + len_q_one) != '\"' && type)
 		*i = write(2, "syntax error with quotes\n", 25);
 	else
 		*line += len_q_one + 1;
-	
-	// if (i && ft_strchr(*line + len_q_one + 1, '"'))
-	// 	*line = ft_strchr(*line + len_q_one + 1, '"') + 1;
-	// else if (!i && ft_strchr(*line + len_q_one + 1, '\''))
-	// 	*line = ft_strchr(*line + len_q_one + 1, '\'') + 1;
 }
 
 void	check_mistakes_inside(char **line, size_t *i, char **line_true, \

@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/23 16:29:12 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/23 16:49:39 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ void	parser(char **line, t_command *com)
 		init_com(com);
 		activate_pipe(line, NULL);
 	}
-	while (**line == ' ')
-		(*line)++;
+	skip_spaces(line);
 	while (line && *line && **line && **line != ';')
 	{
 		pars_tockens(line, com);

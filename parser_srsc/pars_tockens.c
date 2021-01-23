@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars_tockens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 11:30:57 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/22 17:46:22 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/23 16:47:04 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,10 @@ void	pars_tockens(char **line, t_command *com)
 	t_arg			*new;
 
 	new = com->comd->arg;
-	while (**line == ' ')
-		(*line)++;
+	skip_spaces(line);
 	com->comd->no_command = check_command(line, com);
 	if (com->env_var && !com->comd->no_command)
 	{
-		// init_arg(com);
 		com->comd->arg->arg = ft_strdup(com->env_var);
 		free(com->env_var);
 		com->env_var = NULL;
@@ -31,8 +29,7 @@ void	pars_tockens(char **line, t_command *com)
 			check_tockens_ss(line, com);
 		ft_argadd_back(&new, com->comd->arg);
 	}
-	while (**line == ' ')
-		(*line)++;
+	skip_spaces(line);
 	while (line && *line && **line && **line != ';' && **line != '|' &&
 			**line != '>' && **line != '<')
 		pars_tockens_2(com, line, new);
@@ -67,8 +64,7 @@ void	pars_tockens_2(t_command *com, char **line, t_arg *new)
 	}
 	if (com->comd->arg->arg)
 		ft_argadd_back(&new, com->comd->arg);
-	while (**line == ' ')
-		(*line)++;
+	skip_spaces(line);
 }
 
 void	check_tockens(char **line, t_command *com)
@@ -76,8 +72,7 @@ void	check_tockens(char **line, t_command *com)
 	size_t	len;
 	char	*buf;
 
-	while (**line == ' ')
-		(*line)++;
+	skip_spaces(line);
 	if (!(len = find_len_tockens(line)))
 		com->comd->arg->no_arg = 0;
 	else if (**line != '|' && **line != '"' && **line != '\'' &&

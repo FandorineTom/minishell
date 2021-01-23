@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars_escaping.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 21:27:32 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 21:43:37 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/23 16:52:06 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,6 @@ void	pars_esc_nq(char **line, t_command *com)
 		len = find_len_tockens(line);
 		if (len > ft_strlen_char_slash(*line, '\''))
 			len = ft_strlen_char_slash(*line, '\'');
-		// len = ft_strlen_space(*line);
-		// if (len > ft_strlen_char(*line + 1, '\\') + 1)
-		// 	len = ft_strlen_char(*line + 1, '\\') + 1;
 		com->comd->arg->arg = ft_strjoin_gnl(&com->comd->arg->arg, \
 			(buf = ft_substr(*line, 0, len)));
 		free(buf);
@@ -52,15 +49,18 @@ void	pars_escaping(t_command *com, size_t len_str)
 	while (com->comd->arg->arg && *com->comd->arg->arg)
 	{
 		len_slash = ft_strlen_char(com->comd->arg->arg, '\\');
-		buf = ft_strjoin_gnl(&buf, ft_substr(com->comd->arg->arg, 0, len_slash));
+		buf = ft_strjoin_gnl(&buf, ft_substr(com->comd->arg->arg, 0, \
+			len_slash));
 		com->comd->arg->arg += len_slash;
 		if (*com->comd->arg->arg && *(com->comd->arg->arg + 1))
 		{
 			if (*(com->comd->arg->arg + 1) == '"' ||
 				*(com->comd->arg->arg + 1) == '\\')
-				buf = ft_strjoin_gnl(&buf, ft_substr(com->comd->arg->arg, 1, 1));
+				buf = ft_strjoin_gnl(&buf, \
+					ft_substr(com->comd->arg->arg, 1, 1));
 			else
-				buf = ft_strjoin_gnl(&buf, ft_substr(com->comd->arg->arg, 0, 2));
+				buf = ft_strjoin_gnl(&buf, \
+					ft_substr(com->comd->arg->arg, 0, 2));
 			com->comd->arg->arg += 2;
 		}
 	}
