@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:30 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/21 15:30:17 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/23 12:31:00 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ char	**error_message2(char *message)
 	return (NULL);
 }
 
-int		error_path(t_command *com)
+int		error_path(t_command *com, char *message)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(com->comd->arg->arg, 2);
-	ft_putstr_fd(": No such file or directory\n", 2);
+	ft_putstr_fd(message, 2);
 	return (127);
 }
 

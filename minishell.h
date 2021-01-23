@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/22 01:30:12 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/23 12:28:03 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ void				function(int signal);
 char				**envp_to_mass(t_command *com);
 char				**transfer_to_mass(t_command *com);
 void				check_if_my(char *cmd, t_command *com);
-int					error_path(t_command *com);
+int					error_path(t_command *com, char *message);
 int					prompt_message(void);
 
 #endif

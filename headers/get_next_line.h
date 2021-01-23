@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/22 15:33:29 by scopycat          #+#    #+#             */
-/*   Updated: 2020/06/06 12:49:44 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/23 12:08:14 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 size_t	ft_strlen(const char *str);
 char	*ft_strdup(const char *str);
 char	*ft_strchr_gnl(char *str);
-char	*ft_strjoin_gnl(char *l1, char *l2);
+char	*ft_strjoin_gnl(char **l1, char *l2);
 int		get_next_line(int fd, char **line);
 
 #endif
