@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 18:49:22 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/23 16:59:17 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/23 19:17:09 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,10 @@ void	check_line_mistakes(char **line, size_t *i, char **line_true, \
 	else
 		check_mistakes_quotes(line, i);
 	if (((**line == '>' || **line == '<') && (*(*line + 1) == '\0')) ||
-		((*(*line + 1) == '>' || *(*line + 1) == '<') &&
+		(**line && (*(*line + 1) == '>' || *(*line + 1) == '<') &&
 		*(*line + 2) == '\0') || ((**line == '>' || **line == '<') &&
 		(*(*line + skip_sp(*line + 1) + 1) == '\0')) ||
-		((*(*line + 1) == '>' || *(*line + 1) == '<') &&
+		(**line && (*(*line + 1) == '>' || *(*line + 1) == '<') &&
 		*(*line + skip_sp(*line + 2) + 2) == '\0'))
 		*i = write(2, "syntax error near unexpected token `newline'\n", 45);
 	else if (**line == '>' && *(*line + 1) == '|')
@@ -125,7 +125,8 @@ void	check_multyline(char **line, size_t *i, char **line_true, \
 		please_enter(line_true, i, com);
 	else
 	{
-		(*line)++;
+		if (**line)
+			(*line)++;
 		while (**line == ' ')
 			(*line)++;
 		if (!(*i) && **line == '|')
