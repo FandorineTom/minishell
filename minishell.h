@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2021/01/23 18:45:17 by snorthmo         ###   ########.fr       */
-=======
-/*   Updated: 2021/01/23 16:43:59 by scopycat         ###   ########.fr       */
->>>>>>> 8e56f1cb1d2790b5537b720a93e6f247059a369e
+/*   Updated: 2021/01/24 00:29:29 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,5 +214,7 @@ char				**transfer_to_mass(t_command *com);
 void				check_if_my(char *cmd, t_command *com);
 int					error_path(t_command *com, char *message);
 int					prompt_message(void);
+int					check_pwd(t_command *com);
+void				copy_oldpwd(t_command *com);
 
 #endif
