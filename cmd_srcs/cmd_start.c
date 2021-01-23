@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 21:52:08 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/23 13:39:11 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/24 02:09:06 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ int		open_fork(t_command *com)
 	if (!(path = find_bin(com)))
 		return (com->com_ret);
 	if (!(args = transfer_to_mass(com)))
-		return (error_message("malloc error", 2));
+		return (error_message("1malloc error", 2));
 	if (!(envp = envp_to_mass(com)))
-		return (error_message("malloc error", 2));
+		return (error_message("2malloc error", 2));
 	pid = fork();
 	g_b_flag = 1;
 	if (pid == 0)

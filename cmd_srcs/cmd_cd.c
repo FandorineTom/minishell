@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:09:36 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/24 00:28:20 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/24 01:42:17 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,29 @@ int		change_tilda(t_command *com)
 	return (1);
 }
 
+int		change_back(t_command *com)
+{
+	t_env	*tmp;
+	char	*path;
+
+	tmp = com->env_def;
+	while (tmp)
+	{
+		if (!ft_strcmp("OLDPWD", tmp->env))
+		{
+			path = ft_strdup(tmp->meaning);
+			if (chdir(path) < 0)
+				com->com_ret = error_message(strerror(errno), -1);
+			ft_putendl_fd(path, 1);
+			free(path);
+			copy_oldpwd(com);
+			return (com->com_ret = check_pwd(com));
+		}
+		tmp = tmp->next;
+	}
+	return (com->com_ret = error_message("minishell: cd: OLDPWD not set", 127));
+}
+
 int		check_pwd(t_command *com)
 {
 	t_env	*tmp;
@@ -100,6 +123,7 @@ int		check_pwd(t_command *com)
 		}
 		tmp = tmp->next;
 	}
+	free(pwd);
 	return (com->com_ret);
 }
 
@@ -134,25 +158,14 @@ void	copy_oldpwd(t_command *com)
 
 int		cmd_cd(t_command *com)
 {
-	int		flag;
-	char	*pwd;
-	int		size;
-
-	size = 1024;
-	pwd = NULL;
-	while (!(pwd = getcwd(NULL, size)))
-	{
-		size *= 2;
-		if (size >= INT_MAX / 2)
-			return (com->com_ret = error_message(strerror(errno), 2));
-	}
-	flag = 0;
 	if (!check_home(com))
 		return (error_message("minishell: cd: HOME not set", 1));
 	if (!com->comd->arg->arg)
 		return (find_home(com));
 	if (com->comd->arg->arg[0] == '~')
 		return (change_tilda(com));
+	if (com->comd->arg->arg[0] == '-')
+		return (change_back(com));
 	if (chdir(com->comd->arg->arg) < 0)
 		com->com_ret = error_message(strerror(errno), 1);
 	copy_oldpwd(com);

@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:13 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/23 18:48:28 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/24 01:39:13 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,11 @@ t_env	*copy_env_lst(t_env *env)
 int		cmd_export_noargs(t_command *com)
 {
 	t_env	*sorted;
+	t_env	*tmp;
 
 	sorted = copy_env_lst(com->env_def);
 	sorted = sort_list(sorted);
+	tmp = sorted;
 	while (sorted)
 	{
 		ft_putstr("declare -x ");
@@ -83,6 +85,7 @@ int		cmd_export_noargs(t_command *com)
 		ft_putchar('\n');
 		sorted = sorted->next;
 	}
+	sorted = tmp;
 	free_env(sorted);
 	return (0);
 }

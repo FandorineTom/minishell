@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:26 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/19 14:48:10 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/24 01:33:28 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int		cmd_unset(t_command *com)
 		}
 		com->env_def = com->env_def->next;
 	}
+	free(to_del);
 	com->env_def = tmp;
 	return (0);
 }

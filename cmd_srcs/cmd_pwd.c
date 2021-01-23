@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:20 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/20 17:23:07 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/24 01:22:19 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ int		cmd_pwd(t_command *com)
 	}
 	ft_putstr(path);
 	ft_putchar('\n');
+	free(path);
 	return (0);
 }
