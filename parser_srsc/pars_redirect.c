@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars_redirect.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 11:29:32 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 21:25:20 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/23 15:20:42 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	fill_file_name(t_command *com, int i, t_arg *new)
 	t_arg	*buf;
 
 	while (com->comd && com->comd->next &&
+		com->comd->next->redir->type_red &&
 		!com->comd->next->redir->file_name)
 		com->comd = com->comd->next;
 	buf = com->comd->arg;
