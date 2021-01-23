@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:53:08 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/20 13:14:55 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/23 16:41:28 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int		struct_len(t_env *tmp)
 char	**envp_to_mass(t_command *com)
 {
 	char	**envp;
+	// char	*tmp_line;
 	t_env	*tmp;
 	int		i;
 
@@ -67,8 +68,10 @@ char	**envp_to_mass(t_command *com)
 	{
 		if (!(envp[i] = ft_strjoin(tmp->env, "=")))
 			return (error_message2(strerror(errno)));
+		// tmp_line = envp[i];
 		if (!(envp[i] = ft_strjoin(envp[i], tmp->meaning)))
 			return (error_message2(strerror(errno)));
+		// free(tmp_line);
 		i++;
 		tmp = tmp->next;
 	}

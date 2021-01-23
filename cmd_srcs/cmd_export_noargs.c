@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:13 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/19 17:24:27 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/23 18:48:28 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,12 @@ int		cmd_export_noargs(t_command *com)
 	{
 		ft_putstr("declare -x ");
 		ft_putstr(sorted->env);
-		ft_putstr("=\"");
-		ft_putstr(sorted->meaning);
-		ft_putchar('"');
+		if (sorted->meaning)
+		{
+			ft_putstr("=\"");
+			ft_putstr(sorted->meaning);
+			ft_putchar('"');
+		}
 		ft_putchar('\n');
 		sorted = sorted->next;
 	}

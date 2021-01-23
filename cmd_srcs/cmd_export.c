@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 13:04:29 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/21 15:28:23 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/23 18:45:54 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ char	*detect_env_var(t_command *com, t_arg *arg)
 	var = NULL;
 	while (arg->arg[i] && arg->arg[i] != '=')
 		i++;
-	if (arg->arg[i] || (ft_isalpha(arg->arg[0]) && !arg->arg[i] \
-	&& arg->arg[i - 1] == '='))
+	if (arg->arg[i] || ((ft_isalpha(arg->arg[0]) || arg->arg[0] == '_') \
+	&& !arg->arg[i]))
 	{
 		if (!(var = ft_substr(arg->arg, 0, i)))
 		{

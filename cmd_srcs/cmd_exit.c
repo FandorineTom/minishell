@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:00 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/22 18:03:17 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/23 19:26:56 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,10 @@ void	cmd_exit(t_command *com)
 				ft_putstr_fd(com->comd->arg->arg, 2);
 				ft_putstr_fd(": numeric argument required\n", 2);
 			}
-			else
+			if (i && (res != 0 || (res == 0 && com->comd->arg->arg[0] == '0')))
 				com->com_ret = res;
+			else
+				com->com_ret = 255;
 		}
 	}
 	else
