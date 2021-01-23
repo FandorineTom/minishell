@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 18:49:22 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 18:44:35 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/23 19:17:09 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,10 @@ void	check_line_mistakes(char **line, size_t *i, char **line_true, \
 	else
 		check_mistakes_quotes(line, i);
 	if (((**line == '>' || **line == '<') && (*(*line + 1) == '\0')) ||
-		((*(*line + 1) == '>' || *(*line + 1) == '<') &&
+		(**line && (*(*line + 1) == '>' || *(*line + 1) == '<') &&
 		*(*line + 2) == '\0') || ((**line == '>' || **line == '<') &&
 		(*(*line + skip_sp(*line + 1) + 1) == '\0')) ||
-		((*(*line + 1) == '>' || *(*line + 1) == '<') &&
+		(**line && (*(*line + 1) == '>' || *(*line + 1) == '<') &&
 		*(*line + skip_sp(*line + 2) + 2) == '\0'))
 		*i = write(2, "syntax error near unexpected token `newline'\n", 45);
 	else if (**line == '>' && *(*line + 1) == '|')
@@ -79,15 +79,11 @@ void	check_mistakes_quotes(char **line, size_t *i)
 		len_q_one = ft_strlen_char(*line, '\'');
 	if (len_q_one >= ft_strlen(*line) && *(*line + len_q_one) != '\'' && !type)
 		*i = write(2, "syntax error with quotes\n", 25);
-	else if (len_q_one >= ft_strlen(*line) && *(*line + len_q_one) != '\"' && type)
+	else if (len_q_one >= ft_strlen(*line) &&
+		*(*line + len_q_one) != '\"' && type)
 		*i = write(2, "syntax error with quotes\n", 25);
 	else
 		*line += len_q_one + 1;
-	
-	// if (i && ft_strchr(*line + len_q_one + 1, '"'))
-	// 	*line = ft_strchr(*line + len_q_one + 1, '"') + 1;
-	// else if (!i && ft_strchr(*line + len_q_one + 1, '\''))
-	// 	*line = ft_strchr(*line + len_q_one + 1, '\'') + 1;
 }
 
 void	check_mistakes_inside(char **line, size_t *i, char **line_true, \
@@ -129,7 +125,8 @@ void	check_multyline(char **line, size_t *i, char **line_true, \
 		please_enter(line_true, i, com);
 	else
 	{
-		(*line)++;
+		if (**line)
+			(*line)++;
 		while (**line == ' ')
 			(*line)++;
 		if (!(*i) && **line == '|')

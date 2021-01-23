@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2021/01/23 18:45:17 by snorthmo         ###   ########.fr       */
+=======
+/*   Updated: 2021/01/23 16:43:59 by scopycat         ###   ########.fr       */
+>>>>>>> 8e56f1cb1d2790b5537b720a93e6f247059a369e
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +187,7 @@ void				file_close(t_command *com);
 void				error_redirect(t_command *com);
 void				activate_pipe(char **line, t_command *com);
 char				*ft_itoa(int n);
+void				skip_spaces(char **line);
 void				cmd_start(t_command *com);
 int					cmd_echo(t_command *com);
 int					cmd_cd(t_command *com);

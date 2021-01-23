@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 20:49:55 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 21:21:58 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/23 16:49:02 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int		check_which_command(char **line, t_command *com, char *command, int i)
 {
 	char	*buf;
 	char	*buf_2;
-	
+
 	buf = ft_strdup(command);
 	buf_2 = ft_strdup(command);
 	if (!(ft_strncmp(*line, command, i)) || !(ft_strncmp(*line, \

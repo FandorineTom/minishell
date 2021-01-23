@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/13 14:08:41 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/23 16:00:29 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/23 16:49:58 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	pars_single_quotes(char **line, t_command *com)
 void	double_quotes_utils(t_command *com, char **line, size_t len)
 {
 	char	*buf;
-	
+
 	com->comd->arg->arg = ft_strjoin_gnl(&com->comd->arg->arg, \
 		(buf = ft_substr(*line, 1, len)));
 	free(buf);

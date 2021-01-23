@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 10:58:54 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 14:23:32 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/23 16:48:28 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,10 @@ void	free_arg(t_arg *arg)
 		free(buf);
 		buf = NULL;
 	}
+}
+
+void	skip_spaces(char **line)
+{
+	while (**line == ' ')
+		(*line)++;
 }
