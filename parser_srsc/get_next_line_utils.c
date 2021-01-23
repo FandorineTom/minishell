@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/22 15:33:12 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 20:53:48 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/23 15:40:04 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ char	*ft_strjoin_gnl(char **l1, char *l2)
 {
 	char	*buf;
 	int		i;
+	char	*tmp;
 
 	if (!(*l1) && !l2)
 		return (NULL);
@@ -80,8 +81,10 @@ char	*ft_strjoin_gnl(char **l1, char *l2)
 	if (*l1)
 		free(*l1);
 	*l1 = NULL;
+	tmp = l2;
 	while (l2 && *l2)
 		buf[i++] = *l2++;
 	buf[i] = '\0';
+	l2 = tmp;
 	return (buf);
 }

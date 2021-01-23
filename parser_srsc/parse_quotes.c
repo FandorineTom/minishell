@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_quotes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/13 14:08:41 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 21:33:59 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/23 16:00:29 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	pars_double_quotes(char **line, t_command *com)
 	size_t	len;
 	size_t	len_env;
 	char	*buf;
+	char	*tmp;
 
 	len = ft_strlen_char(*line + 1, '"');
 	while (*(*line + len) == '\\')
@@ -34,7 +35,9 @@ void	pars_double_quotes(char **line, t_command *com)
 		buf = com->comd->arg->arg;
 		com->comd->arg->arg = NULL;
 		check_tockens(line, com);
+		tmp = com->comd->arg->arg;
 		com->comd->arg->arg = ft_strjoin_gnl(&buf, com->comd->arg->arg);
+		free(tmp);
 	}
 }
 

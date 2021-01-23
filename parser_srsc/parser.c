@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 18:28:59 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/23 16:29:12 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	check_result_utils(t_command *com, t_arg *new)
 		com->comd->arg = com->comd->arg->next;
 		if (com->comd->arg)
 			com->comd->arg->previous = NULL;
+		if (new->arg)
+			free(new->arg);
 		free(new);
 		new = com->comd->arg;
 		com->comd->no_command = 1;

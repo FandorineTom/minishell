@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars_dollar.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 11:27:49 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 22:01:19 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/23 15:49:35 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	pars_dollar(t_command *com, size_t len_str)
 		}
 	}
 	com->comd->arg->arg = buf;
+	free(buf_end);
 	free(tmp);
 }
 
