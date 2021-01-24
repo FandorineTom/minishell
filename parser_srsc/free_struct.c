@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 18:40:09 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 14:23:31 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/24 11:34:57 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	free_redirect(t_redir *red)
 {
 	t_redir	*buf;
 
+	while (red && red->previous)
+		red = red->previous;
 	while (red)
 	{
 		buf = red;

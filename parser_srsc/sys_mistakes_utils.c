@@ -6,7 +6,7 @@
 /*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 19:08:15 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/21 20:24:30 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/23 23:20:31 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ size_t	ft_strlen_char_slash(char *str, char c)
 	i = 0;
 	if (!str)
 		return (i);
-	while (str[i] && (str[i] != c || (str[i] == c && str[i - 1] == '\\')))
+	while (str[i] && (str[i] != c || (str[i] == c && i > 0 &&
+		str[i - 1] == '\\')))
 		i++;
 	return (i);
 }

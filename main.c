@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/23 16:30:49 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/24 11:34:08 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ int		minishell_loop(t_command *com)
 			start_redirect(com);
 			if (!com->error)
 				cmd_start(com);
-			if (*line == ';' && *(line + 1) == '\0')
+			if (*line == ';' && (*(line + 1) == '\0' ||
+				*(line + skip_sp(line + 1) + 1) == '\0'))
 				break ;
 		}
 		return_stdin_out();

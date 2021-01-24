@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/24 00:51:27 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/24 10:50:33 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	parser(char **line, t_command *com)
 		while (com->comd->previous)
 			com->comd = com->comd->previous;
 	}
-	write(1, "end of parser\n", 14); // чисто для теста, потом нужно убрать
+	// write(1, "end of parser\n", 14); // чисто для теста, потом нужно убрать
 }
 
 void	check_result(t_command *com)
