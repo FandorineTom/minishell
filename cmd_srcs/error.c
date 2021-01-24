@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:30 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/23 12:31:00 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/24 14:49:03 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int		error_message(char *message, int exit_code)
 {
 	ft_putstr_fd(message, 2);
-	ft_putstr_fd("\n", 2);
+	ft_putchar_fd('\n', 2);
 	errno = 0;
 	return (exit_code);
 }
@@ -32,6 +32,7 @@ int		error_path(t_command *com, char *message)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(com->comd->arg->arg, 2);
 	ft_putstr_fd(message, 2);
+	ft_putchar_fd('\n', 2);
 	return (127);
 }
 

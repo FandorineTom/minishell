@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/24 00:29:29 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/24 13:53:32 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,5 +216,6 @@ int					error_path(t_command *com, char *message);
 int					prompt_message(void);
 int					check_pwd(t_command *com);
 void				copy_oldpwd(t_command *com);
+int					free_str(char **str);
 
 #endif

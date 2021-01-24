@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:41 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/23 12:31:22 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/24 12:48:13 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,8 @@ char		*find_bin(t_command *com)
 	{
 		if (find_file(path[i], com->comd->arg->arg))
 		{
-			to_ret = ft_strjoin("/", com->comd->arg->arg);
-			tmp_line = to_ret;
-			to_ret = ft_strjoin(path[i], to_ret);
+			tmp_line = ft_strjoin("/", com->comd->arg->arg);
+			to_ret = ft_strjoin(path[i], tmp_line);
 			free(tmp_line);
 			return (to_ret + free_mas(path));
 		}

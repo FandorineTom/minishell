@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:53:08 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/24 01:15:18 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/24 14:47:31 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,15 @@ char	**envp_to_mass(t_command *com)
 	i = 0;
 	while (tmp)
 	{
-		if (!(envp[i] = ft_strjoin(tmp->env, "=")))
+		if (tmp->meaning)
+		{
+		if (!(tmp_line = ft_strjoin(tmp->env, "=")))
 			return (error_message2(strerror(errno)));
-		tmp_line = envp[i];
-		if (!(envp[i] = ft_strjoin(envp[i], tmp->meaning)))
+		if (!(envp[i] = ft_strjoin(tmp_line, tmp->meaning)))
 			return (error_message2(strerror(errno)));
 		free(tmp_line);
 		i++;
+		}
 		tmp = tmp->next;
 	}
 	envp[i] = NULL;
