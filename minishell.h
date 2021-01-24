@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/24 13:53:32 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/24 15:37:11 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef	struct		s_redir
 {
 	struct s_redir	*next;
 	struct s_redir	*previous;
-	int				fd1; // вот это вроде тоже не используется, да? 
+	int				fd1; // вот это вроде тоже не используется, да?
 	int				fd2;
 	char			*file_name;
 	size_t			type_red;
@@ -197,7 +197,7 @@ t_env				*new_node(char *var, char *mean);
 char				*find_meaning(t_command *com, t_arg *arg);
 int					error_export(char *arg);
 int					cmd_unset(t_command *com);
-void				cmd_exit(t_command *com);
+int					cmd_exit(t_command *com);
 void				signal_handler(t_command *com);
 void				*ctrl_d(t_command *com);
 char				*find_bin(t_command *com);
@@ -217,5 +217,7 @@ int					prompt_message(void);
 int					check_pwd(t_command *com);
 void				copy_oldpwd(t_command *com);
 int					free_str(char **str);
+int					check_home(t_command *com);
+int					find_home(t_command *com);
 
 #endif

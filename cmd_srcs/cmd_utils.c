@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:53:08 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/24 14:47:31 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/24 15:25:14 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	check_if_my(char *cmd, t_command *com)
 	else if (cmd_num == 5)
 		com->com_ret = cmd_env(com);
 	else if (cmd_num == 6)
-		cmd_exit(com);
+		com->com_ret = cmd_exit(com);
 }
 
 int		struct_len(t_env *tmp)
@@ -68,12 +68,12 @@ char	**envp_to_mass(t_command *com)
 	{
 		if (tmp->meaning)
 		{
-		if (!(tmp_line = ft_strjoin(tmp->env, "=")))
-			return (error_message2(strerror(errno)));
-		if (!(envp[i] = ft_strjoin(tmp_line, tmp->meaning)))
-			return (error_message2(strerror(errno)));
-		free(tmp_line);
-		i++;
+			if (!(tmp_line = ft_strjoin(tmp->env, "=")))
+				return (error_message2(strerror(errno)));
+			if (!(envp[i] = ft_strjoin(tmp_line, tmp->meaning)))
+				return (error_message2(strerror(errno)));
+			free(tmp_line);
+			i++;
 		}
 		tmp = tmp->next;
 	}

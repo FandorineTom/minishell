@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:41 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/24 12:48:13 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/24 15:34:35 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,10 @@ static int	find_file(char *path, char *cmd)
 	return (0);
 }
 
-char		*find_bin(t_command *com)
+char		**find_path(t_command *com)
 {
-	char	**path;
-	char	*to_ret;
-	char	*tmp_line;
-	int		i;
 	t_env	*tmp;
+	char	**path;
 
 	tmp = com->env_def;
 	path = NULL;
@@ -72,6 +69,17 @@ char		*find_bin(t_command *com)
 			path = ft_split(tmp->meaning, ':');
 		tmp = tmp->next;
 	}
+	return (path);
+}
+
+char		*find_bin(t_command *com)
+{
+	char	**path;
+	char	*to_ret;
+	char	*tmp_line;
+	int		i;
+
+	path = find_path(com);
 	if (!path)
 		com->com_ret = error_path(com, ": No such file or directory\n");
 	i = -1;

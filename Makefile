@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+         #
+#    By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/13 20:15:44 by scopycat          #+#    #+#              #
-#    Updated: 2021/01/21 14:20:48 by scopycat         ###   ########.fr        #
+#    Updated: 2021/01/24 15:29:07 by snorthmo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ cmd_srcs/signal.c\
 cmd_srcs/minishell.c\
 cmd_srcs/fd_utils.c\
 cmd_srcs/cmd_utils.c\
+cmd_srcs/cmd_cd_utils.c\
 cmd_srcs/error.c
 
 OBJ = $(FUNC:.c=.o)
