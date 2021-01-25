@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/25 13:49:19 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/25 17:08:43 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,10 @@ typedef	struct		s_redir
 {
 	struct s_redir	*next;
 	struct s_redir	*previous;
-	int				fd1; // вот это вроде тоже не используется, да?
 	int				fd2;
 	char			*file_name;
 	size_t			type_red;
 	size_t			r_redir;
-	size_t			l_redir; // не нужен, удалить
 }					t_redir;
 
 typedef struct		s_comd
@@ -170,7 +168,8 @@ int					check_flag_n(char *line, int quotes);
 void				pars_dollar(t_command *com, size_t len_str);
 void				pars_dollar_2(t_command *com, size_t len_str, char **buf);
 void				start_dollar(t_command *com, char **buf, char **buf_end);
-void				pars_escaping(t_command *com, size_t len_str);
+void				pars_escaping(t_command *com);
+void				pars_esc_inside(t_command *com, char **buf);
 void				pars_redirect(char **line, t_command *com);
 void				pars_reverse_redirect(char **line, t_command *com);
 void				which_redirect(char **line, t_command *com);

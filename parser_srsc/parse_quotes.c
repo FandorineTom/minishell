@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/13 14:08:41 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/23 16:49:58 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/25 16:45:03 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,12 @@
 void	pars_double_quotes(char **line, t_command *com)
 {
 	size_t	len;
-	size_t	len_env;
 	char	*buf;
 	char	*tmp;
 
 	len = ft_strlen_char(*line + 1, '"');
 	while (*(*line + len) == '\\')
 		len = len + ft_strlen_char(*line + len + 2, '"') + 1;
-	len_env = 0;
 	if (len == ft_strlen(*line + 1) && (*line)[len - 1] != '"')
 	{
 		com->comd->arg->arg = ft_substr(*line, 1, len);
@@ -91,6 +89,6 @@ void	double_quotes_utils(t_command *com, char **line, size_t len)
 	if (ft_strchr(com->comd->arg->arg, '$'))
 		pars_dollar(com, ft_strlen(com->comd->arg->arg));
 	if (ft_strchr(com->comd->arg->arg, '\\'))
-		pars_escaping(com, len);
+		pars_escaping(com);
 	(*line) += len + 2;
 }
