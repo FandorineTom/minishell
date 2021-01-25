@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:45 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/26 01:47:31 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/26 01:55:34 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,12 @@ void	*ctrl_d(t_command *com)
 void	ctrl_b(int sig)
 {
 	char *code;
-	
-	// g_c_flag = 1;
+
 	if (g_b_flag)
 	{
 		code = ft_itoa(sig);
 		ft_putstr_fd("Quit: ", 2);
 		ft_putendl_fd(code, 2);
-		// prompt_message();
 		free(code);
 	}
 	else
