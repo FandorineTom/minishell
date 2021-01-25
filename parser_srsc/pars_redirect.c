@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 11:29:32 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/23 16:50:17 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/25 16:43:08 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,8 @@ void	pars_redirect(char **line, t_command *com)
 
 void	fill_redirect(t_command *com, size_t type_r)
 {
-	t_redir	*tmp;
-
 	com->comd->redir->type_red = type_r;
 	com->comd->redir->r_redir = 1;
-	tmp = com->comd->redir;
 }
 
 void	which_redirect(char **line, t_command *com)

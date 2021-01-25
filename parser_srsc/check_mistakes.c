@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_mistakes.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 18:49:22 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/23 23:15:36 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/25 17:16:53 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ void	check_mistakes(char **line_true, t_command *com)
 	line = *line_true;
 	while (*line == ' ')
 		line++;
-	if (*line == '|')
+	if (*line == '|' && *(line + 1) == '|')
+		i = write(2, "syntax error near unexpected token '||'\n", 40);
+	else if (*line == '|')
 		i = write(2, "syntax error near unexpected token '|'\n", 39);
 	if (*line == '&')
 		i = write(2, "syntax error near unexpected token '&'\n", 39);

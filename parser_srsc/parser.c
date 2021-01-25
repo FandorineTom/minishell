@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 22:32:31 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/24 10:50:33 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/25 16:39:37 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	parser(char **line, t_command *com)
 		while (com->comd->previous)
 			com->comd = com->comd->previous;
 	}
-	// write(1, "end of parser\n", 14); // чисто для теста, потом нужно убрать
 }
 
 void	check_result(t_command *com)
@@ -88,10 +87,14 @@ void	check_result_flag(t_command *com, t_arg *new)
 {
 	while (new && new->arg && !(ft_strncmp(new->arg, "-n\0", 3)))
 	{
+		if (com->comd->flag->flag)
+			free(com->comd->flag->flag);
 		com->comd->flag->flag = ft_strdup(new->arg);
 		com->comd->flag->no_flag = 1;
 		com->comd->arg = com->comd->arg->next;
 		com->comd->arg->previous = NULL;
+		if (new->arg)
+			free(new->arg);
 		free(new);
 		new = com->comd->arg;
 	}

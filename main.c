@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/25 16:19:52 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/25 20:33:57 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int		minishell_loop(t_command *com)
 	}
 }
 
-int	main(int argc, char **argv, char **env)
+int		main(int argc, char **argv, char **env)
 {
 	t_command	com;
 

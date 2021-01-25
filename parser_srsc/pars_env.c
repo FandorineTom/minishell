@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 20:27:57 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/23 18:47:23 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/25 16:43:40 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,9 @@ void	copy_env(char **env, t_command *com)
 
 void	change_env_var_meaning(t_command *com)
 {
-	size_t	i;
 	size_t	len;
 	t_env	*new;
 
-	i = 0;
 	new = com->env_def;
 	len = ft_strlen_space(com->env_var);
 	while (com->env_def)
