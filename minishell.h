@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:50:14 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/24 15:37:11 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/25 13:49:19 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,6 @@ void				no_such_env(t_command *com, size_t len);
 void				change_env(t_command *com);
 void				check_tockens(char **line, t_command *com);
 void				check_tockens_ss(char **line, t_command *com);
-void				work_comman(t_command *com);
 void				init_com(t_command *com);
 void				init_comd(t_command *com);
 void				init_flag(t_command *com);
