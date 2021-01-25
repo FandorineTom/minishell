@@ -6,22 +6,24 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:45 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/25 18:32:42 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/26 01:47:31 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <stdio.h>
 
 void	ctrl_c(int sig)
 {
 	(void)sig;
-	return_stdin_out();
-	ft_putstr_fd("\n\r", 1);
-	// if (!g_b_flag)
-	// {
-		g_c_flag = 1; // в случае, если не было команды, то код выхода 1, а не 130 и после этого надо обнулить эту переменную, потому что из-за нее не вылезает промт потом
+	if (!g_b_flag)
+		ft_putstr_fd("\b\b  \b\b", 2);
+	ft_putstr_fd("\n\r", 2);
+	if (!g_b_flag)
+	{
+		g_c_flag = 1;
 		prompt_message();
-	// }
+	}
 }
 
 void	*ctrl_d(t_command *com)
@@ -35,27 +37,25 @@ void	ctrl_b(int sig)
 {
 	char *code;
 	
-	code = ft_itoa(sig);
 	// g_c_flag = 1;
 	if (g_b_flag)
 	{
+		code = ft_itoa(sig);
 		ft_putstr_fd("Quit: ", 2);
 		ft_putendl_fd(code, 2);
 		// prompt_message();
+		free(code);
 	}
 	else
 	{
 		g_c_flag = 2;
 		ft_putstr_fd("\b\b  \b\b", 2);
 	}
-	free(code);
 }
 
 void	signal_handler(t_command *com)
 {
 	if (signal(SIGINT, ctrl_c) == SIG_ERR)
 		com->com_ret = errno;
-	if (g_c_flag)
-		com->com_ret = 130;
 	signal(SIGQUIT, ctrl_b);
 }

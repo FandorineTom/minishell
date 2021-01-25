@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 20:27:57 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/25 16:43:40 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/26 01:51:27 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,9 @@ void	no_such_env(t_command *com, size_t len)
 	{
 		free(com->env_var);
 		com->env_var = NULL;
+		if (g_c_flag == 1)
+			com->com_ret = 1;
+		g_c_flag = 0;
 		com->env_var = ft_itoa((int)com->com_ret);
 	}
 	else

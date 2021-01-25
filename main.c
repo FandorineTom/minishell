@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 14:49:11 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/25 20:33:57 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/26 01:47:34 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,10 @@ int		minishell_loop(t_command *com)
 	char	*tmp;
 	char	*line;
 
-	if (g_c_flag == 1)
-		free_all(com, 1);
 	while (1)
 	{
-		if (g_c_flag != 1)
-			if (prompt_message())
-				ctrl_d(com);
-		g_c_flag = 0;
+		if (prompt_message())
+			ctrl_d(com);
 		if (!(get_next_line(0, &line)))
 			ctrl_d(com);
 		com->error = 0;
