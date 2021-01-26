@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:41 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/25 20:31:11 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/26 17:16:08 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ char		*find_bin(t_command *com)
 	char	*tmp_line;
 	int		i;
 
+	if (!com->comd->arg || !com->comd->arg->arg)
+		return (NULL);
 	if (com->comd->arg->arg[0] == '/' || com->comd->arg->arg[0] == '.')
 		return (ft_strdup(com->comd->arg->arg));
 	path = find_path(com);
