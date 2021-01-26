@@ -6,7 +6,7 @@
 /*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/13 14:08:41 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/25 16:45:03 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/26 16:18:42 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	pars_single_quotes(char **line, t_command *com)
 		}
 		(*line) += len + 2;
 	}
+	if (!com->comd->arg->arg)
+		com->comd->arg->arg = ft_strdup("");
 }
 
 void	double_quotes_utils(t_command *com, char **line, size_t len)

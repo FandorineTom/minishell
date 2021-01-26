@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 18:40:09 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/24 11:34:57 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/26 15:46:05 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	free_comd(t_comd *comd)
 {
 	t_comd	*buf;
 
+	while (comd && comd->previous)
+		comd = comd->previous;
 	while (comd)
 	{
 		buf = comd;
