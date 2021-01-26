@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:30 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/24 15:07:52 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/26 18:46:02 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,12 @@ int		error_export(char *arg)
 		ft_putstr_fd("': not a valid identifier\n", 2);
 	}
 	return (1);
+}
+
+int		free_str(char **str)
+{
+	if (*str)
+		free(*str);
+	*str = NULL;
+	return (0);
 }

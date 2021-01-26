@@ -6,7 +6,7 @@
 /*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 14:10:41 by snorthmo          #+#    #+#             */
-/*   Updated: 2021/01/26 17:16:08 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/26 18:44:20 by snorthmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,6 @@ int			free_mas(char **mass)
 	}
 	free(mass);
 	mass = NULL;
-	return (0);
-}
-
-int			free_str(char **str)
-{
-	if (*str)
-		free(*str);
-	*str = NULL;
 	return (0);
 }
 
@@ -72,11 +64,21 @@ char		**find_path(t_command *com)
 	return (path);
 }
 
+char		*copy_path(char *path, char *arg)
+{
+	char	*tmp_line;
+	char	*to_ret;
+
+	tmp_line = ft_strjoin("/", arg);
+	to_ret = ft_strjoin(path, tmp_line);
+	free(tmp_line);
+	return (to_ret);
+}
+
 char		*find_bin(t_command *com)
 {
 	char	**path;
 	char	*to_ret;
-	char	*tmp_line;
 	int		i;
 
 	if (!com->comd->arg || !com->comd->arg->arg)
@@ -91,9 +93,7 @@ char		*find_bin(t_command *com)
 	{
 		if (find_file(path[i], com->comd->arg->arg))
 		{
-			tmp_line = ft_strjoin("/", com->comd->arg->arg);
-			to_ret = ft_strjoin(path[i], tmp_line);
-			free(tmp_line);
+			to_ret = copy_path(path[i], com->comd->arg->arg);
 			return (to_ret + free_mas(path));
 		}
 	}
