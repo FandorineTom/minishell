@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scopycat <scopycat@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 20:49:55 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/23 16:49:02 by scopycat         ###   ########.fr       */
+/*   Updated: 2021/01/27 17:25:03 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int		check_flag_n(char *line, int quotes)
 		define_quotes(&quotes, line, i++);
 	else
 		quotes = 0;
-	if (line[i] == '-')
+	if (line[i] == '-' && check_flag_n(line + i + 1, quotes))
 		i += check_flag_n(line + i + 1, quotes) + 1;
 	if (line[i] == '\0')
 		i++;

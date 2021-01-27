@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snorthmo <snorthmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scopycat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 20:27:57 by scopycat          #+#    #+#             */
-/*   Updated: 2021/01/26 01:51:27 by snorthmo         ###   ########.fr       */
+/*   Updated: 2021/01/27 17:30:59 by scopycat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,16 @@ int		check_env_var(char **line, t_command *com)
 		i = ft_strlen_char(*line, '"');
 	if (i > ft_strlen_char(*line, ';'))
 		i = ft_strlen_char(*line, ';');
+	if (i > ft_strlen_char(*line, '\\'))
+		i = ft_strlen_char(*line, '\\');
 	if (i > ft_strlen_char(*line + 1, '$') + 1)
 		i = ft_strlen_char(*line + 1, '$') + 1;
 	if (**line == '$')
 	{
 		if (!(com->env_var = ft_substr(*line, 1, i - 1)))
 			return (0);
+		if (i == 1)
+			com->comd->arg->arg = ft_strdup("$");
 		if (i - 1)
 			com->no_var += 1;
 		(*line) += i;
